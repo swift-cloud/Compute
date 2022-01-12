@@ -12,7 +12,7 @@ public typealias Char8 = UInt8
 
 public typealias Char32 = UInt32
 
-public enum FastlyStatus: UInt32, CaseIterable {
+public enum FastlyStatus: UInt32, Error, CaseIterable {
     case ok = 0
     case error
     case invalidArgument
@@ -26,36 +26,6 @@ public enum FastlyStatus: UInt32, CaseIterable {
     case none
     case httpHeadTooLarge
     case httpInvalidStatus
-}
-
-public enum FastlyError: Error, CaseIterable {
-    case ok
-    case error
-    case invalidArgument
-    case invalidHandle
-    case bufferLengthError
-    case unsupported
-    case badAlignment
-    case httpInvalidError
-    case httpUserError
-    case httpIncompleteError
-    case none
-    case httpHeadTooLarge
-    case httpInvalidStatus
-
-    init?(_ status: FastlyStatus) {
-        guard status != .ok else {
-            return nil
-        }
-        self = Self.allCases[Int(status.rawValue)]
-    }
-
-    init?<T>(_ code: T) where T: FixedWidthInteger {
-        guard code > 0 && code <= FastlyStatus.allCases.last!.rawValue else {
-            return nil
-        }
-        self = Self.allCases[Int(code)]
-    }
 }
 
 public enum HttpVersion: UInt32 {
@@ -115,7 +85,7 @@ extension ContentEncodings {
 public struct FastlyAbi {
 
     public static func initialize(version: UInt64) throws -> FastlyStatus {
-        try callRuntime { fastly_abi__init(version) }
+        try wasm(fastly_abi__init(version))
         return .ok
     }
 }
@@ -125,10 +95,9 @@ public struct FastlyDictionary {
 
     public init(name: String) throws {
         var handle: DictionaryHandle = 0
-        try callRuntime {
-            name.withCString { namePointer in
-                fastly_dictionary__open(UnsafeMutablePointer(mutating: namePointer), Int32(name.utf8.count), &handle)
-            }
+        try name.withCString {
+            let pointer = UnsafeMutablePointer(mutating: $0)
+            try wasm(fastly_dictionary__open(pointer, Int32(name.utf8.count), &handle))
         }
         self.handle = handle
     }
@@ -137,27 +106,18 @@ public struct FastlyDictionary {
         var resultMaxLength: Int32 = 128
         var resultLength: Int32 = 0
         var resultPointer = UnsafeMutablePointer<CChar>.allocate(capacity: Int(resultMaxLength))
-        try key.withCString { keyPointer in
+        try key.withCString {
+            let pointer = UnsafeMutablePointer(mutating: $0)
+            let pointerLength = Int32(key.utf8.count)
             while true {
                 do {
-                    try callRuntime {
-                        fastly_dictionary__get(
-                            handle,
-                            UnsafeMutablePointer(mutating: keyPointer),
-                            Int32(key.utf8.count),
-                            resultPointer,
-                            resultMaxLength,
-                            &resultLength
-                        )
-                    }
+                    try wasm(fastly_dictionary__get(handle, pointer, pointerLength, resultPointer, resultMaxLength, &resultLength))
                     break
+                } catch FastlyStatus.bufferLengthError {
+                    resultMaxLength *= 2
+                    resultPointer = .allocate(capacity: Int(resultMaxLength))
                 } catch {
-                    if let error = error as? FastlyError, error == .bufferLengthError {
-                        resultMaxLength *= 2
-                        resultPointer = UnsafeMutablePointer<CChar>.allocate(capacity: Int(resultMaxLength))
-                    } else {
-                        throw error
-                    }
+                    throw error
                 }
             }
         }
@@ -165,9 +125,9 @@ public struct FastlyDictionary {
     }
 }
 
-func callRuntime(_ handler: () -> UInt32) throws {
+internal func wasm(_ handler: @autoclosure () -> UInt32) throws {
     let result = handler()
-    if let error = FastlyError(result) {
-        throw error
+    if let status = FastlyStatus(rawValue: result), status != .ok {
+        throw status
     }
 }
