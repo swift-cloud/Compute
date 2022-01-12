@@ -1,3 +1,4 @@
-# SwiftCompute
+#  swift-compute-runtime
 
-A description of this package.
+Swift runtime for Fastly Compute@Edge
+
