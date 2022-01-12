@@ -115,10 +115,8 @@ extension ContentEncodings {
 public struct FastlyAbi {
 
     public static func initialize(version: UInt64) throws -> FastlyStatus {
-        let result = try callRuntime {
-            fastly_abi__init(version)
-        }
-        return FastlyStatus(rawValue: result)!
+        try callRuntime { fastly_abi__init(version) }
+        return .ok
     }
 }
 
@@ -127,7 +125,7 @@ public struct FastlyDictionary {
 
     public init(name: String) throws {
         var handle: DictionaryHandle = 0
-        _ = try callRuntime {
+        try callRuntime {
             name.withCString { namePointer in
                 fastly_dictionary__open(UnsafeMutablePointer(mutating: namePointer), Int32(name.utf8.count), &handle)
             }
@@ -142,7 +140,7 @@ public struct FastlyDictionary {
         try key.withCString { keyPointer in
             while true {
                 do {
-                    try _ = callRuntime {
+                    try callRuntime {
                         fastly_dictionary__get(
                             handle,
                             UnsafeMutablePointer(mutating: keyPointer),
@@ -167,10 +165,9 @@ public struct FastlyDictionary {
     }
 }
 
-func callRuntime<T>(_ handler: () -> T) throws -> T where T: FixedWidthInteger {
+func callRuntime(_ handler: () -> UInt32) throws {
     let result = handler()
     if let error = FastlyError(result) {
         throw error
     }
-    return result
 }
