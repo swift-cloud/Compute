@@ -1,7 +1,7 @@
 # This file describes a Fastly Compute@Edge package. To learn more visit:
 # https://developer.fastly.com/reference/fastly-toml/
 
-authors = ["barba@barstoolsports.com"]
+authors = ["barba@hey.com"]
 description = "Swift Hello World for Compute@Edge"
 language = "swift"
 manifest_version = 2
