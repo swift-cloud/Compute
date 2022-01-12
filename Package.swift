@@ -5,13 +5,17 @@ import PackageDescription
 let package = Package(
     name: "SwiftCompute",
     products: [
-        .executable(name: "SwiftComputeApp", targets: ["SwiftComputeApp"]),
+        // Swift SDK to build C@E apps
         .library(name: "SwiftCompute", targets: ["SwiftCompute"]),
+        // Sample app deployed to C@E using the swift runtime sdk
+        .executable(name: "SwiftComputeApp", targets: ["SwiftComputeApp"]),
     ],
     dependencies: [],
     targets: [
-        .executableTarget(name: "SwiftComputeApp", dependencies: ["SwiftCompute"]),
+        // Swift SDK (+runtime headers) to build C@E apps
+        .target(name: "SwiftCompute", dependencies: ["ComputeRuntime"]),
         .target(name: "ComputeRuntime"),
-        .target(name: "SwiftCompute", dependencies: ["ComputeRuntime"])
+        // Sample app deployed to C@E using the swift runtime sdk
+        .executableTarget(name: "SwiftComputeApp", dependencies: ["SwiftCompute"])
     ]
 )
