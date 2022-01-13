@@ -14,31 +14,20 @@ public struct FastlyDictionary {
     public init(name: String) throws {
         var handle: DictionaryHandle = 0
         try name.withCString {
-            let pointer = UnsafeMutablePointer(mutating: $0)
-            try wasi(fastly_dictionary__open(pointer, Int32(name.utf8.count), &handle))
+            try wasi(fastly_dictionary__open($0, .init(name.count), &handle))
         }
         self.handle = handle
     }
-    
+
     public func get(key: String) throws -> String {
-        var resultMaxLength: Int32 = 1024
-        var resultLength: Int32 = 0
-        var resultPointer = UnsafeMutablePointer<CChar>.allocate(capacity: Int(resultMaxLength))
-        try key.withCString {
-            let pointer = UnsafeMutablePointer(mutating: $0)
-            let pointerLength = Int32(key.utf8.count)
-            while true {
-                do {
-                    try wasi(fastly_dictionary__get(handle, pointer, pointerLength, resultPointer, resultMaxLength, &resultLength))
-                    break
-                } catch WasiStatus.bufferTooSmall {
-                    resultMaxLength *= 2
-                    resultPointer = .allocate(capacity: .init(resultMaxLength))
-                } catch {
-                    throw error
-                }
+        let valueMaxLength: Int32 = 8000
+        var valueLength: Int32 = 0
+        return try key.withCString { keyBuffer in
+            try wasi(fastly_dictionary__get(handle, keyBuffer, .init(key.count), nil, valueMaxLength, &valueLength))
+            let valueBytes = try Array<CChar>(unsafeUninitializedCapacity: .init(valueLength)) { buffer, _ in
+                try wasi(fastly_dictionary__get(handle, keyBuffer, .init(key.count), buffer.baseAddress, valueMaxLength, &valueLength))
             }
+            return String(cString: valueBytes)
         }
-        return String(cString: resultPointer)
     }
 }

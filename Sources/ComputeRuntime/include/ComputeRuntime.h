@@ -19,10 +19,10 @@ extern uint32_t fastly_abi__init(uint64_t abi_version);
 /* FASTLY_DICTIONARY */
 
 __attribute__((__import_module__("fastly_dictionary"),__import_name__("open")))
-extern uint32_t fastly_dictionary__open(char* name, int32_t name_len, int32_t* result);
+extern uint32_t fastly_dictionary__open(const char* name, int32_t name_len, int32_t* result);
 
 __attribute__((__import_module__("fastly_dictionary"),__import_name__("get")))
-extern uint32_t fastly_dictionary__get(int32_t h, char* key, int32_t key_len, char* value, int32_t value_max_len, int32_t* result);
+extern uint32_t fastly_dictionary__get(int32_t h, const char* key, int32_t key_len, char* value, int32_t value_max_len, int32_t* result);
 
 /* FASTLY_LOG */
 
