@@ -1,4 +1,4 @@
-import SwiftCompute
+import Compute
 
 print("Hello, Compute.")
 
