@@ -13,21 +13,21 @@ public struct FastlyDictionary {
     
     public init(name: String) throws {
         var handle: DictionaryHandle = 0
-        try name.withCString {
-            try wasi(fastly_dictionary__open($0, .init(name.count), &handle))
-        }
+        try wasi(fastly_dictionary__open(name, .init(name.utf8.count), &handle))
         self.handle = handle
     }
 
-    public func get(key: String) throws -> String {
-        let valueMaxLength: Int32 = 8000
-        var valueLength: Int32 = 0
-        return try key.withCString { keyBuffer in
-            try wasi(fastly_dictionary__get(handle, keyBuffer, .init(key.count), nil, valueMaxLength, &valueLength))
-            let valueBytes = try Array<CChar>(unsafeUninitializedCapacity: .init(valueLength)) { buffer, _ in
-                try wasi(fastly_dictionary__get(handle, keyBuffer, .init(key.count), buffer.baseAddress, valueMaxLength, &valueLength))
-            }
-            return String(cString: valueBytes)
+    public func get(key: String) throws -> String? {
+        var length: Int32 = 0
+        do {
+            try wasi(fastly_dictionary__get(handle, key, .init(key.utf8.count), nil, maxBufferLength, &length))
+        } catch {
+            return nil
         }
+        let bytes = try Array<UInt8>(unsafeUninitializedCapacity: .init(length)) {
+            try wasi(fastly_dictionary__get(handle, key, .init(key.utf8.count), $0.baseAddress, length, nil))
+            $1 = .init(length)
+        }
+        return String(bytes: bytes, encoding: .utf8)
     }
 }

@@ -13,10 +13,7 @@ public struct Logger {
     
     public init(name: String) throws {
         var handle: EndpointHandle = 0
-        try name.withCString {
-            let pointer = UnsafeMutablePointer(mutating: $0)
-            try wasi(fastly_log__endpoint_get(pointer, Int32(name.utf8.count), &handle))
-        }
+        try wasi(fastly_log__endpoint_get(name, .init(name.utf8.count), &handle))
         self.handle = handle
     }
     
@@ -24,10 +21,7 @@ public struct Logger {
     public func write(_ messages: String...) throws -> Int {
         let message = messages.joined(separator: " ")
         var result: Int32 = 0
-        try message.withCString {
-            let pointer = UnsafeMutablePointer(mutating: $0)
-            try wasi(fastly_log__write(handle, pointer, Int32(message.utf8.count), &result))
-        }
+        try wasi(fastly_log__write(handle, message, .init(message.utf8.count), &result))
         return Int(result)
     }
 }

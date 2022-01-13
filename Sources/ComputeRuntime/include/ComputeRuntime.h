@@ -19,22 +19,22 @@ extern uint32_t fastly_abi__init(uint64_t abi_version);
 /* FASTLY_DICTIONARY */
 
 __attribute__((__import_module__("fastly_dictionary"),__import_name__("open")))
-extern uint32_t fastly_dictionary__open(const char* name, int32_t name_len, int32_t* result);
+extern uint32_t fastly_dictionary__open(const char* name, int name_len, int* handle);
 
 __attribute__((__import_module__("fastly_dictionary"),__import_name__("get")))
-extern uint32_t fastly_dictionary__get(int32_t h, const char* key, int32_t key_len, char* value, int32_t value_max_len, int32_t* result);
+extern uint32_t fastly_dictionary__get(int32_t h, const char* key, int key_len, uint8_t* value, int value_max_len, int* value_len);
 
 /* FASTLY_LOG */
 
 __attribute__((__import_module__("fastly_log"),__import_name__("endpoint_get")))
-extern uint32_t fastly_log__endpoint_get(char* name, int32_t name_len, int32_t* result);
+extern uint32_t fastly_log__endpoint_get(const char* name, int name_len, int* handle);
 
 __attribute__((__import_module__("fastly_log"),__import_name__("write")))
-extern uint32_t fastly_log__write(int32_t h, char* msg, int32_t msg_len, int32_t* result);
+extern uint32_t fastly_log__write(int handle, const char* msg, int msg_len, int* result);
 
 /* FASTLY_GEO */
 
 __attribute__((__import_module__("fastly_geo"),__import_name__("lookup")))
-extern uint32_t fastly_geo__lookup(uint8_t* ip, int32_t ip_len, uint8_t* buf, int32_t buf_len, int32_t* result);
+extern uint32_t fastly_geo__lookup(const uint8_t* ip, int ip_len, uint8_t* value, int value_max_len, int* value_len);
 
 #endif /* ComputeRuntime_h */

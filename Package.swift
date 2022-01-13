@@ -4,6 +4,9 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftCompute",
+    platforms: [
+        .macOS(.v11)
+    ],
     products: [
         // Swift SDK to build C@E apps
         .library(name: "SwiftCompute", targets: ["SwiftCompute"]),
