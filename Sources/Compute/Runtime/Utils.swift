@@ -8,7 +8,7 @@
 import CoreFoundation
 import Foundation
 
-internal func wasi(_ handler: @autoclosure () -> UInt32) throws {
+internal func wasi(_ handler: @autoclosure () -> Int32) throws {
     let result = handler()
     if let status = WasiStatus(rawValue: result), status != .ok {
         throw status

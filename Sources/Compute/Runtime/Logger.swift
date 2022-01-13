@@ -22,6 +22,6 @@ public struct Logger {
         let message = messages.joined(separator: " ")
         var result: Int32 = 0
         try wasi(fastly_log__write(handle, message, .init(message.utf8.count), &result))
-        return Int(result)
+        return .init(result)
     }
 }

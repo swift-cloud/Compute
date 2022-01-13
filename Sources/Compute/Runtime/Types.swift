@@ -7,7 +7,7 @@
 
 public typealias WasiHandle = Int32
 
-public enum WasiStatus: UInt32, Error, CaseIterable {
+public enum WasiStatus: Int32, Error, CaseIterable {
     case ok = 0
     case genericError
     case invalidArgument
@@ -23,7 +23,7 @@ public enum WasiStatus: UInt32, Error, CaseIterable {
     case httpInvalidStatus
 }
 
-public enum HttpVersion: UInt32 {
+public enum HttpVersion: Int32 {
     case http0_9 = 0
     case http1_0
     case http1_1
@@ -31,9 +31,9 @@ public enum HttpVersion: UInt32 {
     case h3
 }
 
-public typealias HttpStatus = UInt16
+public typealias HttpStatus = Int16
 
-public enum BodyWriteEnd: UInt32 {
+public enum BodyWriteEnd: Int32 {
     case back = 0
     case front
 }
@@ -52,7 +52,7 @@ public typealias EndpointHandle = WasiHandle
 
 public typealias DictionaryHandle = WasiHandle
 
-public typealias MultiValueCursor = UInt32
+public typealias MultiValueCursor = Int32
 
 public typealias MultiValueCursorResult = Int64
 
@@ -64,13 +64,13 @@ extension CacheOverrideTag {
     public static let pci: Self = 0x10
 }
 
-public typealias HeaderCount = UInt32
+public typealias HeaderCount = Int32
 
-public typealias IsDone = UInt32
+public typealias IsDone = Int32
 
-public typealias DoneIndex = UInt32
+public typealias DoneIndex = Int32
 
-public typealias ContentEncodings = UInt32
+public typealias ContentEncodings = Int32
 
 extension ContentEncodings {
     
