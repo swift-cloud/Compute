@@ -14,6 +14,7 @@ do {
     let req = try IncomingRequest()
     print("req:method", req.request.method ?? "(null)")
     print("req:uri", req.request.uri ?? "(null)")
+    print("req:version", req.request.httpVersion ?? "(null)")
 
     let dict = try Dictionary(name: "swift")
     print("dict:open")
