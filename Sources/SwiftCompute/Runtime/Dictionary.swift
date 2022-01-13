@@ -8,8 +8,9 @@
 import ComputeRuntime
 
 public struct FastlyDictionary {
+    
     private let handle: DictionaryHandle
-
+    
     public init(name: String) throws {
         var handle: DictionaryHandle = 0
         try name.withCString {
@@ -18,9 +19,9 @@ public struct FastlyDictionary {
         }
         self.handle = handle
     }
-
+    
     public func get(key: String) throws -> String {
-        var resultMaxLength: Int32 = 128
+        var resultMaxLength: Int32 = 1024
         var resultLength: Int32 = 0
         var resultPointer = UnsafeMutablePointer<CChar>.allocate(capacity: Int(resultMaxLength))
         try key.withCString {
@@ -32,7 +33,7 @@ public struct FastlyDictionary {
                     break
                 } catch WasiStatus.bufferTooSmall {
                     resultMaxLength *= 2
-                    resultPointer = .allocate(capacity: Int(resultMaxLength))
+                    resultPointer = .allocate(capacity: .init(resultMaxLength))
                 } catch {
                     throw error
                 }

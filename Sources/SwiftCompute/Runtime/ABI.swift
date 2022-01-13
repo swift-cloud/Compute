@@ -8,7 +8,7 @@
 import ComputeRuntime
 
 public struct ABI {
-
+    
     public static func initialize(version: UInt64) throws -> WasiStatus {
         try wasi(fastly_abi__init(version))
         return .ok

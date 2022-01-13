@@ -73,6 +73,6 @@ public typealias DoneIndex = UInt32
 public typealias ContentEncodings = UInt32
 
 extension ContentEncodings {
-
+    
     public static let gzip: Self = 1
 }

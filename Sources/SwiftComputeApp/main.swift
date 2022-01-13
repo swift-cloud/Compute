@@ -16,13 +16,12 @@ do {
     let value = try dict.get(key: "auth")
     print("value:", value)
 
-
     let logger = try Logger(name: "Logentries")
     print("logger open!")
     let bytes = try logger.write("Hello", "World")
     print("logged bytes:", bytes)
 
-    print("My IP:", try Geo.lookup(ip: [74, 108, 65, 199]))
+    print("74.108.65.199:", try Geo.lookup(ipV4: "74.108.65.199"))
 } catch {
     print("error:", error)
 }

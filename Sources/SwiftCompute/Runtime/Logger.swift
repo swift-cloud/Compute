@@ -8,8 +8,9 @@
 import ComputeRuntime
 
 public struct Logger {
+    
     private let handle: EndpointHandle
-
+    
     public init(name: String) throws {
         var handle: EndpointHandle = 0
         try name.withCString {
@@ -18,7 +19,7 @@ public struct Logger {
         }
         self.handle = handle
     }
-
+    
     @discardableResult
     public func write(_ messages: String...) throws -> Int {
         let message = messages.joined(separator: " ")

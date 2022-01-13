@@ -9,13 +9,7 @@ import ComputeRuntime
 import Foundation
 
 public struct Geo {
-
-    private static let jsonDecoder: JSONDecoder = {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return decoder
-    }()
-
+    
     public struct IpLookup: Codable {
         public let asName: String?
         public let asNumber: Int?
@@ -28,8 +22,8 @@ public struct Geo {
         public let countryCode3: String?
         public let countryName: String?
         public let gmtOffset: Int?
-        public let latitude: Int?
-        public let longitude: Int?
+        public let latitude: Double?
+        public let longitude: Double?
         public let metroCode: Int?
         public let postalCode: String?
         public let proxyDescription: String?
@@ -37,12 +31,18 @@ public struct Geo {
         public let region: String?
         public let utcOffset: Int?
     }
-
-    public static func lookup(ip: [UInt8]) throws -> Any? {
+    
+    public static func lookup(ipV4: String) throws -> IpLookup {
+        let digits = ipV4.components(separatedBy: ".").compactMap { UInt8($0) }
+        return try lookup(ip: digits)
+    }
+    
+    public static func lookup(ip: [UInt8]) throws -> IpLookup {
         var digits = ip
-        var buffer = Array<UInt8>(repeating: 0, count: 1024)
+        let bufferPointer = UnsafeMutablePointer<UInt8>.allocate(capacity: 1024)
         var result: Int32 = 0
-        try wasi(fastly_geo__lookup(&digits, Int32(digits.count), &buffer, Int32(buffer.count), &result))
-        return try jsonDecoder.decode(IpLookup.self, from: .init(buffer))
+        try wasi(fastly_geo__lookup(&digits, .init(digits.count), bufferPointer, 1024, &result))
+        let data = Data(bytes: bufferPointer, count: .init(result))
+        return try Utils.jsonDecoder.decode(IpLookup.self, from: data)
     }
 }
