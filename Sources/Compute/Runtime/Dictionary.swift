@@ -18,16 +18,8 @@ public struct Dictionary {
     }
 
     public func get(key: String) throws -> String? {
-        var length: Int32 = 0
-        do {
-            try wasi(fastly_dictionary__get(handle, key, .init(key.utf8.count), nil, maxBufferLength, &length))
-        } catch {
-            return nil
+        return try wasiString {
+            fastly_dictionary__get(handle, key, .init(key.utf8.count), $0, $1, &$2)
         }
-        let bytes = try Array<UInt8>(unsafeUninitializedCapacity: .init(length)) {
-            try wasi(fastly_dictionary__get(handle, key, .init(key.utf8.count), $0.baseAddress, length, nil))
-            $1 = .init(length)
-        }
-        return String(bytes: bytes, encoding: .utf8)
     }
 }

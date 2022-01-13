@@ -11,6 +11,10 @@ print("env:service_id", Environment.Compute.serviceId)
 print("env:service_version", Environment.Compute.serviceVersion)
 
 do {
+    let req = try IncomingRequest()
+    print("req:method", req.request.method ?? "(null)")
+    print("req:uri", req.request.uri ?? "(null)")
+
     let dict = try Dictionary(name: "swift")
     print("dict:open")
     print("dict:foo", try dict.get(key: "foo") ?? "(null)")

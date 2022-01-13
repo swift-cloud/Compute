@@ -38,12 +38,8 @@ public struct Geo {
     }
     
     public static func lookup(ip: [UInt8]) throws -> IpLookup {
-        var length: Int32 = 0
-        try wasi(fastly_geo__lookup(ip, .init(ip.count), nil, maxBufferLength, &length))
-        let bytes = try Array<UInt8>(unsafeUninitializedCapacity: .init(length)) {
-            try wasi(fastly_geo__lookup(ip, .init(ip.count), $0.baseAddress, length, nil))
-            $1 = .init(length)
+        return try wasiDecode(IpLookup.self) {
+            fastly_geo__lookup(ip, .init(ip.count), $0, $1, &$2)
         }
-        return try Utils.jsonDecoder.decode(IpLookup.self, from: .init(bytes))
     }
 }

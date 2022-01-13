@@ -54,4 +54,24 @@ extern int fastly_http_body__write(int handle, const uint8_t* data, int data_len
 __attribute__((__import_module__("fastly_http_body"),__import_name__("read")))
 extern int fastly_http_body__read(int handle, uint8_t* data, int data_max_len, int* data_len);
 
+/* FASTLY_HTTP_REQ */
+
+__attribute__((__import_module__("fastly_http_req"),__import_name__("new")))
+extern int fastly_http_req__new(int* handle);
+
+__attribute__((__import_module__("fastly_http_req"),__import_name__("body_downstream_get")))
+extern int fastly_http_req__body_downstream_get(int* req, int* body);
+
+__attribute__((__import_module__("fastly_http_req"),__import_name__("close")))
+extern int fastly_http_req__close(int handle);
+
+__attribute__((__import_module__("fastly_http_req"),__import_name__("method_get")))
+extern int fastly_http_req__method_get(int handle, uint8_t* value, int value_max_len, int* value_len);
+
+__attribute__((__import_module__("fastly_http_req"),__import_name__("uri_get")))
+extern int fastly_http_req__uri_get(int handle, uint8_t* value, int value_max_len, int* value_len);
+
+__attribute__((__import_module__("fastly_http_req"),__import_name__("version_get")))
+extern int fastly_http_req__version_get(int handle, int* version);
+
 #endif /* ComputeRuntime_h */
