@@ -21,6 +21,8 @@ do {
     print("logger open!")
     let bytes = try logger.write("Hello", "World")
     print("logged bytes:", bytes)
+
+    print("My IP:", try Geo.lookup(ip: [74, 108, 65, 199]))
 } catch {
     print("error:", error)
 }

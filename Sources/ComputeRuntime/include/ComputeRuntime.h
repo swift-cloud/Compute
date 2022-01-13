@@ -32,4 +32,9 @@ extern uint32_t fastly_log__endpoint_get(char* name, int32_t name_len, int32_t* 
 __attribute__((__import_module__("fastly_log"),__import_name__("write")))
 extern uint32_t fastly_log__write(int32_t h, char* msg, int32_t msg_len, int32_t* result);
 
+/* FASTLY_GEO */
+
+__attribute__((__import_module__("fastly_geo"),__import_name__("lookup")))
+extern uint32_t fastly_geo__lookup(uint8_t* ip, int32_t ip_len, uint8_t* buf, int32_t buf_len, int32_t* result);
+
 #endif /* ComputeRuntime_h */
