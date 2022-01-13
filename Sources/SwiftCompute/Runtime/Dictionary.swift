@@ -7,7 +7,7 @@
 
 import ComputeRuntime
 
-public struct FastlyDictionary {
+public struct Dictionary {
     
     private let handle: DictionaryHandle
     

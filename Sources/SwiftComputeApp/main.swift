@@ -11,7 +11,7 @@ print("env:service_id", Environment.Compute.serviceId)
 print("env:service_version", Environment.Compute.serviceVersion)
 
 do {
-    let dict = try FastlyDictionary(name: "swift")
+    let dict = try Dictionary(name: "swift")
     print("dict:open")
     print("dict:foo", try dict.get(key: "foo") ?? "(null)")
     print("dict:auth", try dict.get(key: "auth") ?? "(null)")

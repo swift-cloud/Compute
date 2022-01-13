@@ -9,8 +9,8 @@ import ComputeRuntime
 
 public struct ABI {
     
-    public static func initialize(version: UInt64) throws -> WasiStatus {
-        try wasi(fastly_abi__init(version))
+    public static func initialize(version: Int) throws -> WasiStatus {
+        try wasi(fastly_abi__init(UInt64(version)))
         return .ok
     }
 }
