@@ -11,7 +11,7 @@ public struct Logger {
     private let handle: EndpointHandle
 
     public init(name: String) throws {
-        var handle: DictionaryHandle = 0
+        var handle: EndpointHandle = 0
         try name.withCString {
             let pointer = UnsafeMutablePointer(mutating: $0)
             try wasi(fastly_log__endpoint_get(pointer, Int32(name.utf8.count), &handle))

@@ -15,6 +15,12 @@ do {
     print("dict open!")
     let value = try dict.get(key: "auth")
     print("value:", value)
+
+
+    let logger = try Logger(name: "Logentries")
+    print("logger open!")
+    let bytes = try logger.write("Hello", "World")
+    print("logged bytes:", bytes)
 } catch {
     print("error:", error)
 }
