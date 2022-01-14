@@ -60,26 +60,21 @@ public struct HttpBody {
     }
 
     public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) throws -> T where T: Decodable {
-        let data = try data(maxLength: .max)
+        let data = try data()
         return try decoder.decode(type, from: data)
     }
 
-    public func json() throws -> Any {
-        let data = try data(maxLength: .max)
-        return try JSONSerialization.jsonObject(with: data, options: [])
-    }
-
     public func text() throws -> String {
-        let data = try data(maxLength: .max)
+        let data = try data()
         return String(data: data, encoding: .utf8) ?? ""
     }
 
-    public func data(maxLength: Int = .max) throws -> Data {
+    public func data(maxLength: Int = maxBufferLength) throws -> Data {
         let bytes: [UInt8] = try bytes(maxLength: maxLength)
         return Data(bytes)
     }
 
-    public func bytes(maxLength: Int = .max) throws -> [UInt8] {
+    public func bytes(maxLength: Int = maxBufferLength) throws -> [UInt8] {
         return try Array<UInt8>(unsafeUninitializedCapacity: maxLength) {
             var length = 0
             try wasi(fastly_http_body__read(handle, $0.baseAddress, maxLength, &length))

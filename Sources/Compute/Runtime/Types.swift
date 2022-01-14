@@ -105,12 +105,12 @@ public enum ContentEncodings: Int32 {
     case gzip = 1
 }
 
-internal let maxBufferLength = 8192
+public let maxBufferLength = 8192
 
-internal let maxHeaderLength = 4096
+public let maxHeaderLength = 4096
 
-internal let maxMethodLength = 1024
+public let maxMethodLength = 1024
 
-internal let maxUriLength = 4096
+public let maxUriLength = 4096
 
-internal let maxDictionaryEntryLength = 8000
+public let maxDictionaryEntryLength = 8000
