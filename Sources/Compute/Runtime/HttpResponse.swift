@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  HttpResponse.swift
 //  
 //
 //  Created by Andrew Barba on 1/13/22.

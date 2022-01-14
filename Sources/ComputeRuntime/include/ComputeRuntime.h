@@ -89,6 +89,21 @@ extern int fastly_http_req__version_set(int handle, int version);
 WASM_IMPORT("fastly_http_req", "downstream_client_ip_addr")
 extern int fastly_http_req__downstream_client_ip_addr(uint8_t* octets, size_t* nwritten);
 
+WASM_IMPORT("fastly_http_req", "header_value_get")
+int fastly_http_req__header_value_get(int resp_handle, const char *name, size_t name_len,
+                                       uint8_t* value, size_t value_max_len, size_t* nwritten);
+
+WASM_IMPORT("fastly_http_req", "header_insert")
+int fastly_http_req__header_insert(int resp_handle, const char *name, size_t name_len,
+                                    const char *value, size_t value_len);
+
+WASM_IMPORT("fastly_http_req", "header_append")
+int fastly_http_req__header_append(int resp_handle, const char *name, size_t name_len,
+                                    const char *value, size_t value_len);
+
+WASM_IMPORT("fastly_http_req", "header_remove")
+int fastly_http_req__header_remove(int resp_handle, const char *name, size_t name_len);
+
 /* FASTLY_HTTP_RESP */
 
 WASM_IMPORT("fastly_http_resp", "new")
@@ -111,5 +126,20 @@ extern int fastly_http_resp__version_set(int handle, int version);
 
 WASM_IMPORT("fastly_http_resp", "status_set")
 extern int fastly_http_resp__status_set(int handle, int status);
+
+WASM_IMPORT("fastly_http_resp", "header_value_get")
+int fastly_http_resp__header_value_get(int resp_handle, const char *name, size_t name_len,
+                                       uint8_t* value, size_t value_max_len, size_t* nwritten);
+
+WASM_IMPORT("fastly_http_resp", "header_insert")
+int fastly_http_resp__header_insert(int resp_handle, const char *name, size_t name_len,
+                                    const char *value, size_t value_len);
+
+WASM_IMPORT("fastly_http_resp", "header_append")
+int fastly_http_resp__header_append(int resp_handle, const char *name, size_t name_len,
+                                    const char *value, size_t value_len);
+
+WASM_IMPORT("fastly_http_resp", "header_remove")
+int fastly_http_resp__header_remove(int resp_handle, const char *name, size_t name_len);
 
 #endif /* ComputeRuntime_h */
