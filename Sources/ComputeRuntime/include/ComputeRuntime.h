@@ -8,102 +8,105 @@
 #ifndef ComputeRuntime_h
 #define ComputeRuntime_h
 
-#include <stdlib.h>
+#include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
+
+#define WASM_IMPORT(module, name) __attribute__((import_module(module), import_name(name)))
 
 /* FASTLY_ABI */
 
-__attribute__((__import_module__("fastly_abi"),__import_name__("init")))
+WASM_IMPORT("fastly_abi", "init")
 extern int fastly_abi__init(uint64_t abi_version);
 
 /* FASTLY_DICTIONARY */
 
-__attribute__((__import_module__("fastly_dictionary"),__import_name__("open")))
+WASM_IMPORT("fastly_dictionary", "open")
 extern int fastly_dictionary__open(const char* name, int name_len, int* handle);
 
-__attribute__((__import_module__("fastly_dictionary"),__import_name__("get")))
+WASM_IMPORT("fastly_dictionary", "get")
 extern int fastly_dictionary__get(int32_t h, const char* key, int key_len, uint8_t* value, int value_max_len, int* value_len);
 
 /* FASTLY_LOG */
 
-__attribute__((__import_module__("fastly_log"),__import_name__("endpoint_get")))
+WASM_IMPORT("fastly_log", "endpoint_get")
 extern int fastly_log__endpoint_get(const char* name, int name_len, int* handle);
 
-__attribute__((__import_module__("fastly_log"),__import_name__("write")))
+WASM_IMPORT("fastly_log", "write")
 extern int fastly_log__write(int handle, const char* msg, int msg_len, int* result);
 
 /* FASTLY_GEO */
 
-__attribute__((__import_module__("fastly_geo"),__import_name__("lookup")))
+WASM_IMPORT("fastly_geo", "lookup")
 extern int fastly_geo__lookup(const uint8_t* ip, int ip_len, uint8_t* value, int value_max_len, int* value_len);
 
 /* FASTLY_HTTP_BODY */
 
-__attribute__((__import_module__("fastly_http_body"),__import_name__("new")))
+WASM_IMPORT("fastly_http_body", "new")
 extern int fastly_http_body__new(int* handle);
 
-__attribute__((__import_module__("fastly_http_body"),__import_name__("append")))
+WASM_IMPORT("fastly_http_body", "append")
 extern int fastly_http_body__append(int dest, int src);
 
-__attribute__((__import_module__("fastly_http_body"),__import_name__("close")))
+WASM_IMPORT("fastly_http_body", "close")
 extern int fastly_http_body__close(int handle);
 
-__attribute__((__import_module__("fastly_http_body"),__import_name__("write")))
+WASM_IMPORT("fastly_http_body", "write")
 extern int fastly_http_body__write(int handle, const uint8_t* data, int data_len, int body_end, int* result);
 
-__attribute__((__import_module__("fastly_http_body"),__import_name__("read")))
+WASM_IMPORT("fastly_http_body", "read")
 extern int fastly_http_body__read(int handle, uint8_t* data, int data_max_len, int* data_len);
 
 /* FASTLY_HTTP_REQ */
 
-__attribute__((__import_module__("fastly_http_req"),__import_name__("new")))
+WASM_IMPORT("fastly_http_req", "new")
 extern int fastly_http_req__new(int* handle);
 
-__attribute__((__import_module__("fastly_http_req"),__import_name__("body_downstream_get")))
+WASM_IMPORT("fastly_http_req", "body_downstream_get")
 extern int fastly_http_req__body_downstream_get(int* req, int* body);
 
-__attribute__((__import_module__("fastly_http_req"),__import_name__("close")))
+WASM_IMPORT("fastly_http_req", "close")
 extern int fastly_http_req__close(int handle);
 
-__attribute__((__import_module__("fastly_http_req"),__import_name__("method_get")))
+WASM_IMPORT("fastly_http_req", "method_get")
 extern int fastly_http_req__method_get(int handle, uint8_t* value, int value_max_len, int* value_len);
 
-__attribute__((__import_module__("fastly_http_req"),__import_name__("uri_get")))
+WASM_IMPORT("fastly_http_req", "uri_get")
 extern int fastly_http_req__uri_get(int handle, uint8_t* value, int value_max_len, int* value_len);
 
-__attribute__((__import_module__("fastly_http_req"),__import_name__("version_get")))
+WASM_IMPORT("fastly_http_req", "version_get")
 extern int fastly_http_req__version_get(int handle, int* version);
 
-__attribute__((__import_module__("fastly_http_req"),__import_name__("method_set")))
+WASM_IMPORT("fastly_http_req", "method_set")
 extern int fastly_http_req__method_set(int handle, const char* method, int method_len);
 
-__attribute__((__import_module__("fastly_http_req"),__import_name__("uri_set")))
+WASM_IMPORT("fastly_http_req", "uri_set")
 extern int fastly_http_req__uri_set(int handle, const char* uri, int uri_len);
 
-__attribute__((__import_module__("fastly_http_req"),__import_name__("version_set")))
+WASM_IMPORT("fastly_http_req", "version_set")
 extern int fastly_http_req__version_set(int handle, int version);
 
 /* FASTLY_HTTP_RESP */
 
-__attribute__((__import_module__("fastly_http_resp"),__import_name__("new")))
+WASM_IMPORT("fastly_http_resp", "new")
 extern int fastly_http_resp__new(int* handle);
 
-__attribute__((__import_module__("fastly_http_resp"),__import_name__("close")))
+WASM_IMPORT("fastly_http_resp", "close")
 extern int fastly_http_resp__close(int handle);
 
-__attribute__((__import_module__("fastly_http_resp"),__import_name__("send_downstream")))
+WASM_IMPORT("fastly_http_resp", "send_downstream")
 extern int fastly_http_resp__send_downstream(int resp_handle, int body_handle, int streaming);
 
-__attribute__((__import_module__("fastly_http_resp"),__import_name__("version_get")))
+WASM_IMPORT("fastly_http_resp", "version_get")
 extern int fastly_http_resp__version_get(int handle, int* version);
 
-__attribute__((__import_module__("fastly_http_resp"),__import_name__("status_get")))
+WASM_IMPORT("fastly_http_resp", "status_get")
 extern int fastly_http_resp__status_get(int handle, int* status);
 
-__attribute__((__import_module__("fastly_http_resp"),__import_name__("version_set")))
+WASM_IMPORT("fastly_http_resp", "version_set")
 extern int fastly_http_resp__version_set(int handle, int version);
 
-__attribute__((__import_module__("fastly_http_resp"),__import_name__("status_set")))
+WASM_IMPORT("fastly_http_resp", "status_set")
 extern int fastly_http_resp__status_set(int handle, int status);
 
 #endif /* ComputeRuntime_h */

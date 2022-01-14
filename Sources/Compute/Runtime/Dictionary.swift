@@ -18,7 +18,7 @@ public struct Dictionary {
     }
 
     public func get(key: String) throws -> String? {
-        return try wasiString {
+        return try wasiString(maxBufferLength: maxDictionaryEntryLength) {
             fastly_dictionary__get(handle, key, .init(key.utf8.count), $0, $1, &$2)
         }
     }

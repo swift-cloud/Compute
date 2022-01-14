@@ -11,36 +11,6 @@ public struct HttpResponse {
 
     internal let handle: ResponseHandle
 
-    public var status: HttpStatus? {
-        get {
-            do {
-                var status: Int32 = 200
-                try wasi(fastly_http_resp__status_get(handle, &status))
-                return status
-            } catch {
-                return nil
-            }
-        }
-        set {
-            try? wasi(fastly_http_resp__status_set(handle, newValue ?? 0))
-        }
-    }
-
-    public var httpVersion: HttpVersion? {
-        get {
-            do {
-                var version: Int32 = 0
-                try wasi(fastly_http_resp__version_get(handle, &version))
-                return HttpVersion(rawValue: version)
-            } catch {
-                return nil
-            }
-        }
-        set {
-            try? wasi(fastly_http_resp__version_set(handle, newValue?.rawValue ?? 0))
-        }
-    }
-
     internal init(_ handle: ResponseHandle) {
         self.handle = handle
     }
@@ -49,6 +19,26 @@ public struct HttpResponse {
         var handle: ResponseHandle = 0
         try wasi(fastly_http_resp__new(&handle))
         self.handle = handle
+    }
+
+    public func status() throws -> HttpStatus {
+        var status: Int32 = 0
+        try wasi(fastly_http_resp__status_get(handle, &status))
+        return status
+    }
+
+    public func status(_ newValue: HttpStatus) throws {
+        try wasi(fastly_http_resp__status_set(handle, newValue))
+    }
+
+    public func httpVersion() throws -> HttpVersion? {
+        var version: Int32 = 0
+        try wasi(fastly_http_resp__version_get(handle, &version))
+        return HttpVersion(rawValue: version)
+    }
+
+    public func httpVersion(_ newValue: HttpVersion) throws {
+        try wasi(fastly_http_resp__version_set(handle, newValue.rawValue))
     }
 
     public func send(_ body: HttpBody, streaming: Bool = false) throws {

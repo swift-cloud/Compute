@@ -16,10 +16,6 @@ public class OutgoingResponse {
 
     public let body: HttpBody
 
-    public var status: HttpStatus {
-        response.status ?? 200
-    }
-
     internal init() throws {
         try response = HttpResponse()
         try body = HttpBody()
@@ -31,57 +27,81 @@ public class OutgoingResponse {
         try response.send(body, streaming: true)
     }
 
+    public func status() throws -> HttpStatus {
+        return try response.status()
+    }
+
     @discardableResult
-    public func status(_ newValue: HttpStatus) -> Self {
-        response.status = status
+    public func status(_ newValue: HttpStatus) throws -> Self {
+        try response.status(newValue)
         return self
     }
 
-    public func write<T>(_ object: T, encoder: JSONEncoder = .init()) throws where T: Encodable {
+    @discardableResult
+    public func write<T>(_ object: T, encoder: JSONEncoder = .init()) throws -> Self where T: Encodable {
         try body.write(object, encoder: encoder)
         try sendStreamingBodyIfNeeded()
+        return self
     }
 
-    public func write(_ text: String) throws {
+    @discardableResult
+    public func write(_ text: String) throws -> Self {
         try body.write(text)
         try sendStreamingBodyIfNeeded()
+        return self
     }
 
-    public func write(_ data: Data) throws {
+    @discardableResult
+    public func write(_ data: Data) throws -> Self {
         try body.write(data)
         try sendStreamingBodyIfNeeded()
+        return self
     }
 
-    public func write(_ bytes: [UInt8]) throws {
+    @discardableResult
+    public func write(_ bytes: [UInt8]) throws -> Self {
         try body.write(bytes)
         try sendStreamingBodyIfNeeded()
+        return self
     }
 
-    public func send<T>(_ object: T, encoder: JSONEncoder = .init()) throws where T: Encodable {
+    @discardableResult
+    public func send<T>(_ object: T, encoder: JSONEncoder = .init()) throws -> Self where T: Encodable {
         try body.write(object, encoder: encoder)
         try response.send(body, streaming: false)
+        return self
     }
 
-    public func send(_ text: String) throws {
+    @discardableResult
+    public func send(_ text: String) throws -> Self {
         try body.write(text)
         try response.send(body, streaming: false)
+        return self
     }
 
-    public func send(_ data: Data) throws {
+    @discardableResult
+    public func send(_ data: Data) throws -> Self {
         try body.write(data)
         try response.send(body, streaming: false)
+        return self
     }
 
-    public func send(_ bytes: [UInt8]) throws {
+    @discardableResult
+    public func send(_ bytes: [UInt8]) throws -> Self {
         try body.write(bytes)
         try response.send(body, streaming: false)
+        return self
     }
 
-    public func end() throws {
+    @discardableResult
+    public func end() throws -> Self {
         try body.close()
+        return self
     }
 
-    public func cancel() throws {
+    @discardableResult
+    public func cancel() throws -> Self {
         try response.close()
+        return self
     }
 }

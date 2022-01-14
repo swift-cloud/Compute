@@ -29,10 +29,10 @@ internal func wasiString(maxBufferLength: Int32 = maxBufferLength, _ handler: Wa
 }
 
 internal func wasiDecode<T>(
+    _ type: T.Type,
     decoder: JSONDecoder = Utils.jsonDecoder,
     maxBufferLength: Int32 = maxBufferLength,
-    _ type: T.Type,
-    _ handler: WasiBufferReader
+    handler: WasiBufferReader
 ) throws -> T where T: Decodable {
     let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler)
     return try decoder.decode(type, from: Data(bytes))

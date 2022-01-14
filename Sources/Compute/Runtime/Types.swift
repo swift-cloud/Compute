@@ -86,4 +86,12 @@ extension ContentEncodings {
     public static let gzip: Self = 1
 }
 
-internal let maxBufferLength: Int32 = 1024 * 8
+internal let maxBufferLength: Int32 = 8192
+
+internal let maxHeaderLength: Int32 = 4096
+
+internal let maxMethodLength: Int32 = 1024
+
+internal let maxUriLength: Int32 = 4096
+
+internal let maxDictionaryEntryLength: Int32 = 8000

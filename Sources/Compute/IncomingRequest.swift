@@ -12,19 +12,19 @@ public struct IncomingRequest {
 
     internal let request: HttpRequest
 
+    public let body: HttpBody
+
     public var method: HttpMethod {
-        request.method ?? .get
+        return (try? request.method()) ?? .get
     }
 
     public var url: URL {
-        URL(string: request.uri ?? "http://localhost")!
+        return URL(string: (try? request.uri()) ?? "http://localhost")!
     }
 
     public var httpVersion: HttpVersion {
-        request.httpVersion ?? .http1_1
+        return (try? request.httpVersion()) ?? .http1_1
     }
-
-    public let body: HttpBody
 
     internal init() throws {
         var requestHandle: RequestHandle = 0
