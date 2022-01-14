@@ -62,6 +62,30 @@ internal struct HttpRequest {
         }
     }
 
+    public func cachePolicy(_ policy: CachePolicy, surrogateKey: String?) throws {
+        var tag: CacheOverrideTag = .none
+        var ttl: UInt32 = 0
+        var swr: UInt32 = 0
+        switch policy {
+        case .origin:
+            break
+        case .pass:
+            tag |= .pass
+        case .ttl(let seconds, let staleWhileRevalidate):
+            tag |= .ttl
+            if staleWhileRevalidate > 0 {
+                tag |= .staleWhileRevalidate
+            }
+            ttl = .init(seconds)
+            swr = .init(staleWhileRevalidate)
+        }
+        if let surrogateKey = surrogateKey {
+            try wasi(fastly_http_req__cache_override_v2_set(handle, tag, ttl, swr, surrogateKey, surrogateKey.utf8.count))
+        } else {
+            try wasi(fastly_http_req__cache_override_set(handle, tag, ttl, swr))
+        }
+    }
+
     public func close() throws {
         try wasi(fastly_http_req__close(handle))
     }

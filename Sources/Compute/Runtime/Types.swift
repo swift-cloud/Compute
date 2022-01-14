@@ -61,8 +61,6 @@ public enum IpAddress {
     }
 }
 
-public typealias CacheOverrideTag = UInt32
-
 public typealias BodyHandle = WasiHandle
 
 public typealias RequestHandle = WasiHandle
@@ -79,6 +77,8 @@ public typealias MultiValueCursor = Int32
 
 public typealias MultiValueCursorResult = Int64
 
+public typealias CacheOverrideTag = Int32
+
 extension CacheOverrideTag {
     public static let none: Self = 0x1
     public static let pass: Self = 0x2
@@ -87,17 +87,20 @@ extension CacheOverrideTag {
     public static let pci: Self = 0x10
 }
 
+public enum CachePolicy {
+    case origin
+    case pass
+    case ttl(seconds: Int, staleWhileRevalidate: Int)
+}
+
 public typealias HeaderCount = Int32
 
 public typealias IsDone = Int32
 
 public typealias DoneIndex = Int32
 
-public typealias ContentEncodings = Int32
-
-extension ContentEncodings {
-    
-    public static let gzip: Self = 1
+public enum ContentEncodings: Int32 {
+    case gzip = 1
 }
 
 internal let maxBufferLength = 8192
