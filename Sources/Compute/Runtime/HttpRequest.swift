@@ -95,15 +95,15 @@ public struct HttpRequest {
     }
 
     public func sendAsync(_ body: HttpBody, backend: String) throws -> HttpPendingRequest {
-        var handle: PendingRequestHandle = 0
-        try wasi(fastly_http_req__send_async(handle, body.handle, backend, backend.utf8.count, &handle))
-        return .init(handle, request: self)
+        var pendingRequestHandle: PendingRequestHandle = 0
+        try wasi(fastly_http_req__send_async(handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
+        return .init(pendingRequestHandle, request: self)
     }
 
     public func sendAsyncStreaming(_ body: HttpBody, backend: String) throws -> HttpPendingRequest {
-        var handle: PendingRequestHandle = 0
-        try wasi(fastly_http_req__send_async_streaming(handle, body.handle, backend, backend.utf8.count, &handle))
-        return .init(handle, request: self)
+        var pendingRequestHandle: PendingRequestHandle = 0
+        try wasi(fastly_http_req__send_async_streaming(handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
+        return .init(pendingRequestHandle, request: self)
     }
 
     public func close() throws {
