@@ -10,9 +10,9 @@ import Foundation
 
 public struct HttpBody {
 
-    private let handle: BodyHandle
+    internal let handle: BodyHandle
 
-    public init(_ handle: BodyHandle) {
+    internal init(_ handle: BodyHandle) {
         self.handle = handle
     }
 
@@ -30,13 +30,26 @@ public struct HttpBody {
         try wasi(fastly_http_body__close(handle))
     }
 
+    @discardableResult
+    public func write<T>(encoder: JSONEncoder = .init(), _ object: T, location: BodyWriteEnd = .back) throws -> Int where T: Encodable {
+        let data = try encoder.encode(object)
+        return try write(data)
+    }
+
+    @discardableResult
+    public func write(_ string: String, location: BodyWriteEnd = .back) throws -> Int {
+        return try write(string.data(using: .utf8) ?? .init())
+    }
+
+    @discardableResult
     public func write(_ data: Data, location: BodyWriteEnd = .back) throws -> Int {
         return try write(Array<UInt8>(data))
     }
 
-    public func write(_ data: [UInt8], location: BodyWriteEnd = .back) throws -> Int {
+    @discardableResult
+    public func write(_ bytes: [UInt8], location: BodyWriteEnd = .back) throws -> Int {
         var result: Int32 = 0
-        try wasi(fastly_http_body__write(handle, data, .init(data.count), location.rawValue, &result))
+        try wasi(fastly_http_body__write(handle, bytes, .init(bytes.count), location.rawValue, &result))
         return .init(result)
     }
 

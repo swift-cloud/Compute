@@ -9,7 +9,7 @@ import ComputeRuntime
 
 public struct Dictionary {
     
-    private let handle: DictionaryHandle
+    internal let handle: DictionaryHandle
     
     public init(name: String) throws {
         var handle: DictionaryHandle = 0

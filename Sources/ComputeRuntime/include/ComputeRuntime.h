@@ -74,4 +74,36 @@ extern int fastly_http_req__uri_get(int handle, uint8_t* value, int value_max_le
 __attribute__((__import_module__("fastly_http_req"),__import_name__("version_get")))
 extern int fastly_http_req__version_get(int handle, int* version);
 
+__attribute__((__import_module__("fastly_http_req"),__import_name__("method_set")))
+extern int fastly_http_req__method_set(int handle, const char* method, int method_len);
+
+__attribute__((__import_module__("fastly_http_req"),__import_name__("uri_set")))
+extern int fastly_http_req__uri_set(int handle, const char* uri, int uri_len);
+
+__attribute__((__import_module__("fastly_http_req"),__import_name__("version_set")))
+extern int fastly_http_req__version_set(int handle, int version);
+
+/* FASTLY_HTTP_RESP */
+
+__attribute__((__import_module__("fastly_http_resp"),__import_name__("new")))
+extern int fastly_http_resp__new(int* handle);
+
+__attribute__((__import_module__("fastly_http_resp"),__import_name__("close")))
+extern int fastly_http_resp__close(int handle);
+
+__attribute__((__import_module__("fastly_http_resp"),__import_name__("send_downstream")))
+extern int fastly_http_resp__send_downstream(int resp_handle, int body_handle, int streaming);
+
+__attribute__((__import_module__("fastly_http_resp"),__import_name__("version_get")))
+extern int fastly_http_resp__version_get(int handle, int* version);
+
+__attribute__((__import_module__("fastly_http_resp"),__import_name__("status_get")))
+extern int fastly_http_resp__status_get(int handle, int* status);
+
+__attribute__((__import_module__("fastly_http_resp"),__import_name__("version_set")))
+extern int fastly_http_resp__version_set(int handle, int version);
+
+__attribute__((__import_module__("fastly_http_resp"),__import_name__("status_set")))
+extern int fastly_http_resp__status_set(int handle, int status);
+
 #endif /* ComputeRuntime_h */

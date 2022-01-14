@@ -6,16 +6,21 @@
 //
 
 import ComputeRuntime
+import Foundation
 
-public struct HttpRequest {
+internal struct HttpRequest {
 
-    private let handle: RequestHandle
+    internal let handle: RequestHandle
 
-    public var method: String? {
+    public var method: HttpMethod? {
         get {
-            try? wasiString {
+            let string = try? wasiString {
                 fastly_http_req__method_get(handle, $0, $1, &$2)
             }
+            return HttpMethod(rawValue: string ?? "")
+        }
+        set {
+            try? wasi(fastly_http_req__method_set(handle, newValue?.rawValue, .init(newValue?.rawValue.utf8.count ?? 0)))
         }
     }
 
@@ -24,6 +29,9 @@ public struct HttpRequest {
             try? wasiString {
                 fastly_http_req__uri_get(handle, $0, $1, &$2)
             }
+        }
+        set {
+            try? wasi(fastly_http_req__uri_set(handle, newValue, .init(newValue?.utf8.count ?? 0)))
         }
     }
 
@@ -37,9 +45,12 @@ public struct HttpRequest {
                 return nil
             }
         }
+        set {
+            try? wasi(fastly_http_req__version_set(handle, newValue?.rawValue ?? 0))
+        }
     }
 
-    public init(_ handle: RequestHandle) {
+    internal init(_ handle: RequestHandle) {
         self.handle = handle
     }
 
@@ -51,20 +62,5 @@ public struct HttpRequest {
 
     public func close() throws {
         try wasi(fastly_http_req__close(handle))
-    }
-}
-
-public struct IncomingRequest {
-
-    public let request: HttpRequest
-
-    public let body: HttpBody
-
-    public init() throws {
-        var requestHandle: RequestHandle = 0
-        var bodyHandle: BodyHandle = 0
-        try wasi(fastly_http_req__body_downstream_get(&requestHandle, &bodyHandle))
-        self.request = HttpRequest(requestHandle)
-        self.body = HttpBody(bodyHandle)
     }
 }

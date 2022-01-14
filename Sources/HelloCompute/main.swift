@@ -11,11 +11,6 @@ print("env:service_id", Environment.Compute.serviceId)
 print("env:service_version", Environment.Compute.serviceVersion)
 
 do {
-    let req = try IncomingRequest()
-    print("req:method", req.request.method ?? "(null)")
-    print("req:uri", req.request.uri ?? "(null)")
-    print("req:version", req.request.httpVersion ?? "(null)")
-
     let dict = try Dictionary(name: "swift")
     print("dict:open")
     print("dict:foo", try dict.get(key: "foo") ?? "(null)")
@@ -30,4 +25,16 @@ do {
     print("ip:74.108.65.199", try Geo.lookup(ipV4: "74.108.65.199"))
 } catch {
     print("error:", error)
+}
+
+onIncomingRequest { req, res in
+    print("req:method", req.method)
+    print("req:uri", req.url)
+    print("req:version", req.httpVersion)
+
+    res.status(201)
+
+    try res.body.write("Hello, World")
+    try res.send()
+    print("sent 1")
 }

@@ -9,7 +9,7 @@ import ComputeRuntime
 
 public struct Logger {
     
-    private let handle: EndpointHandle
+    internal let handle: EndpointHandle
     
     public init(name: String) throws {
         var handle: EndpointHandle = 0

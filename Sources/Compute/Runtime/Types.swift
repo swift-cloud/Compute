@@ -31,7 +31,16 @@ public enum HttpVersion: Int32 {
     case h3
 }
 
-public typealias HttpStatus = Int16
+public enum HttpMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case put = "PUT"
+    case delete = "DELETE"
+    case options = "OPTIONS"
+    case query = "QUERY"
+}
+
+public typealias HttpStatus = Int32
 
 public enum BodyWriteEnd: Int32 {
     case back = 0
