@@ -66,7 +66,7 @@ public struct FetchRequest {
             }
 
             // Sleep for a bit before polling
-            try await Task.sleep(nanoseconds: 1_000_000)
+            try await Task.sleep(nanoseconds: 4_000_000)
         }
     }
 }
