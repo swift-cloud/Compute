@@ -62,7 +62,7 @@ internal struct HttpRequest {
         }
     }
 
-    public func cachePolicy(_ policy: CachePolicy, surrogateKey: String?) throws {
+    public func cachePolicy(_ policy: CachePolicy, surrogateKey: String? = nil) throws {
         var tag: CacheOverrideTag = .none
         var ttl: UInt32 = 0
         var swr: UInt32 = 0
