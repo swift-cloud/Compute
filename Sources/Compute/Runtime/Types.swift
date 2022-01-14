@@ -5,6 +5,8 @@
 //  Created by Andrew Barba on 1/12/22.
 //
 
+import ComputeRuntime
+
 public typealias WasiHandle = Int32
 
 public enum WasiStatus: Int32, Error, CaseIterable {
@@ -77,14 +79,14 @@ public typealias MultiValueCursor = Int32
 
 public typealias MultiValueCursorResult = Int64
 
-public typealias CacheOverrideTag = Int32
+public typealias CacheOverrideTag = UInt32
 
 extension CacheOverrideTag {
-    public static let none: Self = 0x1
-    public static let pass: Self = 0x2
-    public static let ttl: Self = 0x4
-    public static let staleWhileRevalidate: Self = 0x8
-    public static let pci: Self = 0x10
+    public static let none: Self = CACHE_OVERRIDE_NONE
+    public static let pass: Self = CACHE_OVERRIDE_PASS
+    public static let ttl: Self = CACHE_OVERRIDE_TTL
+    public static let staleWhileRevalidate: Self = CACHE_OVERRIDE_STALE_WHILE_REVALIDATE
+    public static let pci: Self = CACHE_OVERRIDE_PASS
 }
 
 public enum CachePolicy {

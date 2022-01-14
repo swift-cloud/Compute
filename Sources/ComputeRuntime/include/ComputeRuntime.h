@@ -15,6 +15,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define CACHE_OVERRIDE_NONE (0u)
+#define CACHE_OVERRIDE_PASS (1u<<0)
+#define CACHE_OVERRIDE_TTL (1u<<1)
+#define CACHE_OVERRIDE_STALE_WHILE_REVALIDATE (1u<<2)
+#define CACHE_OVERRIDE_PCI (1u<<3)
+
 #define WASM_IMPORT(module, name) __attribute__((import_module(module), import_name(name)))
 
     /* FASTLY_ABI */
@@ -69,11 +75,11 @@
     int fastly_http_req__body_downstream_get(int* req, int* body);
 
     WASM_IMPORT("fastly_http_req", "cache_override_set")
-    int fastly_http_req__cache_override_set(int req_handle, int tag, uint32_t ttl,
+    int fastly_http_req__cache_override_set(int req_handle, uint32_t tag, uint32_t ttl,
                                             uint32_t stale_while_revalidate);
 
     WASM_IMPORT("fastly_http_req", "cache_override_v2_set")
-    int fastly_http_req__cache_override_v2_set(int req_handle, int tag, uint32_t ttl,
+    int fastly_http_req__cache_override_v2_set(int req_handle, uint32_t tag, uint32_t ttl,
                                                uint32_t stale_while_revalidate,
                                                const char *surrogate_key, size_t surrogate_key_len);
 

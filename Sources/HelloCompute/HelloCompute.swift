@@ -18,7 +18,7 @@ struct HelloCompute {
         print("req:uri", req.url)
         print("req:version", req.httpVersion)
 
-        let fetchResponse = try await fetch("https://api.twoyay.com/status")
+        let fetchResponse = try await fetch("https://api.twoyay.com/status", cachePolicy: .pass)
         print("fetch:status", try fetchResponse.response.status())
         print("fetch:content-type", try fetchResponse.headers.get("content-type") ?? "(null)")
         print("fetch:content-length", try fetchResponse.headers.get("content-length") ?? "(null)")
