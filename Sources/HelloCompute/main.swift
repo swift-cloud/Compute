@@ -32,9 +32,17 @@ onIncomingRequest { req, res in
     print("req:uri", req.url)
     print("req:version", req.httpVersion)
 
-    res.status(201)
+    try res.status(201)
 
-    try res.body.write("Hello, World")
-    try res.send()
-    print("sent 1")
+    print("write ...")
+    try res.write("Hello\n")
+    print("write 1.")
+
+    print("write ...")
+    try res.write("World\n")
+    print("write 2.")
+
+    print("end...")
+    try res.end()
+    print("end.")
 }

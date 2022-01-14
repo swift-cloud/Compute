@@ -31,14 +31,14 @@ public struct HttpBody {
     }
 
     @discardableResult
-    public func write<T>(encoder: JSONEncoder = .init(), _ object: T, location: BodyWriteEnd = .back) throws -> Int where T: Encodable {
+    public func write<T>(_ object: T, encoder: JSONEncoder = .init(), location: BodyWriteEnd = .back) throws -> Int where T: Encodable {
         let data = try encoder.encode(object)
         return try write(data)
     }
 
     @discardableResult
-    public func write(_ string: String, location: BodyWriteEnd = .back) throws -> Int {
-        return try write(string.data(using: .utf8) ?? .init())
+    public func write(_ text: String, location: BodyWriteEnd = .back) throws -> Int {
+        return try write(text.data(using: .utf8) ?? .init())
     }
 
     @discardableResult
