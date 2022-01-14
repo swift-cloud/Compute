@@ -63,19 +63,20 @@ public struct HttpRequest {
     }
 
     public func cachePolicy(_ policy: CachePolicy, surrogateKey: String? = nil) throws {
-        var tag: CacheOverrideTag = .none
-        var ttl: UInt32 = 0
-        var swr: UInt32 = 0
+        let tag: CacheOverrideTag
+        let ttl: UInt32
+        let swr: UInt32
         switch policy {
         case .origin:
-            break
+            tag = .none
+            ttl = 0
+            swr = 0
         case .pass:
-            tag |= .pass
+            tag = .pass
+            ttl = 0
+            swr = 0
         case .ttl(let seconds, let staleWhileRevalidate):
-            tag |= .ttl
-            if staleWhileRevalidate > 0 {
-                tag |= .staleWhileRevalidate
-            }
+            tag = staleWhileRevalidate > 0 ? .staleWhileRevalidate : .ttl
             ttl = .init(seconds)
             swr = .init(staleWhileRevalidate)
         }
