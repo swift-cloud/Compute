@@ -56,10 +56,13 @@ public struct FetchRequest {
         let pendingRequest = try request.sendAsync(body, backend: backend)
 
         while true {
+            // Poll request to see if its done
             if let (response, body) = try pendingRequest.poll() {
                 let headers = HttpResponseHeaders(response.handle)
                 return .init(response: response, headers: headers, body: body)
             }
+
+            // Sleep for a bit before polling
             try await Task.sleep(nanoseconds: 1_000_000)
         }
     }
