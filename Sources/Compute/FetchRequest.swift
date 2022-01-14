@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  FetchRequest.swift
 //  
 //
 //  Created by Andrew Barba on 1/14/22.
@@ -43,13 +43,8 @@ public struct FetchRequest {
 
     public func send() async throws -> FetchResponse {
         // Set request resources
-        print("fetch:uri", url.absoluteString)
         try request.uri(url.absoluteString)
-        print("fetch:method", method.rawValue)
         try request.method(method)
-        print("fetch:httpVersion", "h2")
-        try request.httpVersion(.h2)
-        print("fetch:cachePolicy", cachePolicy)
         try request.cachePolicy(cachePolicy, surrogateKey: surrogateKey)
 
         // Set headers
@@ -58,9 +53,7 @@ public struct FetchRequest {
         }
 
         // Issue async request
-        print("fetch:backend", backend)
         let pendingRequest = try request.sendAsync(body, backend: backend)
-        print("fetch:pendingRequest", pendingRequest.handle)
 
         while true {
             // Poll request to see if its done

@@ -18,14 +18,14 @@ struct HelloCompute {
         print("req:uri", req.url)
         print("req:version", req.httpVersion)
 
-        let fetchResponse = try await fetch("https://api.twoyay.com/status", cachePolicy: .pass)
+        let fetchResponse = try await fetch("https://api.twoyay.com/status")
         print("fetch:status", try fetchResponse.response.status())
         print("fetch:content-type", try fetchResponse.headers.get("content-type") ?? "(null)")
         print("fetch:content-length", try fetchResponse.headers.get("content-length") ?? "(null)")
         print("fetch:server", try fetchResponse.headers.get("server") ?? "(null)")
 
         let data: Data = try fetchResponse.body.read(size: 1024 * 100)
-        print(String(data: data, encoding: .utf8) ?? "(null)")
+        print("fetch:body", String(data: data, encoding: .utf8) ?? "(null)")
 
         guard let ip = req.clientIp else {
             try res.status(400).send("Count not parse IP Address.")
