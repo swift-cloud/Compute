@@ -1,55 +1,35 @@
 import Compute
-import ComputeRuntime
 
 @main
 struct HelloCompute {
-    static func main() async throws {
+    static func main() async {
         print("Hello, Compute.")
-        try await onIncomingRequest(handleIncomingRequest)
+        await onIncomingRequest(handleIncomingRequest)
     }
 
     static func handleIncomingRequest(req: IncomingRequest, res: OutgoingResponse) async throws {
         print("env:hostname", Environment.Compute.hostname)
-
         print("env:region", Environment.Compute.region)
-
         print("env:service_id", Environment.Compute.serviceId)
-
         print("env:service_version", Environment.Compute.serviceVersion)
-
-        do {
-            let dict = try Dictionary(name: "swift")
-            print("dict:open")
-            print("dict:foo", try dict.get(key: "foo") ?? "(null)")
-            print("dict:auth", try dict.get(key: "auth") ?? "(null)")
-            print("dict:xxx", try dict.get(key: "xxx") ?? "(null)")
-
-            let logger = try Logger(name: "Logentries")
-            print("logger:open")
-            let bytes = try logger.write("Hello", "World", "🔥")
-            print("logged:bytes", bytes)
-
-            print("ip:74.108.65.199", try Geo.lookup(ipV4: "74.108.65.199"))
-        } catch {
-            print("error:", error)
-        }
 
         print("req:method", req.method)
         print("req:uri", req.url)
         print("req:version", req.httpVersion)
 
-        try res.status(201)
+        guard let ip = req.clientIp else {
+            try res.status(400).send("Count not parse IP Address.")
+            return
+        }
 
-        print("write ...")
-        try res.write("Hello\n")
-        print("write 1.")
+        print("client:ip", ip)
 
-        print("write ...")
-        try res.write("World\n")
-        print("write 2.")
+        let ipLookup = try Geo.lookup(ip: ip)
 
-        print("end...")
-        try res.end()
-        print("end.")
+        try res.status(200).send(ipLookup)
     }
+}
+
+public struct StatusResponse: Codable {
+    public let status: String
 }

@@ -8,7 +8,7 @@
 import CoreFoundation
 import Foundation
 
-internal typealias WasiBufferReader = (_ buffer: UnsafeMutablePointer<UInt8>?, _ maxLength: Int32, _ length: inout Int32) -> Int32
+internal typealias WasiBufferReader = (_ buffer: UnsafeMutablePointer<UInt8>?, _ maxLength: Int, _ length: inout Int) -> Int32
 
 internal func wasi(_ handler: @autoclosure () -> Int32) throws {
     let result = handler()
@@ -17,7 +17,7 @@ internal func wasi(_ handler: @autoclosure () -> Int32) throws {
     }
 }
 
-internal func wasiString(maxBufferLength: Int32 = maxBufferLength, _ handler: WasiBufferReader) throws -> String? {
+internal func wasiString(maxBufferLength: Int = maxBufferLength, _ handler: WasiBufferReader) throws -> String? {
     do {
         let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler)
         return String(bytes: bytes, encoding: .utf8)
@@ -31,19 +31,19 @@ internal func wasiString(maxBufferLength: Int32 = maxBufferLength, _ handler: Wa
 internal func wasiDecode<T>(
     _ type: T.Type,
     decoder: JSONDecoder = Utils.jsonDecoder,
-    maxBufferLength: Int32 = maxBufferLength,
+    maxBufferLength: Int = maxBufferLength,
     handler: WasiBufferReader
 ) throws -> T where T: Decodable {
     let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler)
     return try decoder.decode(type, from: Data(bytes))
 }
 
-internal func wasiBytes(maxBufferLength: Int32 = maxBufferLength, _ handler: WasiBufferReader) throws -> [UInt8] {
-    var length: Int32 = 0
+internal func wasiBytes(maxBufferLength: Int = maxBufferLength, _ handler: WasiBufferReader) throws -> [UInt8] {
+    var length = 0
     try wasi(handler(nil, maxBufferLength, &length))
-    return try Array<UInt8>(unsafeUninitializedCapacity: .init(length)) {
+    return try Array<UInt8>(unsafeUninitializedCapacity: length) {
         try wasi(handler($0.baseAddress, length, &length))
-        $1 = .init(length)
+        $1 = length
     }
 }
 

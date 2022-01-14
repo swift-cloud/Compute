@@ -22,23 +22,23 @@ extern int fastly_abi__init(uint64_t abi_version);
 /* FASTLY_DICTIONARY */
 
 WASM_IMPORT("fastly_dictionary", "open")
-extern int fastly_dictionary__open(const char* name, int name_len, int* handle);
+extern int fastly_dictionary__open(const char* name, size_t name_len, int* handle);
 
 WASM_IMPORT("fastly_dictionary", "get")
-extern int fastly_dictionary__get(int32_t h, const char* key, int key_len, uint8_t* value, int value_max_len, int* value_len);
+extern int fastly_dictionary__get(int32_t h, const char* key, size_t key_len, uint8_t* value, size_t value_max_len, size_t* nwritten);
 
 /* FASTLY_LOG */
 
 WASM_IMPORT("fastly_log", "endpoint_get")
-extern int fastly_log__endpoint_get(const char* name, int name_len, int* handle);
+extern int fastly_log__endpoint_get(const char* name, size_t name_len, int* handle);
 
 WASM_IMPORT("fastly_log", "write")
-extern int fastly_log__write(int handle, const char* msg, int msg_len, int* result);
+extern int fastly_log__write(int handle, const char* msg, size_t msg_len, size_t* nwritten);
 
 /* FASTLY_GEO */
 
 WASM_IMPORT("fastly_geo", "lookup")
-extern int fastly_geo__lookup(const uint8_t* ip, int ip_len, uint8_t* value, int value_max_len, int* value_len);
+extern int fastly_geo__lookup(const uint8_t* ip, size_t ip_len, uint8_t* value, size_t value_max_len, size_t* nwritten);
 
 /* FASTLY_HTTP_BODY */
 
@@ -52,10 +52,10 @@ WASM_IMPORT("fastly_http_body", "close")
 extern int fastly_http_body__close(int handle);
 
 WASM_IMPORT("fastly_http_body", "write")
-extern int fastly_http_body__write(int handle, const uint8_t* data, int data_len, int body_end, int* result);
+extern int fastly_http_body__write(int handle, const uint8_t* data, size_t data_len, int body_end, size_t* nwritten);
 
 WASM_IMPORT("fastly_http_body", "read")
-extern int fastly_http_body__read(int handle, uint8_t* data, int data_max_len, int* data_len);
+extern int fastly_http_body__read(int handle, uint8_t* data, size_t data_max_len, size_t* nwritten);
 
 /* FASTLY_HTTP_REQ */
 
@@ -69,22 +69,25 @@ WASM_IMPORT("fastly_http_req", "close")
 extern int fastly_http_req__close(int handle);
 
 WASM_IMPORT("fastly_http_req", "method_get")
-extern int fastly_http_req__method_get(int handle, uint8_t* value, int value_max_len, int* value_len);
+extern int fastly_http_req__method_get(int handle, uint8_t* value, size_t value_max_len, size_t* nwritten);
 
 WASM_IMPORT("fastly_http_req", "uri_get")
-extern int fastly_http_req__uri_get(int handle, uint8_t* value, int value_max_len, int* value_len);
+extern int fastly_http_req__uri_get(int handle, uint8_t* value, size_t value_max_len, size_t* nwritten);
 
 WASM_IMPORT("fastly_http_req", "version_get")
 extern int fastly_http_req__version_get(int handle, int* version);
 
 WASM_IMPORT("fastly_http_req", "method_set")
-extern int fastly_http_req__method_set(int handle, const char* method, int method_len);
+extern int fastly_http_req__method_set(int handle, const char* method, size_t method_len);
 
 WASM_IMPORT("fastly_http_req", "uri_set")
-extern int fastly_http_req__uri_set(int handle, const char* uri, int uri_len);
+extern int fastly_http_req__uri_set(int handle, const char* uri, size_t uri_len);
 
 WASM_IMPORT("fastly_http_req", "version_set")
 extern int fastly_http_req__version_set(int handle, int version);
+
+WASM_IMPORT("fastly_http_req", "downstream_client_ip_addr")
+extern int fastly_http_req__downstream_client_ip_addr(uint8_t* octets, size_t* nwritten);
 
 /* FASTLY_HTTP_RESP */
 

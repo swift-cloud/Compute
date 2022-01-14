@@ -32,14 +32,24 @@ public struct Geo {
         public let utcOffset: Int?
     }
     
-    public static func lookup(ipV4: String) throws -> IpLookup {
-        let digits = ipV4.components(separatedBy: ".").compactMap { UInt8($0) }
-        return try lookup(ip: digits)
+    public static func lookup(ip: IpAddress) throws -> IpLookup {
+        switch ip {
+        case .v4(let text):
+            let bytes = text.components(separatedBy: ".").compactMap { UInt8($0) }
+            return try lookup(ip: bytes)
+        case .v6(let text):
+            let bytes = text.components(separatedBy: ":").reduce(Array<UInt8>()) { res, octet in
+                let first = octet.prefix(2)
+                let second = octet.suffix(2)
+                return res + [UInt8(first, radix: 16), UInt8(second, radix: 16)].compactMap { $0 }
+            }
+            return try lookup(ip: bytes)
+        }
     }
     
-    public static func lookup(ip: [UInt8]) throws -> IpLookup {
+    public static func lookup(ip bytes: [UInt8]) throws -> IpLookup {
         return try wasiDecode(IpLookup.self) {
-            fastly_geo__lookup(ip, .init(ip.count), $0, $1, &$2)
+            fastly_geo__lookup(bytes, bytes.count, $0, $1, &$2)
         }
     }
 }

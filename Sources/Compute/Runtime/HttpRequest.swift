@@ -31,7 +31,7 @@ internal struct HttpRequest {
 
     public func method(_ newValue: HttpMethod) throws {
         let text = newValue.rawValue
-        try wasi(fastly_http_req__method_set(handle, text, .init(text.utf8.count)))
+        try wasi(fastly_http_req__method_set(handle, text, text.utf8.count))
     }
 
     public func uri() throws -> String? {
@@ -41,7 +41,7 @@ internal struct HttpRequest {
     }
 
     public func uri(_ newValue: String) throws {
-        try wasi(fastly_http_req__uri_set(handle, newValue, .init(newValue.utf8.count)))
+        try wasi(fastly_http_req__uri_set(handle, newValue, newValue.utf8.count))
     }
 
     public func httpVersion() throws -> HttpVersion? {
@@ -52,6 +52,14 @@ internal struct HttpRequest {
 
     public func httpVersion(_ newValue: HttpVersion) throws {
         try wasi(fastly_http_req__version_set(handle, newValue.rawValue))
+    }
+
+    public func clientIp() throws -> [UInt8] {
+        return try Array<UInt8>(unsafeUninitializedCapacity: 16) {
+            var length = 0
+            try wasi(fastly_http_req__downstream_client_ip_addr($0.baseAddress, &length))
+            $1 = length
+        }
     }
 
     public func close() throws {

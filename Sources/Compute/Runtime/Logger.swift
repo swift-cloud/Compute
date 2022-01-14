@@ -13,15 +13,15 @@ public struct Logger {
     
     public init(name: String) throws {
         var handle: EndpointHandle = 0
-        try wasi(fastly_log__endpoint_get(name, .init(name.utf8.count), &handle))
+        try wasi(fastly_log__endpoint_get(name, name.utf8.count, &handle))
         self.handle = handle
     }
     
     @discardableResult
     public func write(_ messages: String...) throws -> Int {
         let message = messages.joined(separator: " ")
-        var result: Int32 = 0
-        try wasi(fastly_log__write(handle, message, .init(message.utf8.count), &result))
-        return .init(result)
+        var result = 0
+        try wasi(fastly_log__write(handle, message, message.utf8.count, &result))
+        return result
     }
 }

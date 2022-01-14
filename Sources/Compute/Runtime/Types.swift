@@ -47,6 +47,20 @@ public enum BodyWriteEnd: Int32 {
     case front
 }
 
+public enum IpAddress {
+    case v4(String)
+    case v6(String)
+
+    public var stringValue: String {
+        switch self {
+        case .v4(let text):
+            return text
+        case .v6(let text):
+            return text
+        }
+    }
+}
+
 public typealias CacheOverrideTag = UInt32
 
 public typealias BodyHandle = WasiHandle
@@ -86,12 +100,12 @@ extension ContentEncodings {
     public static let gzip: Self = 1
 }
 
-internal let maxBufferLength: Int32 = 8192
+internal let maxBufferLength = 8192
 
-internal let maxHeaderLength: Int32 = 4096
+internal let maxHeaderLength = 4096
 
-internal let maxMethodLength: Int32 = 1024
+internal let maxMethodLength = 1024
 
-internal let maxUriLength: Int32 = 4096
+internal let maxUriLength = 4096
 
-internal let maxDictionaryEntryLength: Int32 = 8000
+internal let maxDictionaryEntryLength = 8000

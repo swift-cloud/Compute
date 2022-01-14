@@ -51,9 +51,9 @@ public struct HttpBody {
         var position = 0
         while position < bytes.count {
             try bytes[position..<bytes.count].withUnsafeBufferPointer {
-                var written: Int32 = 0
-                try wasi(fastly_http_body__write(handle, $0.baseAddress, .init($0.count), location.rawValue, &written))
-                position += .init(written)
+                var written = 0
+                try wasi(fastly_http_body__write(handle, $0.baseAddress, $0.count, location.rawValue, &written))
+                position += written
             }
         }
         return position
@@ -66,9 +66,9 @@ public struct HttpBody {
 
     public func read(size: Int) throws -> [UInt8] {
         return try Array<UInt8>(unsafeUninitializedCapacity: size) {
-            var length: Int32 = 0
-            try wasi(fastly_http_body__read(handle, $0.baseAddress, .init(size), &length))
-            $1 = .init(length)
+            var length = 0
+            try wasi(fastly_http_body__read(handle, $0.baseAddress, size, &length))
+            $1 = length
         }
     }
 }
