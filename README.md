@@ -19,8 +19,8 @@ struct HelloCompute {
 
     static func handleIncomingRequest(req: IncomingRequest, res: OutgoingResponse) async throws {
         let fetchResponse = try await fetch("https://httpbin.org/json")
-        let data = try fetchResponse.body.readData(size: .max)
-        try res.status(200).send(data)
+        let text = try fetchResponse.body.text()
+        try res.status(200).send(text)
     }
 }
 ```

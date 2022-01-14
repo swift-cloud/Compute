@@ -59,15 +59,30 @@ public struct HttpBody {
         return position
     }
 
-    public func readData(size: Int) throws -> Data {
-        let bytes: [UInt8] = try readBytes(size: size)
+    public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) throws -> T where T: Decodable {
+        let data = try data(maxLength: .max)
+        return try decoder.decode(type, from: data)
+    }
+
+    public func json() throws -> Any {
+        let data = try data(maxLength: .max)
+        return try JSONSerialization.jsonObject(with: data, options: [])
+    }
+
+    public func text() throws -> String {
+        let data = try data(maxLength: .max)
+        return String(data: data, encoding: .utf8) ?? ""
+    }
+
+    public func data(maxLength: Int = .max) throws -> Data {
+        let bytes: [UInt8] = try bytes(maxLength: maxLength)
         return Data(bytes)
     }
 
-    public func readBytes(size: Int) throws -> [UInt8] {
-        return try Array<UInt8>(unsafeUninitializedCapacity: size) {
+    public func bytes(maxLength: Int = .max) throws -> [UInt8] {
+        return try Array<UInt8>(unsafeUninitializedCapacity: maxLength) {
             var length = 0
-            try wasi(fastly_http_body__read(handle, $0.baseAddress, size, &length))
+            try wasi(fastly_http_body__read(handle, $0.baseAddress, maxLength, &length))
             $1 = length
         }
     }

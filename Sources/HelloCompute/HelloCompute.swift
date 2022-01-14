@@ -22,9 +22,7 @@ struct HelloCompute {
         print("fetch:content-type", try fetchResponse.headers.get("content-type") ?? "(null)")
         print("fetch:content-length", try fetchResponse.headers.get("content-length") ?? "(null)")
         print("fetch:server", try fetchResponse.headers.get("server") ?? "(null)")
-
-        let data = try fetchResponse.body.readData(size: 1024 * 100)
-        print("fetch:body", String(data: data, encoding: .utf8) ?? "(null)")
+        print("fetch:body", try fetchResponse.body.text())
 
         guard let ip = req.clientIp else {
             try res.status(400).send("Count not parse IP Address.")
