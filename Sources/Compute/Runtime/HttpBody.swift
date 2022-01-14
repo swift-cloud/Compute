@@ -48,9 +48,15 @@ public struct HttpBody {
 
     @discardableResult
     public func write(_ bytes: [UInt8], location: BodyWriteEnd = .back) throws -> Int {
-        var result: Int32 = 0
-        try wasi(fastly_http_body__write(handle, bytes, .init(bytes.count), location.rawValue, &result))
-        return .init(result)
+        var position = 0
+        while position < bytes.count {
+            try bytes[position..<bytes.count].withUnsafeBufferPointer {
+                var written: Int32 = 0
+                try wasi(fastly_http_body__write(handle, $0.baseAddress, .init($0.count), location.rawValue, &written))
+                position += .init(written)
+            }
+        }
+        return position
     }
 
     public func read(size: Int) throws -> Data {
