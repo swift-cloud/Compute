@@ -1,5 +1,4 @@
 import Compute
-import Foundation
 
 @main
 struct HelloCompute {
@@ -24,7 +23,7 @@ struct HelloCompute {
         print("fetch:content-length", try fetchResponse.headers.get("content-length") ?? "(null)")
         print("fetch:server", try fetchResponse.headers.get("server") ?? "(null)")
 
-        let data: Data = try fetchResponse.body.read(size: 1024 * 100)
+        let data = try fetchResponse.body.readData(size: 1024 * 100)
         print("fetch:body", String(data: data, encoding: .utf8) ?? "(null)")
 
         guard let ip = req.clientIp else {

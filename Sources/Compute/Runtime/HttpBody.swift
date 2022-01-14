@@ -59,12 +59,12 @@ public struct HttpBody {
         return position
     }
 
-    public func read(size: Int) throws -> Data {
-        let bytes: [UInt8] = try read(size: size)
+    public func readData(size: Int) throws -> Data {
+        let bytes: [UInt8] = try readBytes(size: size)
         return Data(bytes)
     }
 
-    public func read(size: Int) throws -> [UInt8] {
+    public func readBytes(size: Int) throws -> [UInt8] {
         return try Array<UInt8>(unsafeUninitializedCapacity: size) {
             var length = 0
             try wasi(fastly_http_body__read(handle, $0.baseAddress, size, &length))
