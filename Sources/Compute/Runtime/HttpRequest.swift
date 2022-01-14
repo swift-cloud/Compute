@@ -8,7 +8,7 @@
 import ComputeRuntime
 import Foundation
 
-internal struct HttpRequest {
+public struct HttpRequest {
 
     internal let handle: RequestHandle
 
@@ -86,7 +86,65 @@ internal struct HttpRequest {
         }
     }
 
+    public func send(_ body: HttpBody, backend: String) throws -> (response: HttpResponse, body: HttpBody) {
+        var responseHandle: ResponseHandle = 0
+        var bodyHandle: BodyHandle = 0
+        try wasi(fastly_http_req__send(handle, body.handle, backend, backend.utf8.count, &responseHandle, &bodyHandle))
+        return (.init(responseHandle), .init(bodyHandle))
+    }
+
+    public func sendAsync(_ body: HttpBody, backend: String) throws -> HttpPendingRequest {
+        var handle: PendingRequestHandle = 0
+        try wasi(fastly_http_req__send_async(handle, body.handle, backend, backend.utf8.count, &handle))
+        return .init(handle, request: self)
+    }
+
+    public func sendAsyncStreaming(_ body: HttpBody, backend: String) throws -> HttpPendingRequest {
+        var handle: PendingRequestHandle = 0
+        try wasi(fastly_http_req__send_async_streaming(handle, body.handle, backend, backend.utf8.count, &handle))
+        return .init(handle, request: self)
+    }
+
     public func close() throws {
         try wasi(fastly_http_req__close(handle))
+    }
+}
+
+public struct HttpPendingRequest {
+
+    internal let handle: PendingRequestHandle
+
+    public let request: HttpRequest
+
+    internal init(_ handle: PendingRequestHandle, request: HttpRequest) {
+        self.handle = handle
+        self.request = request
+    }
+
+    internal func wait() throws -> (response: HttpResponse, body: HttpBody) {
+        var responseHandle: ResponseHandle = 0
+        var bodyHandle: BodyHandle = 0
+        try wasi(fastly_http_req__pending_req_wait(handle, &responseHandle, &bodyHandle))
+        return (.init(responseHandle), .init(bodyHandle))
+    }
+
+    internal func poll() throws -> (response: HttpResponse, body: HttpBody)? {
+        var isDone: UInt32 = 0
+        var responseHandle: ResponseHandle = 0
+        var bodyHandle: BodyHandle = 0
+        try wasi(fastly_http_req__pending_req_poll(handle, &isDone, &responseHandle, &bodyHandle))
+        guard isDone > 0 else {
+            return nil
+        }
+        return (.init(responseHandle), .init(bodyHandle))
+    }
+
+    internal static func select(_ requests: [HttpPendingRequest]) throws -> (index: Int, response: HttpResponse, body: HttpBody) {
+        var handles = requests.map(\.handle)
+        var doneIndex: UInt32 = 0
+        var responseHandle: ResponseHandle = 0
+        var bodyHandle: BodyHandle = 0
+        try wasi(fastly_http_req__pending_req_select(&handles, handles.count, &doneIndex, &responseHandle, &bodyHandle))
+        return (.init(doneIndex), .init(responseHandle), .init(bodyHandle))
     }
 }
