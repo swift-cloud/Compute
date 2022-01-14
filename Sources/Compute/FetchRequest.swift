@@ -43,7 +43,9 @@ public struct FetchRequest {
 
     public func send() async throws -> FetchResponse {
         // Set request resources
+        print("fetch:uri", url.absoluteString)
         try request.uri(url.absoluteString)
+        print("fetch:method", method.rawValue)
         try request.method(method)
         try request.cachePolicy(cachePolicy, surrogateKey: surrogateKey)
 
@@ -53,6 +55,7 @@ public struct FetchRequest {
         }
 
         // Issue async request
+        print("fetch:backend", backend)
         let pendingRequest = try request.sendAsync(body, backend: backend)
 
         while true {
