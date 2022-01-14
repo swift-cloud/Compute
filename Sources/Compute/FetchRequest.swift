@@ -47,6 +47,9 @@ public struct FetchRequest {
         try request.uri(url.absoluteString)
         print("fetch:method", method.rawValue)
         try request.method(method)
+        print("fetch:httpVersion", "h2")
+        try request.httpVersion(.h2)
+        print("fetch:cachePolicy", cachePolicy)
         try request.cachePolicy(cachePolicy, surrogateKey: surrogateKey)
 
         // Set headers
