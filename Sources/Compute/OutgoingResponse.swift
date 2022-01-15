@@ -43,7 +43,7 @@ public class OutgoingResponse {
     public func header(_ name: String, _ value: String?) throws -> Self {
         if let value = value {
             try response.insertHeader(name, value)
-        } else {
+        } else if try response.getHeader(name) != nil {
             try response.removeHeader(name)
         }
         return self

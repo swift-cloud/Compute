@@ -42,7 +42,7 @@ public enum HttpMethod: String {
     case query = "QUERY"
 }
 
-public typealias HttpStatus = Int32
+public typealias HttpStatus = Int
 
 public enum BodyWriteEnd: Int32 {
     case back = 0

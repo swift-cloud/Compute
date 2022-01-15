@@ -12,15 +12,15 @@ public struct IncomingRequest {
 
     internal let request: HttpRequest
 
+    public let headers: Headers
+
     public let body: HttpBody
 
     public var method: HttpMethod {
         return (try? request.method()) ?? .get
     }
 
-    public var url: URL {
-        return URL(string: (try? request.uri()) ?? "http://localhost")!
-    }
+    public let url: URL
 
     public var httpVersion: HttpVersion {
         return (try? request.httpVersion()) ?? .http1_1
@@ -46,7 +46,37 @@ public struct IncomingRequest {
         var requestHandle: RequestHandle = 0
         var bodyHandle: BodyHandle = 0
         try wasi(fastly_http_req__body_downstream_get(&requestHandle, &bodyHandle))
-        self.request = HttpRequest(requestHandle)
+        let request = HttpRequest(requestHandle)
+        self.request = request
         self.body = HttpBody(bodyHandle)
+        self.headers = Headers(request: request)
+        self.url = URL(string: try request.uri() ?? "http://localhost")!
+    }
+}
+
+extension IncomingRequest {
+
+    public struct Headers {
+
+        internal let request: HttpRequest
+
+        internal init(request: HttpRequest) {
+            self.request = request
+        }
+
+        public func get(_ name: String) -> String? {
+            return try? request.getHeader(name)
+        }
+
+        public func has(_ name: String) -> Bool {
+            guard let value = get(name) else {
+                return false
+            }
+            return value.count > 0
+        }
+
+        public subscript(name: String) -> String? {
+            get { get(name) }
+        }
     }
 }

@@ -17,7 +17,7 @@ public struct FetchResponse {
 
     public let headers: Headers
 
-    public let status: Int
+    public let status: HttpStatus
 
     public var ok: Bool {
         return status >= 200 && status <= 299
@@ -71,6 +71,11 @@ extension FetchResponse {
 
         public func delete(_ name: String) {
             try? response.removeHeader(name)
+        }
+
+        public subscript(name: String) -> String? {
+            get { get(name) }
+            set { set(name, newValue) }
         }
     }
 }

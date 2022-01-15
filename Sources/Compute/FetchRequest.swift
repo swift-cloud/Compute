@@ -23,7 +23,9 @@ public struct FetchRequest {
 
     public var surrogateKey: String?
 
-    public var headers: [String: String]
+    public var headers: [String: String?]
+
+    public var searchParams: [String: String?]
 
     public var body: Body?
 
@@ -38,10 +40,29 @@ public struct FetchRequest {
         self.cachePolicy = options.cachePolicy
         self.surrogateKey = options.surrogateKey
         self.headers = options.headers
+        self.searchParams = options.searchParams
         self.body = options.body
     }
 
     public func send() async throws -> FetchResponse {
+        guard var urlComponents = URLComponents(string: url.absoluteString) else {
+            throw FetchRequestError.invalidURL
+        }
+
+        // Set default query params
+        urlComponents.queryItems = urlComponents.queryItems ?? []
+
+        // Build search params
+        for (key, value) in searchParams {
+            guard let value = value else { continue }
+            urlComponents.queryItems?.append(.init(name: key, value: value))
+        }
+
+        // Parse final url
+        guard let url = urlComponents.url else {
+            throw FetchRequestError.invalidURL
+        }
+
         // Set request resources
         try request.uri(url.absoluteString)
         try request.method(method)
@@ -49,6 +70,7 @@ public struct FetchRequest {
 
         // Set headers
         for (key, value) in headers {
+            guard let value = value else { continue }
             try request.insertHeader(key, value)
         }
 
@@ -92,7 +114,9 @@ extension FetchRequest {
 
         public var body: Body? = nil
 
-        public var headers: [String: String] = [:]
+        public var headers: [String: String?] = [:]
+
+        public var searchParams: [String: String?] = [:]
 
         public var timeout: TimeInterval = .init(Int.max)
 
@@ -105,7 +129,8 @@ extension FetchRequest {
         public static func options(
             method: HttpMethod = .get,
             body: Body? = nil,
-            headers: [String: String] = [:],
+            headers: [String: String?] = [:],
+            searchParams: [String: String?] = [:],
             timeout: TimeInterval = .init(Int.max),
             cachePolicy: CachePolicy = .origin,
             surrogateKey: String? = nil,
@@ -115,6 +140,7 @@ extension FetchRequest {
                 method: method,
                 body: body,
                 headers: headers,
+                searchParams: searchParams,
                 timeout: timeout,
                 cachePolicy: cachePolicy,
                 surrogateKey: surrogateKey,

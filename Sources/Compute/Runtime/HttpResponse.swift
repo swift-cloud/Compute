@@ -24,11 +24,11 @@ public struct HttpResponse {
     public func status() throws -> HttpStatus {
         var status: Int32 = 0
         try wasi(fastly_http_resp__status_get(handle, &status))
-        return status
+        return .init(status)
     }
 
     public func status(_ newValue: HttpStatus) throws {
-        try wasi(fastly_http_resp__status_set(handle, newValue))
+        try wasi(fastly_http_resp__status_set(handle, .init(newValue)))
     }
 
     public func httpVersion() throws -> HttpVersion? {
