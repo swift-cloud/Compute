@@ -17,7 +17,7 @@ internal func wasi(_ handler: @autoclosure () -> Int32) throws {
     }
 }
 
-internal func wasiString(maxBufferLength: Int = maxBufferLength, _ handler: WasiBufferReader) throws -> String? {
+internal func wasiString(maxBufferLength: Int, _ handler: WasiBufferReader) throws -> String? {
     do {
         let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler)
         return String(bytes: bytes, encoding: .utf8)
@@ -30,15 +30,15 @@ internal func wasiString(maxBufferLength: Int = maxBufferLength, _ handler: Wasi
 
 internal func wasiDecode<T>(
     _ type: T.Type,
+    maxBufferLength: Int,
     decoder: JSONDecoder = Utils.jsonDecoder,
-    maxBufferLength: Int = maxBufferLength,
     handler: WasiBufferReader
 ) throws -> T where T: Decodable {
     let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler)
     return try decoder.decode(type, from: Data(bytes))
 }
 
-internal func wasiBytes(maxBufferLength: Int = maxBufferLength, _ handler: WasiBufferReader) throws -> [UInt8] {
+internal func wasiBytes(maxBufferLength: Int, _ handler: WasiBufferReader) throws -> [UInt8] {
     var length = 0
     try wasi(handler(nil, maxBufferLength, &length))
     return try Array<UInt8>(unsafeUninitializedCapacity: length) {

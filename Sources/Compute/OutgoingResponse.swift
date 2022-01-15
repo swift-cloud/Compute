@@ -70,36 +70,50 @@ public class OutgoingResponse {
 
     @discardableResult
     public func write<T>(_ object: T, encoder: JSONEncoder = .init()) throws -> Self where T: Encodable {
-        try body.write(object, encoder: encoder)
         try sendStreamingBodyIfNeeded()
+        try body.write(object, encoder: encoder)
         return self
     }
 
     @discardableResult
     public func write(_ json: Any) throws -> Self {
-        try body.write(json)
         try sendStreamingBodyIfNeeded()
+        try body.write(json)
         return self
     }
 
     @discardableResult
     public func write(_ text: String) throws -> Self {
-        try body.write(text)
         try sendStreamingBodyIfNeeded()
+        try body.write(text)
         return self
     }
 
     @discardableResult
     public func write(_ data: Data) throws -> Self {
-        try body.write(data)
         try sendStreamingBodyIfNeeded()
+        try body.write(data)
         return self
     }
 
     @discardableResult
     public func write(_ bytes: [UInt8]) throws -> Self {
-        try body.write(bytes)
         try sendStreamingBodyIfNeeded()
+        try body.write(bytes)
+        return self
+    }
+
+    @discardableResult
+    public func write(_ source: HttpBody, end: Bool = true) throws -> Self {
+        try sendStreamingBodyIfNeeded()
+        try source.pipeTo(body, end: end)
+        return self
+    }
+
+    @discardableResult
+    public func append(_ source: HttpBody) throws -> Self {
+        try sendStreamingBodyIfNeeded()
+        try body.append(source)
         return self
     }
 

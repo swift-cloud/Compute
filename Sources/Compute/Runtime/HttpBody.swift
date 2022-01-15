@@ -80,16 +80,52 @@ public struct HttpBody {
         return String(data: data, encoding: .utf8) ?? ""
     }
 
-    public func data(maxLength: Int = maxBufferLength) throws -> Data {
-        let bytes: [UInt8] = try bytes(maxLength: maxLength)
+    public func data() throws -> Data {
+        let bytes: [UInt8] = try bytes()
         return Data(bytes)
     }
 
-    public func bytes(maxLength: Int = maxBufferLength) throws -> [UInt8] {
-        return try Array<UInt8>(unsafeUninitializedCapacity: maxLength) {
-            var length = 0
-            try wasi(fastly_http_body__read(handle, $0.baseAddress, maxLength, &length))
-            $1 = length
+    public func bytes() throws -> [UInt8] {
+        var bytes = Array<UInt8>()
+        try scan {
+            bytes.append(contentsOf: $0)
+            return .continue
+        }
+        return bytes
+    }
+
+    public func pipeTo(_ dest: HttpBody, end: Bool = true) throws {
+        try scan {
+            try dest.write($0)
+            return .continue
+        }
+        if end {
+            try dest.close()
+        }
+    }
+
+    @discardableResult
+    public func scan(
+        highWaterMark: Int = highWaterMark,
+        onChunk: (Array<UInt8>) throws -> BodyScanContinuation = { _ in .continue }
+    ) throws -> [UInt8] {
+        while true {
+            // Read chunk based on appropriate offset
+            let chunk = try Array<UInt8>(unsafeUninitializedCapacity: highWaterMark) {
+                var length = 0
+                try wasi(fastly_http_body__read(handle, $0.baseAddress, highWaterMark, &length))
+                $1 = length
+            }
+
+            // Make sure we read new bytes, else break
+            guard chunk.count > 0 else {
+                return chunk
+            }
+
+            // Trigger callback
+            guard try onChunk(chunk) == .continue else {
+                return chunk
+            }
         }
     }
 }

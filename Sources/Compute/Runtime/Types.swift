@@ -105,7 +105,10 @@ public enum ContentEncodings: Int32 {
     case gzip = 1
 }
 
-public let maxBufferLength = 8192
+public enum BodyScanContinuation {
+    case `continue`
+    case `break`
+}
 
 public let maxHeaderLength = 4096
 
@@ -113,4 +116,8 @@ public let maxMethodLength = 1024
 
 public let maxUriLength = 4096
 
+public let maxIpLookupLength = 2048
+
 public let maxDictionaryEntryLength = 8000
+
+public let highWaterMark = 4096
