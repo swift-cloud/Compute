@@ -8,6 +8,8 @@ struct HelloCompute {
     }
 
     static func handleIncomingRequest(req: IncomingRequest, res: OutgoingResponse) async throws {
+        print("\(req.method) \(req.url.path)\(req.url.query ?? "")")
+
         let fetchResponse = try await fetch(
             "https://cms-media-library.s3.us-east-1.amazonaws.com/barba/splitFile-segment-0002.mp3",
             .options(
@@ -15,6 +17,7 @@ struct HelloCompute {
                 cachePolicy: .ttl(seconds: 900, staleWhileRevalidate: 900)
             )
         )
+
         try res
             .status(fetchResponse.status)
             .header("accept-ranges", fetchResponse.headers["accept-ranges"])

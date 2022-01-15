@@ -7,6 +7,10 @@
 
 #ifndef ComputeRuntime_h
 #define ComputeRuntime_h
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-attributes"
+
 #ifdef __cplusplus
 "C" {
 #endif
@@ -189,5 +193,6 @@
 
 #ifdef __cplusplus
 }
+#pragma GCC diagnostic pop
 #endif
 #endif /* ComputeRuntime_h */
