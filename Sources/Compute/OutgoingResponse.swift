@@ -76,6 +76,13 @@ public class OutgoingResponse {
     }
 
     @discardableResult
+    public func write(_ json: Any) throws -> Self {
+        try body.write(json)
+        try sendStreamingBodyIfNeeded()
+        return self
+    }
+
+    @discardableResult
     public func write(_ text: String) throws -> Self {
         try body.write(text)
         try sendStreamingBodyIfNeeded()
@@ -100,6 +107,14 @@ public class OutgoingResponse {
     public func send<T>(_ object: T, encoder: JSONEncoder = .init()) throws -> Self where T: Encodable {
         try defaultContentType("application/json")
         try body.write(object, encoder: encoder)
+        try response.send(body, streaming: false)
+        return self
+    }
+
+    @discardableResult
+    public func send(_ json: Any) throws -> Self {
+        try defaultContentType("application/json")
+        try body.write(json)
         try response.send(body, streaming: false)
         return self
     }
