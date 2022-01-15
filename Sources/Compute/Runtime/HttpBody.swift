@@ -64,6 +64,11 @@ public struct HttpBody {
         return try decoder.decode(type, from: data)
     }
 
+    public func json() throws -> Any {
+        let data = try data()
+        return try JSONSerialization.jsonObject(with: data, options: [])
+    }
+
     public func text() throws -> String {
         let data = try data()
         return String(data: data, encoding: .utf8) ?? ""

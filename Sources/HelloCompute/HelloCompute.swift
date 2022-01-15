@@ -18,11 +18,12 @@ struct HelloCompute {
         print("req:version", req.httpVersion)
 
         let fetchResponse = try await fetch("https://httpbin.org/json")
-        print("fetch:status", try fetchResponse.response.status())
-        print("fetch:content-type", try fetchResponse.headers.get("content-type") ?? "(null)")
-        print("fetch:content-length", try fetchResponse.headers.get("content-length") ?? "(null)")
-        print("fetch:server", try fetchResponse.headers.get("server") ?? "(null)")
-        print("fetch:body", try fetchResponse.body.text())
+        print("fetch:ok", fetchResponse.ok)
+        print("fetch:status", fetchResponse.status)
+        print("fetch:content-type", fetchResponse.headers.get("content-type") ?? "(null)")
+        print("fetch:content-length", fetchResponse.headers.get("content-length") ?? "(null)")
+        print("fetch:server", fetchResponse.headers.get("server") ?? "(null)")
+        print("fetch:body", try await fetchResponse.text())
 
         guard let ip = req.clientIp else {
             try res.status(400).send("Count not parse IP Address.")

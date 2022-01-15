@@ -87,6 +87,24 @@ public struct HttpRequest {
         }
     }
 
+    public func getHeader(_ name: String) throws -> String? {
+        try wasiString(maxBufferLength: maxHeaderLength) {
+            fastly_http_req__header_value_get(handle, name, name.utf8.count, $0, $1, &$2)
+        }
+    }
+
+    public func insertHeader(_ name: String, _ value: String) throws {
+        try wasi(fastly_http_req__header_insert(handle, name, name.utf8.count, value, value.utf8.count))
+    }
+
+    public func appendHeader(_ name: String, _ value: String) throws {
+        try wasi(fastly_http_req__header_append(handle, name, name.utf8.count, value, value.utf8.count))
+    }
+
+    public func removeHeader(_ name: String) throws {
+        try wasi(fastly_http_req__header_remove(handle, name, name.utf8.count))
+    }
+
     public func send(_ body: HttpBody, backend: String) throws -> (response: HttpResponse, body: HttpBody) {
         var responseHandle: ResponseHandle = 0
         var bodyHandle: BodyHandle = 0

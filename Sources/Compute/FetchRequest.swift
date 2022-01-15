@@ -49,7 +49,7 @@ public struct FetchRequest {
 
         // Set headers
         for (key, value) in headers {
-            try HttpRequestHeaders(request.handle).insert(key, value)
+            try request.insertHeader(key, value)
         }
 
         // Issue async request
@@ -58,22 +58,13 @@ public struct FetchRequest {
         while true {
             // Poll request to see if its done
             if let (response, body) = try pendingRequest.poll() {
-                return .init(response: response, headers: .init(response.handle), body: body)
+                return try .init(request: self, response: response, body: body)
             }
 
             // Sleep for a bit before polling
             try await Task.sleep(nanoseconds: 4_000_000)
         }
     }
-}
-
-public struct FetchResponse {
-
-    public let response: HttpResponse
-
-    public let headers: HttpResponseHeaders
-
-    public let body: HttpBody
 }
 
 public func fetch(_ url: URL, backend: String? = nil, method: HttpMethod = .get, cachePolicy: CachePolicy = .origin, surrogateKey: String? = nil, headers: [String: String] = [:], body: HttpBody? = nil) async throws -> FetchResponse {

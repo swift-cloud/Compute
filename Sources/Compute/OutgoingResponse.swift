@@ -16,12 +16,9 @@ public class OutgoingResponse {
 
     public let body: HttpBody
 
-    public let headers: HttpResponseHeaders
-
     internal init() throws {
         try response = HttpResponse()
         try body = HttpBody()
-        headers = .init(response.handle)
     }
 
     private func sendStreamingBodyIfNeeded() throws {
@@ -39,15 +36,15 @@ public class OutgoingResponse {
     }
 
     public func header(_ name: String) throws -> String? {
-        return try headers.get(name)
+        return try response.getHeader(name)
     }
 
     @discardableResult
     public func header(_ name: String, _ value: String?) throws -> Self {
         if let value = value {
-            try headers.insert(name, value)
+            try response.insertHeader(name, value)
         } else {
-            try headers.remove(name)
+            try response.removeHeader(name)
         }
         return self
     }
