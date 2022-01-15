@@ -81,12 +81,12 @@ public struct HttpBody {
     }
 
     public func data() throws -> Data {
-        let bytes: [UInt8] = try bytes()
+        let bytes = try bytes()
         return Data(bytes)
     }
 
     public func bytes() throws -> [UInt8] {
-        var bytes = Array<UInt8>()
+        var bytes: [UInt8] = []
         try scan {
             bytes.append(contentsOf: $0)
             return .continue
@@ -107,7 +107,7 @@ public struct HttpBody {
     @discardableResult
     public func scan(
         highWaterMark: Int = highWaterMark,
-        onChunk: (Array<UInt8>) throws -> BodyScanContinuation = { _ in .continue }
+        onChunk: ([UInt8]) throws -> BodyScanContinuation
     ) throws -> [UInt8] {
         while true {
             // Read chunk based on appropriate offset
