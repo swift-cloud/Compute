@@ -37,6 +37,12 @@ public struct HttpBody {
     }
 
     @discardableResult
+    public func write(_ json: Any, location: BodyWriteEnd = .back) throws -> Int {
+        let data = try JSONSerialization.data(withJSONObject: json, options: [])
+        return try write(data)
+    }
+
+    @discardableResult
     public func write(_ text: String, location: BodyWriteEnd = .back) throws -> Int {
         return try write(text.data(using: .utf8) ?? .init())
     }

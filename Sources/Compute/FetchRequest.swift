@@ -17,28 +17,28 @@ public struct FetchRequest {
 
     public var backend: String
 
-    public var method: HttpMethod = .get
+    public var method: HttpMethod
 
-    public var cachePolicy: CachePolicy = .origin
+    public var cachePolicy: CachePolicy
 
-    public var surrogateKey: String? = nil
+    public var surrogateKey: String?
 
-    public var headers: [String: String] = [:]
+    public var headers: [String: String]
 
-    public var body: HttpBody
+    public var body: Body?
 
     private let request: HttpRequest
 
-    public init(_ url: URL, backend: String? = nil, method: HttpMethod = .get, cachePolicy: CachePolicy = .origin, surrogateKey: String? = nil, headers: [String: String] = [:], body: HttpBody? = nil) throws {
+    public init(_ url: URL, _ options: Options = .options()) throws {
         let request = try HttpRequest()
         self.request = request
         self.url = url
-        self.backend = backend ?? url.host ?? "localhost"
-        self.method = method
-        self.cachePolicy = cachePolicy
-        self.surrogateKey = surrogateKey
-        self.headers = headers
-        self.body = try body ?? .init()
+        self.backend = options.backend ?? url.host ?? "localhost"
+        self.method = options.method
+        self.cachePolicy = options.cachePolicy
+        self.surrogateKey = options.surrogateKey
+        self.headers = options.headers
+        self.body = options.body
     }
 
     public func send() async throws -> FetchResponse {
@@ -52,8 +52,25 @@ public struct FetchRequest {
             try request.insertHeader(key, value)
         }
 
+        // Build request body
+        let httpBody = try HttpBody()
+        switch body {
+        case .bytes(let bytes):
+            try httpBody.write(bytes)
+        case .data(let data):
+            try httpBody.write(data)
+        case .text(let text):
+            try httpBody.write(text)
+        case .json(let json):
+            try httpBody.write(json)
+        case .encode(let object):
+            try httpBody.write(object)
+        case .none:
+            break
+        }
+
         // Issue async request
-        let pendingRequest = try request.sendAsync(body, backend: backend)
+        let pendingRequest = try request.sendAsync(httpBody, backend: backend)
 
         while true {
             // Poll request to see if its done
@@ -67,15 +84,53 @@ public struct FetchRequest {
     }
 }
 
-public func fetch(_ url: URL, backend: String? = nil, method: HttpMethod = .get, cachePolicy: CachePolicy = .origin, surrogateKey: String? = nil, headers: [String: String] = [:], body: HttpBody? = nil) async throws -> FetchResponse {
-    let request = try FetchRequest(url, backend: backend, method: method, cachePolicy: cachePolicy, surrogateKey: surrogateKey, headers: headers, body: body)
-    return try await request.send()
+extension FetchRequest {
+
+    public struct Options {
+
+        public var method: HttpMethod = .get
+
+        public var body: Body? = nil
+
+        public var headers: [String: String] = [:]
+
+        public var timeout: TimeInterval = .init(Int.max)
+
+        public var cachePolicy: CachePolicy = .origin
+
+        public var surrogateKey: String? = nil
+
+        public var backend: String? = nil
+
+        public static func options(
+            method: HttpMethod = .get,
+            body: Body? = nil,
+            headers: [String: String] = [:],
+            timeout: TimeInterval = .init(Int.max),
+            cachePolicy: CachePolicy = .origin,
+            surrogateKey: String? = nil,
+            backend: String? = nil
+        ) -> Options {
+            return Options(
+                method: method,
+                body: body,
+                headers: headers,
+                timeout: timeout,
+                cachePolicy: cachePolicy,
+                surrogateKey: surrogateKey,
+                backend: backend
+            )
+        }
+    }
 }
 
-public func fetch(_ urlPath: String, backend: String? = nil, method: HttpMethod = .get, cachePolicy: CachePolicy = .origin, surrogateKey: String? = nil, headers: [String: String] = [:], body: HttpBody? = nil) async throws -> FetchResponse {
-    guard let url = URL(string: urlPath) else {
-        throw FetchRequestError.invalidURL
+extension FetchRequest {
+
+    public enum Body {
+        case bytes(_ bytes: [UInt8])
+        case data(_ data: Data)
+        case text(_ text: String)
+        case json(_ json: Any)
+        case encode(_ object: Encodable)
     }
-    let request = try FetchRequest(url, backend: backend, method: method, cachePolicy: cachePolicy, surrogateKey: surrogateKey, headers: headers, body: body)
-    return try await request.send()
 }

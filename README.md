@@ -18,8 +18,10 @@ struct HelloCompute {
     }
 
     static func handleIncomingRequest(req: IncomingRequest, res: OutgoingResponse) async throws {
-        let fetchResponse = try await fetch("https://httpbin.org/json")
-        let text = try fetchResponse.body.text()
+        let fetchResponse = try await fetch("https://httpbin.org/json", .options(
+            headers: ["user-agent": "swift-compute-runtime"]
+        ))
+        let text = try await fetchResponse.text()
         try res.status(200).send(text)
     }
 }

@@ -17,7 +17,9 @@ struct HelloCompute {
         print("req:uri", req.url)
         print("req:version", req.httpVersion)
 
-        let fetchResponse = try await fetch("https://httpbin.org/json")
+        let fetchResponse = try await fetch("https://httpbin.org/json", .options(
+            headers: ["user-agent": "swift-compute-runtime"]
+        ))
         print("fetch:ok", fetchResponse.ok)
         print("fetch:status", fetchResponse.status)
         print("fetch:content-type", fetchResponse.headers.get("content-type") ?? "(null)")
