@@ -44,15 +44,8 @@ public class FetchResponse {
 
 extension FetchResponse {
 
-    private func assertBodyNotUsed() throws {
-        defer { bodyUsed = true }
-        guard bodyUsed == false else {
-            throw FetchResponseError.bodyAlreadyUsed
-        }
-    }
-
     public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T where T: Decodable {
-        try assertBodyNotUsed()
+        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -66,7 +59,7 @@ extension FetchResponse {
     }
 
     public func json() async throws -> Any {
-        try assertBodyNotUsed()
+        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -80,7 +73,7 @@ extension FetchResponse {
     }
 
     public func text() async throws -> String {
-        try assertBodyNotUsed()
+        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -94,7 +87,7 @@ extension FetchResponse {
     }
 
     public func data() async throws -> Data {
-        try assertBodyNotUsed()
+        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -108,7 +101,7 @@ extension FetchResponse {
     }
 
     public func bytes() async throws -> [UInt8] {
-        try assertBodyNotUsed()
+        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {

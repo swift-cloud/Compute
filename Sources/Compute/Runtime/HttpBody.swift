@@ -10,6 +10,9 @@ import Foundation
 
 public struct HttpBody {
 
+    /// Cache previously read bytes. Body can only be read once
+    private var _bytes: [UInt8]? = nil
+
     internal let handle: BodyHandle
 
     internal init(_ handle: BodyHandle) {
@@ -86,12 +89,7 @@ public struct HttpBody {
     }
 
     public mutating func bytes() throws -> [UInt8] {
-        var bytes: [UInt8] = []
-        try scan {
-            bytes.append(contentsOf: $0)
-            return .continue
-        }
-        return bytes
+        return try scan { _ in .continue }
     }
 
     public mutating func pipeTo(_ dest: inout HttpBody, end: Bool = true) throws {
@@ -109,6 +107,12 @@ public struct HttpBody {
         highWaterMark: Int = highWaterMark,
         onChunk: ([UInt8]) throws -> BodyScanContinuation
     ) throws -> [UInt8] {
+        var bytes = self._bytes ?? []
+
+        defer {
+            self._bytes = bytes
+        }
+
         while true {
             // Read chunk based on appropriate offset
             let chunk = try Array<UInt8>(unsafeUninitializedCapacity: highWaterMark) {
@@ -119,12 +123,15 @@ public struct HttpBody {
 
             // Make sure we read new bytes, else break
             guard chunk.count > 0 else {
-                return chunk
+                return bytes
             }
+
+            // Store read bytes
+            bytes.append(contentsOf: chunk)
 
             // Trigger callback
             guard try onChunk(chunk) == .continue else {
-                return chunk
+                return bytes
             }
         }
     }
