@@ -86,10 +86,6 @@ public class FetchRequest {
             try await writableBody.write(data)
         case .text(let text):
             try await writableBody.write(text)
-        case .json(let json):
-            try await writableBody.write(json)
-        case .encode(let object):
-            try await writableBody.write(object)
         case .stream(let readableBody):
             streamingBody = readableBody
         case .none:
@@ -167,8 +163,21 @@ extension FetchRequest {
         case bytes(_ bytes: [UInt8])
         case data(_ data: Data)
         case text(_ text: String)
-        case json(_ json: Any)
-        case encode(_ object: Encodable)
         case stream(_ body: ReadableBody)
+
+        public static func encode<T>(_ value: T, encoder: JSONEncoder = .init()) throws -> Body where T: Encodable {
+            let data = try encoder.encode(value)
+            return .data(data)
+        }
+
+        public static func json(_ jsonObject: [String: Any]) throws -> Body {
+            let data = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
+            return .data(data)
+        }
+
+        public static func json(_ jsonArray: [Any]) throws -> Body {
+            let data = try JSONSerialization.data(withJSONObject: jsonArray, options: [])
+            return .data(data)
+        }
     }
 }

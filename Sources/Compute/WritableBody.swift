@@ -44,8 +44,12 @@ public actor WritableBody {
 
 extension WritableBody {
 
-    public func append(_ source: HttpBody) throws {
-        try body.append(body)
+    public func append(_ source: ReadableBody) async throws {
+        try await body.append(source.body)
+    }
+
+    public func pipeFrom(_ source: ReadableBody, preventClose: Bool = false) async throws {
+        try await source.pipeTo(self, preventClose: preventClose)
     }
 
     public func write<T>(_ object: T, encoder: JSONEncoder = .init()) throws where T: Encodable {
@@ -53,8 +57,13 @@ extension WritableBody {
         try write(data)
     }
 
-    public func write(_ json: Any) throws {
-        let data = try JSONSerialization.data(withJSONObject: json, options: [])
+    public func write(_ jsonObject: [String: Any]) throws {
+        let data = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
+        try write(data)
+    }
+
+    public func write(_ jsonArray: [Any]) throws {
+        let data = try JSONSerialization.data(withJSONObject: jsonArray, options: [])
         try write(data)
     }
 
@@ -64,7 +73,8 @@ extension WritableBody {
     }
 
     public func write(_ data: Data) throws {
-        try write(Array<UInt8>(data))
+        let bytes: [UInt8] = .init(data)
+        try write(bytes)
     }
 
     public func write(_ bytes: [UInt8]) throws {

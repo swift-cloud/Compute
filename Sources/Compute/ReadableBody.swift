@@ -48,12 +48,12 @@ public actor ReadableBody {
 
 extension ReadableBody {
 
-    public func pipeTo(_ body: WritableBody, preventClose: Bool = false) async throws {
+    public func pipeTo(_ dest: WritableBody, preventClose: Bool = false) async throws {
         for try await chunk in byteStream() {
-            try await body.write(chunk)
+            try await dest.write(chunk)
         }
         if preventClose == false {
-            try await body.close()
+            try await dest.close()
         }
     }
 }

@@ -12,7 +12,7 @@ public class OutgoingResponse {
 
     internal private(set) var response: HttpResponse
 
-    internal private(set) var didSendStreamingBody = false
+    internal private(set) var didSend = false
 
     internal let body: WritableBody
 
@@ -44,12 +44,6 @@ public class OutgoingResponse {
         self.headers = Headers(response)
     }
 
-    private func sendStreamingBodyIfNeeded() async throws {
-        defer { didSendStreamingBody = true }
-        guard didSendStreamingBody == false else { return }
-        try await response.send(body.body, streaming: true)
-    }
-
     @discardableResult
     private func defaultContentType(_ value: String) throws -> Self {
         if contentType == nil {
@@ -78,63 +72,76 @@ public class OutgoingResponse {
 
     @discardableResult
     public func write<T>(_ object: T, encoder: JSONEncoder = .init()) async throws -> Self where T: Encodable {
-        try await sendStreamingBodyIfNeeded()
+        try await send(streaming: true)
         try await body.write(object, encoder: encoder)
         return self
     }
 
     @discardableResult
-    public func write(_ json: Any) async throws -> Self {
-        try await sendStreamingBodyIfNeeded()
-        try await body.write(json)
+    public func write(_ jsonObject: [String: Any]) async throws -> Self {
+        try await send(streaming: true)
+        try await body.write(jsonObject)
+        return self
+    }
+
+    @discardableResult
+    public func write(_ jsonArray: [Any]) async throws -> Self {
+        try await send(streaming: true)
+        try await body.write(jsonArray)
         return self
     }
 
     @discardableResult
     public func write(_ text: String) async throws -> Self {
-        try await sendStreamingBodyIfNeeded()
+        try await send(streaming: true)
         try await body.write(text)
         return self
     }
 
     @discardableResult
     public func write(_ data: Data) async throws -> Self {
-        try await sendStreamingBodyIfNeeded()
+        try await send(streaming: true)
         try await body.write(data)
         return self
     }
 
     @discardableResult
     public func write(_ bytes: [UInt8]) async throws -> Self {
-        try await sendStreamingBodyIfNeeded()
+        try await send(streaming: true)
         try await body.write(bytes)
         return self
     }
 
     @discardableResult
-    public func write(_ source: ReadableBody) async throws -> Self {
-        try await sendStreamingBodyIfNeeded()
-        try await source.pipeTo(body, preventClose: true)
+    public func pipeFrom(_ source: ReadableBody) async throws -> Self {
+        try await send(streaming: true)
+        try await body.pipeFrom(source, preventClose: true)
         return self
     }
 
     @discardableResult
     public func append(_ source: ReadableBody) async throws -> Self {
-        try await sendStreamingBodyIfNeeded()
-        try await body.append(source.body)
+        try await send(streaming: true)
+        try await body.append(source)
         return self
     }
 
     public func send<T>(_ object: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
         try defaultContentType("application/json")
         try await body.write(object, encoder: encoder)
-        try await response.send(body.body, streaming: false)
+        try await send()
     }
 
-    public func send(_ json: Any) async throws {
+    public func send(_ jsonObject: [String: Any]) async throws {
         try defaultContentType("application/json")
-        try await body.write(json)
-        try await response.send(body.body, streaming: false)
+        try await body.write(jsonObject)
+        try await send()
+    }
+
+    public func send(_ jsonArray: [Any]) async throws {
+        try defaultContentType("application/json")
+        try await body.write(jsonArray)
+        try await send()
     }
 
     public func send(_ text: String, html: Bool = false) async throws {
@@ -144,12 +151,19 @@ public class OutgoingResponse {
     }
 
     public func send(_ data: Data) async throws {
-        try await send(Array<UInt8>(data))
+        let bytes: [UInt8] = .init(data)
+        try await send(bytes)
     }
 
     public func send(_ bytes: [UInt8]) async throws {
         try await body.write(bytes)
-        try await response.send(body.body, streaming: false)
+        try await send()
+    }
+
+    public func send(streaming: Bool = false) async throws {
+        guard didSend == false else { return }
+        didSend = true
+        try await response.send(body.body, streaming: streaming)
     }
 
     public func end() async throws {
