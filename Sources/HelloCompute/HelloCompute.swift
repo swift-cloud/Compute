@@ -24,6 +24,7 @@ struct HelloCompute {
             .header("content-type", fetchResponse.headers["content-type"])
             .header("content-length", fetchResponse.headers["content-length"])
             .header("content-range", fetchResponse.headers["content-range"])
+            .header("x-service-version", Environment.Compute.serviceVersion)
             .append(fetchResponse.body)
     }
 }
