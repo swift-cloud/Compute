@@ -13,7 +13,7 @@ public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ re
             try await handler(req, res)
         } catch {
             print("onIncomingRequest:error", error.localizedDescription)
-            try res.status(500).send("Server error: \(error.localizedDescription)")
+            try await res.status(500).send("Server error: \(error.localizedDescription)")
         }
     } catch {
         fatalError("Something went wrong.")

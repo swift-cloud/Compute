@@ -14,7 +14,7 @@ public class IncomingRequest {
 
     public let headers: Headers<HttpRequest>
 
-    public private(set) var body: HttpBody
+    public let body: ReadableBody
 
     public let method: HttpMethod
 
@@ -28,7 +28,7 @@ public class IncomingRequest {
         try wasi(fastly_http_req__body_downstream_get(&requestHandle, &bodyHandle))
         let request = HttpRequest(requestHandle)
         self.request = request
-        self.body = HttpBody(bodyHandle)
+        self.body = ReadableBody(bodyHandle)
         self.headers = Headers(request)
         self.url = URL(string: try request.getUri() ?? "http://localhost")!
         self.method = try request.getMethod() ?? .get
@@ -48,74 +48,6 @@ public class IncomingRequest {
                 .joined(separator: ":"))
         default:
             return nil
-        }
-    }
-}
-
-extension IncomingRequest {
-
-    public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T where T: Decodable {
-        return try await withCheckedThrowingContinuation { continuation in
-            Task.detached(priority: .high) {
-                do {
-                    let doc = try self.body.decode(type, decoder: decoder)
-                    continuation.resume(with: .success(doc))
-                } catch {
-                    continuation.resume(with: .failure(error))
-                }
-            }
-        }
-    }
-
-    public func json() async throws -> Any {
-        return try await withCheckedThrowingContinuation { continuation in
-            Task.detached(priority: .high) {
-                do {
-                    let json = try self.body.json()
-                    continuation.resume(with: .success(json))
-                } catch {
-                    continuation.resume(with: .failure(error))
-                }
-            }
-        }
-    }
-
-    public func text() async throws -> String {
-        return try await withCheckedThrowingContinuation { continuation in
-            Task.detached(priority: .high) {
-                do {
-                    let text = try self.body.text()
-                    continuation.resume(with: .success(text))
-                } catch {
-                    continuation.resume(with: .failure(error))
-                }
-            }
-        }
-    }
-
-    public func data() async throws -> Data {
-        return try await withCheckedThrowingContinuation { continuation in
-            Task.detached(priority: .high) {
-                do {
-                    let data = try self.body.data()
-                    continuation.resume(with: .success(data))
-                } catch {
-                    continuation.resume(with: .failure(error))
-                }
-            }
-        }
-    }
-
-    public func bytes() async throws -> [UInt8] {
-        return try await withCheckedThrowingContinuation { continuation in
-            Task.detached(priority: .high) {
-                do {
-                    let bytes = try self.body.bytes()
-                    continuation.resume(with: .success(bytes))
-                } catch {
-                    continuation.resume(with: .failure(error))
-                }
-            }
         }
     }
 }

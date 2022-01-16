@@ -75,26 +75,35 @@ public class FetchRequest {
         }
 
         // Build request body
-        var httpBody = try HttpBody()
+        let writableBody = WritableBody(try HttpBody())
+        var streamingBody: ReadableBody? = nil
 
         // Write bytes to body
         switch body {
         case .bytes(let bytes):
-            try httpBody.write(bytes)
+            try await writableBody.write(bytes)
         case .data(let data):
-            try httpBody.write(data)
+            try await writableBody.write(data)
         case .text(let text):
-            try httpBody.write(text)
+            try await writableBody.write(text)
         case .json(let json):
-            try httpBody.write(json)
+            try await writableBody.write(json)
         case .encode(let object):
-            try httpBody.write(object)
+            try await writableBody.write(object)
+        case .stream(let readableBody):
+            streamingBody = readableBody
         case .none:
             break
         }
 
         // Issue async request
-        let pendingRequest = try request.sendAsync(httpBody, backend: backend)
+        let pendingRequest: HttpPendingRequest
+        if let streamingBody = streamingBody {
+            pendingRequest = try await request.sendAsyncStreaming(writableBody.body, backend: backend)
+            try await streamingBody.pipeTo(writableBody)
+        } else {
+            pendingRequest = try await request.sendAsync(writableBody.body, backend: backend)
+        }
 
         while true {
             // Poll request to see if its done
@@ -160,5 +169,6 @@ extension FetchRequest {
         case text(_ text: String)
         case json(_ json: Any)
         case encode(_ object: Encodable)
+        case stream(_ body: ReadableBody)
     }
 }

@@ -4,7 +4,7 @@ import Foundation
 @main
 struct HelloCompute {
     static func main() async {
-        await onIncomingRequest(handleIncomingRequest)
+            await onIncomingRequest(handleIncomingRequest)
     }
 
     static func handleIncomingRequest(req: IncomingRequest, res: OutgoingResponse) async throws {
@@ -18,13 +18,14 @@ struct HelloCompute {
             )
         )
 
-        try res
+        try await res
             .status(fetchResponse.status)
             .header("accept-ranges", fetchResponse.headers["accept-ranges"])
             .header("content-type", fetchResponse.headers["content-type"])
             .header("content-length", fetchResponse.headers["content-length"])
             .header("content-range", fetchResponse.headers["content-range"])
             .header("x-service-version", Environment.Compute.serviceVersion)
-            .append(fetchResponse.body)
+            .write(fetchResponse.body)
+            .end()
     }
 }

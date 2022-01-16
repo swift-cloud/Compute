@@ -14,9 +14,9 @@ public class OutgoingResponse {
 
     internal private(set) var didSendStreamingBody = false
 
-    public private(set) var headers: Headers<HttpResponse>
+    internal let body: WritableBody
 
-    public private(set) var body: HttpBody
+    public private(set) var headers: Headers<HttpResponse>
 
     public var status: HttpStatus {
         get {
@@ -40,14 +40,14 @@ public class OutgoingResponse {
     internal init() throws {
         let response = try HttpResponse()
         self.response = response
-        self.body = try HttpBody()
+        self.body = WritableBody(try HttpBody())
         self.headers = Headers(response)
     }
 
-    private func sendStreamingBodyIfNeeded() throws {
+    private func sendStreamingBodyIfNeeded() async throws {
         defer { didSendStreamingBody = true }
         guard didSendStreamingBody == false else { return }
-        try response.send(body, streaming: true)
+        try await response.send(body.body, streaming: true)
     }
 
     @discardableResult
@@ -77,107 +77,92 @@ public class OutgoingResponse {
     }
 
     @discardableResult
-    public func write<T>(_ object: T, encoder: JSONEncoder = .init()) throws -> Self where T: Encodable {
-        try sendStreamingBodyIfNeeded()
-        try body.write(object, encoder: encoder)
+    public func write<T>(_ object: T, encoder: JSONEncoder = .init()) async throws -> Self where T: Encodable {
+        try await sendStreamingBodyIfNeeded()
+        try await body.write(object, encoder: encoder)
         return self
     }
 
     @discardableResult
-    public func write(_ json: Any) throws -> Self {
-        try sendStreamingBodyIfNeeded()
-        try body.write(json)
+    public func write(_ json: Any) async throws -> Self {
+        try await sendStreamingBodyIfNeeded()
+        try await body.write(json)
         return self
     }
 
     @discardableResult
-    public func write(_ text: String) throws -> Self {
-        try sendStreamingBodyIfNeeded()
-        try body.write(text)
+    public func write(_ text: String) async throws -> Self {
+        try await sendStreamingBodyIfNeeded()
+        try await body.write(text)
         return self
     }
 
     @discardableResult
-    public func write(_ data: Data) throws -> Self {
-        try sendStreamingBodyIfNeeded()
-        try body.write(data)
+    public func write(_ data: Data) async throws -> Self {
+        try await sendStreamingBodyIfNeeded()
+        try await body.write(data)
         return self
     }
 
     @discardableResult
-    public func write(_ bytes: [UInt8]) throws -> Self {
-        try sendStreamingBodyIfNeeded()
-        try body.write(bytes)
+    public func write(_ bytes: [UInt8]) async throws -> Self {
+        try await sendStreamingBodyIfNeeded()
+        try await body.write(bytes)
         return self
     }
 
     @discardableResult
-    public func write(_ source: HttpBody, end: Bool = true) throws -> Self {
-        try sendStreamingBodyIfNeeded()
-        try source.pipeTo(&body, end: end)
+    public func write(_ source: ReadableBody) async throws -> Self {
+        try await sendStreamingBodyIfNeeded()
+        try await source.pipeTo(body, preventClose: true)
         return self
     }
 
     @discardableResult
-    public func append(_ source: HttpBody) throws -> Self {
-        try sendStreamingBodyIfNeeded()
-        try body.append(source)
+    public func append(_ source: ReadableBody) async throws -> Self {
+        try await sendStreamingBodyIfNeeded()
+        try await body.append(source.body)
         return self
     }
 
-    @discardableResult
-    public func send<T>(_ object: T, encoder: JSONEncoder = .init()) throws -> Self where T: Encodable {
+    public func send<T>(_ object: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
         try defaultContentType("application/json")
-        try body.write(object, encoder: encoder)
-        try response.send(body, streaming: false)
-        return self
+        try await body.write(object, encoder: encoder)
+        try await response.send(body.body, streaming: false)
     }
 
-    @discardableResult
-    public func send(_ json: Any) throws -> Self {
+    public func send(_ json: Any) async throws {
         try defaultContentType("application/json")
-        try body.write(json)
-        try response.send(body, streaming: false)
-        return self
+        try await body.write(json)
+        try await response.send(body.body, streaming: false)
     }
 
-    @discardableResult
-    public func send(_ text: String, html: Bool = false) throws -> Self {
+    public func send(_ text: String, html: Bool = false) async throws {
         try defaultContentType(html ? "text/html" : "text/plain")
-        try body.write(text)
-        try response.send(body, streaming: false)
-        return self
+        let data = text.data(using: .utf8) ?? .init()
+        try await send(data)
     }
 
-    @discardableResult
-    public func send(_ data: Data) throws -> Self {
-        try body.write(data)
-        try response.send(body, streaming: false)
-        return self
+    public func send(_ data: Data) async throws {
+        try await send(Array<UInt8>(data))
     }
 
-    @discardableResult
-    public func send(_ bytes: [UInt8]) throws -> Self {
-        try body.write(bytes)
-        try response.send(body, streaming: false)
-        return self
+    public func send(_ bytes: [UInt8]) async throws {
+        try await body.write(bytes)
+        try await response.send(body.body, streaming: false)
     }
 
-    @discardableResult
-    public func end() throws -> Self {
-        try body.close()
-        return self
+    public func end() async throws {
+        try await body.close()
     }
 
-    public func redirect(_ location: String, permanent: Bool = false) throws {
+    public func redirect(_ location: String, permanent: Bool = false) async throws {
         status = permanent ? 308 : 307
         headers["location"] = location
-        try send("Redirecting to \(location)")
+        try await send("Redirecting to \(location)")
     }
 
-    @discardableResult
-    public func cancel() throws -> Self {
+    public func cancel() throws {
         try response.close()
-        return self
     }
 }

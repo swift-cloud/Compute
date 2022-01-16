@@ -31,28 +31,6 @@ public struct HttpBody {
     }
 
     @discardableResult
-    public mutating func write<T>(_ object: T, encoder: JSONEncoder = .init(), location: BodyWriteEnd = .back) throws -> Int where T: Encodable {
-        let data = try encoder.encode(object)
-        return try write(data)
-    }
-
-    @discardableResult
-    public mutating func write(_ json: Any, location: BodyWriteEnd = .back) throws -> Int {
-        let data = try JSONSerialization.data(withJSONObject: json, options: [])
-        return try write(data)
-    }
-
-    @discardableResult
-    public mutating func write(_ text: String, location: BodyWriteEnd = .back) throws -> Int {
-        return try write(text.data(using: .utf8) ?? .init())
-    }
-
-    @discardableResult
-    public mutating func write(_ data: Data, location: BodyWriteEnd = .back) throws -> Int {
-        return try write(Array<UInt8>(data))
-    }
-
-    @discardableResult
     public mutating func write(_ bytes: [UInt8], location: BodyWriteEnd = .back) throws -> Int {
         var position = 0
         while position < bytes.count {
@@ -65,66 +43,27 @@ public struct HttpBody {
         return position
     }
 
-    public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) throws -> T where T: Decodable {
-        let data = try data()
-        return try decoder.decode(type, from: data)
-    }
-
-    public func json() throws -> Any {
-        let data = try data()
-        return try JSONSerialization.jsonObject(with: data, options: [])
-    }
-
-    public func text() throws -> String {
-        let data = try data()
-        return String(data: data, encoding: .utf8) ?? ""
-    }
-
-    public func data() throws -> Data {
-        let bytes = try bytes()
-        return Data(bytes)
-    }
-
-    public func bytes() throws -> [UInt8] {
-        var bytes: [UInt8] = []
-        try scan {
-            bytes.append(contentsOf: $0)
-            return .continue
-        }
-        return bytes
-    }
-
-    public func pipeTo(_ dest: inout HttpBody, end: Bool = true, highWaterMark: Int = highWaterMark) throws {
-        try scan(highWaterMark: highWaterMark) {
-            try dest.write($0)
-            return .continue
-        }
-        if end {
-            try dest.close()
+    public mutating func next(highWaterMark: Int = highWaterMark) throws -> [UInt8] {
+        return try Array<UInt8>(unsafeUninitializedCapacity: highWaterMark) {
+            var length = 0
+            try wasi(fastly_http_body__read(handle, $0.baseAddress, highWaterMark, &length))
+            $1 = length
         }
     }
 
-    @discardableResult
-    private func scan(
-        highWaterMark: Int = highWaterMark,
-        onChunk: ([UInt8]) throws -> BodyScanContinuation
-    ) throws -> [UInt8] {
+    public mutating func read(highWaterMark: Int = highWaterMark, onChunk: ([UInt8]) throws -> BodyScanContinuation) throws {
         while true {
             // Read chunk based on appropriate offset
-            let chunk = try Array<UInt8>(unsafeUninitializedCapacity: highWaterMark) {
-                var length = 0
-                try wasi(fastly_http_body__read(handle, $0.baseAddress, highWaterMark, &length))
-                $1 = length
-            }
+            let chunk = try next(highWaterMark: highWaterMark)
 
             // Make sure we read new bytes, else break
             guard chunk.count > 0 else {
-                return chunk
+                return
             }
 
             // Trigger callback
             guard try onChunk(chunk) == .continue else {
-                return chunk
+                return
             }
         }
     }
