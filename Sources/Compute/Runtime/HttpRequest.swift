@@ -22,39 +22,39 @@ public struct HttpRequest {
         self.handle = handle
     }
 
-    public func method() throws -> HttpMethod? {
+    public func getMethod() throws -> HttpMethod? {
         let text = try wasiString(maxBufferLength: maxMethodLength) {
             fastly_http_req__method_get(handle, $0, $1, &$2)
         }
         return HttpMethod(rawValue: text ?? "")
     }
 
-    public func method(_ newValue: HttpMethod) throws {
+    public mutating func setMethod(_ newValue: HttpMethod) throws {
         let text = newValue.rawValue
         try wasi(fastly_http_req__method_set(handle, text, text.utf8.count))
     }
 
-    public func uri() throws -> String? {
+    public func getUri() throws -> String? {
         return try wasiString(maxBufferLength: maxUriLength) {
             fastly_http_req__uri_get(handle, $0, $1, &$2)
         }
     }
 
-    public func uri(_ newValue: String) throws {
+    public mutating func setUri(_ newValue: String) throws {
         try wasi(fastly_http_req__uri_set(handle, newValue, newValue.utf8.count))
     }
 
-    public func httpVersion() throws -> HttpVersion? {
+    public func getHttpVersion() throws -> HttpVersion? {
         var version: Int32 = 0
         try wasi(fastly_http_req__version_get(handle, &version))
         return HttpVersion(rawValue: version)
     }
 
-    public func httpVersion(_ newValue: HttpVersion) throws {
+    public mutating func setHttpVersion(_ newValue: HttpVersion) throws {
         try wasi(fastly_http_req__version_set(handle, newValue.rawValue))
     }
 
-    public func clientIp() throws -> [UInt8] {
+    public func downstreamClientIpAddress() throws -> [UInt8] {
         return try Array<UInt8>(unsafeUninitializedCapacity: 16) {
             var length = 0
             try wasi(fastly_http_req__downstream_client_ip_addr($0.baseAddress, &length))
@@ -62,7 +62,7 @@ public struct HttpRequest {
         }
     }
 
-    public func cachePolicy(_ policy: CachePolicy, surrogateKey: String? = nil) throws {
+    public mutating func setCachePolicy(_ policy: CachePolicy, surrogateKey: String? = nil) throws {
         let tag: CacheOverrideTag
         let ttl: UInt32
         let swr: UInt32
@@ -93,38 +93,38 @@ public struct HttpRequest {
         }
     }
 
-    public func insertHeader(_ name: String, _ value: String) throws {
+    public mutating func insertHeader(_ name: String, _ value: String) throws {
         try wasi(fastly_http_req__header_insert(handle, name, name.utf8.count, value, value.utf8.count))
     }
 
-    public func appendHeader(_ name: String, _ value: String) throws {
+    public mutating func appendHeader(_ name: String, _ value: String) throws {
         try wasi(fastly_http_req__header_append(handle, name, name.utf8.count, value, value.utf8.count))
     }
 
-    public func removeHeader(_ name: String) throws {
+    public mutating func removeHeader(_ name: String) throws {
         try wasi(fastly_http_req__header_remove(handle, name, name.utf8.count))
     }
 
-    public func send(_ body: HttpBody, backend: String) throws -> (response: HttpResponse, body: HttpBody) {
+    public mutating func send(_ body: HttpBody, backend: String) throws -> (response: HttpResponse, body: HttpBody) {
         var responseHandle: ResponseHandle = 0
         var bodyHandle: BodyHandle = 0
         try wasi(fastly_http_req__send(handle, body.handle, backend, backend.utf8.count, &responseHandle, &bodyHandle))
         return (.init(responseHandle), .init(bodyHandle))
     }
 
-    public func sendAsync(_ body: HttpBody, backend: String) throws -> HttpPendingRequest {
+    public mutating func sendAsync(_ body: HttpBody, backend: String) throws -> HttpPendingRequest {
         var pendingRequestHandle: PendingRequestHandle = 0
         try wasi(fastly_http_req__send_async(handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
         return .init(pendingRequestHandle, request: self)
     }
 
-    public func sendAsyncStreaming(_ body: HttpBody, backend: String) throws -> HttpPendingRequest {
+    public mutating func sendAsyncStreaming(_ body: HttpBody, backend: String) throws -> HttpPendingRequest {
         var pendingRequestHandle: PendingRequestHandle = 0
         try wasi(fastly_http_req__send_async_streaming(handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
         return .init(pendingRequestHandle, request: self)
     }
 
-    public func close() throws {
+    public mutating func close() throws {
         try wasi(fastly_http_req__close(handle))
     }
 }

@@ -11,7 +11,7 @@ public enum FetchRequestError: Error {
     case invalidURL
 }
 
-public struct FetchRequest {
+public class FetchRequest {
 
     public var url: URL
 
@@ -29,7 +29,7 @@ public struct FetchRequest {
 
     public var body: Body?
 
-    private let request: HttpRequest
+    private var request: HttpRequest
 
     public init(_ url: URL, _ options: Options = .options()) throws {
         let request = try HttpRequest()
@@ -64,9 +64,9 @@ public struct FetchRequest {
         }
 
         // Set request resources
-        try request.uri(url.absoluteString)
-        try request.method(method)
-        try request.cachePolicy(cachePolicy, surrogateKey: surrogateKey)
+        try request.setUri(url.absoluteString)
+        try request.setMethod(method)
+        try request.setCachePolicy(cachePolicy, surrogateKey: surrogateKey)
 
         // Set headers
         for (key, value) in headers {
@@ -75,7 +75,9 @@ public struct FetchRequest {
         }
 
         // Build request body
-        let httpBody = try HttpBody()
+        var httpBody = try HttpBody()
+
+        // Write bytes to body
         switch body {
         case .bytes(let bytes):
             try httpBody.write(bytes)

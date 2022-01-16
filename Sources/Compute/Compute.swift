@@ -12,8 +12,8 @@ public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ re
         do {
             try await handler(req, res)
         } catch {
-            print("onIncomingRequest:error", error)
-            try res.status(500).send("Server error.")
+            print("onIncomingRequest:error", error.localizedDescription)
+            try res.status(500).send("Server error: \(error.localizedDescription)")
         }
     } catch {
         fatalError("Something went wrong.")

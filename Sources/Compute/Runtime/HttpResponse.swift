@@ -21,27 +21,27 @@ public struct HttpResponse {
         self.handle = handle
     }
 
-    public func status() throws -> HttpStatus {
+    public func getStatus() throws -> HttpStatus {
         var status: Int32 = 0
         try wasi(fastly_http_resp__status_get(handle, &status))
         return .init(status)
     }
 
-    public func status(_ newValue: HttpStatus) throws {
+    public mutating func setStatus(_ newValue: HttpStatus) throws {
         try wasi(fastly_http_resp__status_set(handle, .init(newValue)))
     }
 
-    public func httpVersion() throws -> HttpVersion? {
+    public func getHttpVersion() throws -> HttpVersion? {
         var version: Int32 = 0
         try wasi(fastly_http_resp__version_get(handle, &version))
         return HttpVersion(rawValue: version)
     }
 
-    public func httpVersion(_ newValue: HttpVersion) throws {
+    public mutating func setHttpVersion(_ newValue: HttpVersion) throws {
         try wasi(fastly_http_resp__version_set(handle, newValue.rawValue))
     }
 
-    public func send(_ body: HttpBody, streaming: Bool = false) throws {
+    public mutating func send(_ body: HttpBody, streaming: Bool = false) throws {
         try wasi(fastly_http_resp__send_downstream(handle, body.handle, Int32(streaming ? 1 : 0)))
     }
 
@@ -51,19 +51,19 @@ public struct HttpResponse {
         }
     }
 
-    public func insertHeader(_ name: String, _ value: String) throws {
+    public mutating func insertHeader(_ name: String, _ value: String) throws {
         try wasi(fastly_http_resp__header_insert(handle, name, name.utf8.count, value, value.utf8.count))
     }
 
-    public func appendHeader(_ name: String, _ value: String) throws {
+    public mutating func appendHeader(_ name: String, _ value: String) throws {
         try wasi(fastly_http_resp__header_append(handle, name, name.utf8.count, value, value.utf8.count))
     }
 
-    public func removeHeader(_ name: String) throws {
+    public mutating func removeHeader(_ name: String) throws {
         try wasi(fastly_http_resp__header_remove(handle, name, name.utf8.count))
     }
 
-    public func close() throws {
+    public mutating func close() throws {
         try wasi(fastly_http_resp__close(handle))
     }
 }

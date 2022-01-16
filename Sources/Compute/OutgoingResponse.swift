@@ -10,15 +10,38 @@ import Foundation
 
 public class OutgoingResponse {
 
-    internal let response: HttpResponse
+    internal private(set) var response: HttpResponse
 
     internal private(set) var didSendStreamingBody = false
 
-    public let body: HttpBody
+    public private(set) var headers: Headers<HttpResponse>
+
+    public private(set) var body: HttpBody
+
+    public var status: HttpStatus {
+        get {
+            let value = try? response.getStatus()
+            return value ?? 200
+        }
+        set {
+            try? response.setStatus(newValue)
+        }
+    }
+
+    public var contentType: String? {
+        get {
+            return headers["conent-type"]
+        }
+        set {
+            headers["content-type"] = newValue
+        }
+    }
 
     internal init() throws {
-        try response = HttpResponse()
-        try body = HttpBody()
+        let response = try HttpResponse()
+        self.response = response
+        self.body = try HttpBody()
+        self.headers = Headers(response)
     }
 
     private func sendStreamingBodyIfNeeded() throws {
@@ -29,42 +52,27 @@ public class OutgoingResponse {
 
     @discardableResult
     private func defaultContentType(_ value: String) throws -> Self {
-        if try header("content-type") == nil {
-            try contentType(value)
+        if contentType == nil {
+            contentType = value
         }
         return self
     }
 
-    public func header(_ name: String) throws -> String? {
-        return try response.getHeader(name)
-    }
-
     @discardableResult
-    public func header(_ name: String, _ value: String?) throws -> Self {
-        if let value = value {
-            try response.insertHeader(name, value)
-        } else if try response.getHeader(name) != nil {
-            try response.removeHeader(name)
-        }
+    public func contentType(_ value: String) -> Self {
+        contentType = value
         return self
     }
 
-    public func contentType() throws -> String? {
-        return try header("content-type")
+    @discardableResult
+    public func status(_ newValue: HttpStatus) -> Self {
+        status = newValue
+        return self
     }
 
     @discardableResult
-    public func contentType(_ value: String) throws -> Self {
-        return try header("content-type", value)
-    }
-
-    public func status() throws -> HttpStatus {
-        return try response.status()
-    }
-
-    @discardableResult
-    public func status(_ newValue: HttpStatus) throws -> Self {
-        try response.status(newValue)
+    public func header(_ name: String, _ value: String?) -> Self {
+        headers[name] = value
         return self
     }
 
@@ -104,9 +112,9 @@ public class OutgoingResponse {
     }
 
     @discardableResult
-    public func write(_ source: HttpBody, end: Bool = true) throws -> Self {
+    public func write(_ source: inout HttpBody, end: Bool = true) throws -> Self {
         try sendStreamingBodyIfNeeded()
-        try source.pipeTo(body, end: end)
+        try source.pipeTo(&body, end: end)
         return self
     }
 
@@ -162,8 +170,8 @@ public class OutgoingResponse {
     }
 
     public func redirect(_ location: String, permanent: Bool = false) throws {
-        try status(permanent ? 308 : 307)
-        try header("location", location)
+        status = permanent ? 308 : 307
+        headers["location"] = location
         try send("Redirecting to \(location)")
     }
 

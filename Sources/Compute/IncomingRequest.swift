@@ -8,26 +8,37 @@
 import ComputeRuntime
 import Foundation
 
-public struct IncomingRequest {
+public class IncomingRequest {
 
     internal let request: HttpRequest
 
-    public let headers: Headers
+    public let headers: Headers<HttpRequest>
 
-    public let body: HttpBody
+    public private(set) var body: HttpBody
 
-    public var method: HttpMethod {
-        return (try? request.method()) ?? .get
-    }
+    public private(set) var bodyUsed: Bool = false
+
+    public let method: HttpMethod
 
     public let url: URL
 
-    public var httpVersion: HttpVersion {
-        return (try? request.httpVersion()) ?? .http1_1
+    public let httpVersion: HttpVersion
+
+    internal init() throws {
+        var requestHandle: RequestHandle = 0
+        var bodyHandle: BodyHandle = 0
+        try wasi(fastly_http_req__body_downstream_get(&requestHandle, &bodyHandle))
+        let request = HttpRequest(requestHandle)
+        self.request = request
+        self.body = HttpBody(bodyHandle)
+        self.headers = Headers(request)
+        self.url = URL(string: try request.getUri() ?? "http://localhost")!
+        self.method = try request.getMethod() ?? .get
+        self.httpVersion = try request.getHttpVersion() ?? .http1_1
     }
 
-    public var clientIp: IpAddress? {
-        guard let octets = try? request.clientIp() else {
+    public func clientIpAddress() -> IpAddress? {
+        guard let octets = try? request.downstreamClientIpAddress() else {
             return nil
         }
         switch octets.count {
@@ -41,42 +52,84 @@ public struct IncomingRequest {
             return nil
         }
     }
-
-    internal init() throws {
-        var requestHandle: RequestHandle = 0
-        var bodyHandle: BodyHandle = 0
-        try wasi(fastly_http_req__body_downstream_get(&requestHandle, &bodyHandle))
-        let request = HttpRequest(requestHandle)
-        self.request = request
-        self.body = HttpBody(bodyHandle)
-        self.headers = Headers(request: request)
-        self.url = URL(string: try request.uri() ?? "http://localhost")!
-    }
 }
 
 extension IncomingRequest {
 
-    public struct Headers {
-
-        internal let request: HttpRequest
-
-        internal init(request: HttpRequest) {
-            self.request = request
+    private func assertBodyNotUsed() throws {
+        defer { bodyUsed = true }
+        guard bodyUsed == false else {
+            throw FetchResponseError.bodyAlreadyUsed
         }
+    }
 
-        public func get(_ name: String) -> String? {
-            return try? request.getHeader(name)
-        }
-
-        public func has(_ name: String) -> Bool {
-            guard let value = get(name) else {
-                return false
+    public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T where T: Decodable {
+        try assertBodyNotUsed()
+        return try await withCheckedThrowingContinuation { continuation in
+            Task.detached(priority: .high) {
+                do {
+                    let doc = try self.body.decode(type, decoder: decoder)
+                    continuation.resume(with: .success(doc))
+                } catch {
+                    continuation.resume(with: .failure(error))
+                }
             }
-            return value.count > 0
         }
+    }
 
-        public subscript(name: String) -> String? {
-            get { get(name) }
+    public func json() async throws -> Any {
+        try assertBodyNotUsed()
+        return try await withCheckedThrowingContinuation { continuation in
+            Task.detached(priority: .high) {
+                do {
+                    let json = try self.body.json()
+                    continuation.resume(with: .success(json))
+                } catch {
+                    continuation.resume(with: .failure(error))
+                }
+            }
+        }
+    }
+
+    public func text() async throws -> String {
+        try assertBodyNotUsed()
+        return try await withCheckedThrowingContinuation { continuation in
+            Task.detached(priority: .high) {
+                do {
+                    let text = try self.body.text()
+                    continuation.resume(with: .success(text))
+                } catch {
+                    continuation.resume(with: .failure(error))
+                }
+            }
+        }
+    }
+
+    public func data() async throws -> Data {
+        try assertBodyNotUsed()
+        return try await withCheckedThrowingContinuation { continuation in
+            Task.detached(priority: .high) {
+                do {
+                    let data = try self.body.data()
+                    continuation.resume(with: .success(data))
+                } catch {
+                    continuation.resume(with: .failure(error))
+                }
+            }
+        }
+    }
+
+    public func bytes() async throws -> [UInt8] {
+        try assertBodyNotUsed()
+        return try await withCheckedThrowingContinuation { continuation in
+            Task.detached(priority: .high) {
+                do {
+                    let bytes = try self.body.bytes()
+                    continuation.resume(with: .success(bytes))
+                } catch {
+                    continuation.resume(with: .failure(error))
+                }
+            }
         }
     }
 }

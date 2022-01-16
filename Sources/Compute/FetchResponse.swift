@@ -7,17 +7,23 @@
 
 import Foundation
 
-public struct FetchResponse {
+public enum FetchResponseError: Error {
+    case bodyAlreadyUsed
+}
+
+public class FetchResponse {
 
     internal let request: FetchRequest
 
     internal let response: HttpResponse
 
-    public let body: HttpBody
+    public private(set) var body: HttpBody
 
-    public let headers: Headers
+    public let headers: Headers<HttpResponse>
 
     public let status: HttpStatus
+
+    public private(set) var bodyUsed: Bool = false
 
     public var ok: Bool {
         return status >= 200 && status <= 299
@@ -31,59 +37,23 @@ public struct FetchResponse {
         self.request = request
         self.response = response
         self.body = body
-        self.headers = Headers(response: response)
-        self.status = try .init(response.status())
+        self.headers = Headers(response)
+        self.status = try .init(response.getStatus())
     }
 }
 
 extension FetchResponse {
 
-    public struct Headers {
-
-        internal let response: HttpResponse
-
-        internal init(response: HttpResponse) {
-            self.response = response
-        }
-
-        public func get(_ name: String) -> String? {
-            return try? response.getHeader(name)
-        }
-
-        public func has(_ name: String) -> Bool {
-            guard let value = get(name) else {
-                return false
-            }
-            return value.count > 0
-        }
-
-        public func set(_ name: String, _ value: String?) {
-            if let value = value {
-                try? response.insertHeader(name, value)
-            } else {
-                try? response.removeHeader(name)
-            }
-        }
-
-        public func append(_ name: String, _ value: String) {
-            try? response.appendHeader(name, value)
-        }
-
-        public func delete(_ name: String) {
-            try? response.removeHeader(name)
-        }
-
-        public subscript(name: String) -> String? {
-            get { get(name) }
-            set { set(name, newValue) }
+    private func assertBodyNotUsed() throws {
+        defer { bodyUsed = true }
+        guard bodyUsed == false else {
+            throw FetchResponseError.bodyAlreadyUsed
         }
     }
-}
-
-extension FetchResponse {
 
     public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T where T: Decodable {
-        try await withCheckedThrowingContinuation { continuation in
+        try assertBodyNotUsed()
+        return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
                     let doc = try self.body.decode(type, decoder: decoder)
@@ -96,7 +66,8 @@ extension FetchResponse {
     }
 
     public func json() async throws -> Any {
-        try await withCheckedThrowingContinuation { continuation in
+        try assertBodyNotUsed()
+        return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
                     let json = try self.body.json()
@@ -109,7 +80,8 @@ extension FetchResponse {
     }
 
     public func text() async throws -> String {
-        try await withCheckedThrowingContinuation { continuation in
+        try assertBodyNotUsed()
+        return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
                     let text = try self.body.text()
@@ -122,7 +94,8 @@ extension FetchResponse {
     }
 
     public func data() async throws -> Data {
-        try await withCheckedThrowingContinuation { continuation in
+        try assertBodyNotUsed()
+        return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
                     let data = try self.body.data()
@@ -135,7 +108,8 @@ extension FetchResponse {
     }
 
     public func bytes() async throws -> [UInt8] {
-        try await withCheckedThrowingContinuation { continuation in
+        try assertBodyNotUsed()
+        return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
                     let bytes = try self.body.bytes()

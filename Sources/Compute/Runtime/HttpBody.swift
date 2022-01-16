@@ -22,38 +22,38 @@ public struct HttpBody {
         self.handle = handle
     }
 
-    public func append(_ source: HttpBody) throws {
+    public mutating func append(_ source: HttpBody) throws {
         try wasi(fastly_http_body__append(handle, source.handle))
     }
 
-    public func close() throws {
+    public mutating func close() throws {
         try wasi(fastly_http_body__close(handle))
     }
 
     @discardableResult
-    public func write<T>(_ object: T, encoder: JSONEncoder = .init(), location: BodyWriteEnd = .back) throws -> Int where T: Encodable {
+    public mutating func write<T>(_ object: T, encoder: JSONEncoder = .init(), location: BodyWriteEnd = .back) throws -> Int where T: Encodable {
         let data = try encoder.encode(object)
         return try write(data)
     }
 
     @discardableResult
-    public func write(_ json: Any, location: BodyWriteEnd = .back) throws -> Int {
+    public mutating func write(_ json: Any, location: BodyWriteEnd = .back) throws -> Int {
         let data = try JSONSerialization.data(withJSONObject: json, options: [])
         return try write(data)
     }
 
     @discardableResult
-    public func write(_ text: String, location: BodyWriteEnd = .back) throws -> Int {
+    public mutating func write(_ text: String, location: BodyWriteEnd = .back) throws -> Int {
         return try write(text.data(using: .utf8) ?? .init())
     }
 
     @discardableResult
-    public func write(_ data: Data, location: BodyWriteEnd = .back) throws -> Int {
+    public mutating func write(_ data: Data, location: BodyWriteEnd = .back) throws -> Int {
         return try write(Array<UInt8>(data))
     }
 
     @discardableResult
-    public func write(_ bytes: [UInt8], location: BodyWriteEnd = .back) throws -> Int {
+    public mutating func write(_ bytes: [UInt8], location: BodyWriteEnd = .back) throws -> Int {
         var position = 0
         while position < bytes.count {
             try bytes[position..<bytes.count].withUnsafeBufferPointer {
@@ -65,27 +65,27 @@ public struct HttpBody {
         return position
     }
 
-    public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) throws -> T where T: Decodable {
+    public mutating func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) throws -> T where T: Decodable {
         let data = try data()
         return try decoder.decode(type, from: data)
     }
 
-    public func json() throws -> Any {
+    public mutating func json() throws -> Any {
         let data = try data()
         return try JSONSerialization.jsonObject(with: data, options: [])
     }
 
-    public func text() throws -> String {
+    public mutating func text() throws -> String {
         let data = try data()
         return String(data: data, encoding: .utf8) ?? ""
     }
 
-    public func data() throws -> Data {
+    public mutating func data() throws -> Data {
         let bytes = try bytes()
         return Data(bytes)
     }
 
-    public func bytes() throws -> [UInt8] {
+    public mutating func bytes() throws -> [UInt8] {
         var bytes: [UInt8] = []
         try scan {
             bytes.append(contentsOf: $0)
@@ -94,7 +94,7 @@ public struct HttpBody {
         return bytes
     }
 
-    public func pipeTo(_ dest: HttpBody, end: Bool = true) throws {
+    public mutating func pipeTo(_ dest: inout HttpBody, end: Bool = true) throws {
         try scan {
             try dest.write($0)
             return .continue
@@ -105,7 +105,7 @@ public struct HttpBody {
     }
 
     @discardableResult
-    public func scan(
+    public mutating func scan(
         highWaterMark: Int = highWaterMark,
         onChunk: ([UInt8]) throws -> BodyScanContinuation
     ) throws -> [UInt8] {
