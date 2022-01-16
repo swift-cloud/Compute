@@ -12,13 +12,6 @@ public struct HttpBody {
 
     internal let handle: BodyHandle
 
-    /// Cache previously read bytes. Body can only be read once
-    private var _bytes: [UInt8]? = nil
-
-    internal var used: Bool {
-        return _bytes != nil
-    }
-
     internal init(_ handle: BodyHandle) {
         self.handle = handle
     }
@@ -72,32 +65,37 @@ public struct HttpBody {
         return position
     }
 
-    public mutating func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) throws -> T where T: Decodable {
+    public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) throws -> T where T: Decodable {
         let data = try data()
         return try decoder.decode(type, from: data)
     }
 
-    public mutating func json() throws -> Any {
+    public func json() throws -> Any {
         let data = try data()
         return try JSONSerialization.jsonObject(with: data, options: [])
     }
 
-    public mutating func text() throws -> String {
+    public func text() throws -> String {
         let data = try data()
         return String(data: data, encoding: .utf8) ?? ""
     }
 
-    public mutating func data() throws -> Data {
+    public func data() throws -> Data {
         let bytes = try bytes()
         return Data(bytes)
     }
 
-    public mutating func bytes() throws -> [UInt8] {
-        return try scan { _ in .continue }
+    public func bytes() throws -> [UInt8] {
+        var bytes: [UInt8] = []
+        try scan {
+            bytes.append(contentsOf: $0)
+            return .continue
+        }
+        return bytes
     }
 
-    public mutating func pipeTo(_ dest: inout HttpBody, end: Bool = true) throws {
-        try scan {
+    public func pipeTo(_ dest: inout HttpBody, end: Bool = true, highWaterMark: Int = highWaterMark) throws {
+        try scan(highWaterMark: highWaterMark) {
             try dest.write($0)
             return .continue
         }
@@ -107,16 +105,10 @@ public struct HttpBody {
     }
 
     @discardableResult
-    public mutating func scan(
+    private func scan(
         highWaterMark: Int = highWaterMark,
         onChunk: ([UInt8]) throws -> BodyScanContinuation
     ) throws -> [UInt8] {
-        var bytes = self._bytes ?? []
-
-        defer {
-            self._bytes = bytes
-        }
-
         while true {
             // Read chunk based on appropriate offset
             let chunk = try Array<UInt8>(unsafeUninitializedCapacity: highWaterMark) {
@@ -127,15 +119,12 @@ public struct HttpBody {
 
             // Make sure we read new bytes, else break
             guard chunk.count > 0 else {
-                return bytes
+                return chunk
             }
-
-            // Store read bytes
-            bytes.append(contentsOf: chunk)
 
             // Trigger callback
             guard try onChunk(chunk) == .continue else {
-                return bytes
+                return chunk
             }
         }
     }

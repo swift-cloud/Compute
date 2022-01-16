@@ -23,10 +23,6 @@ public class FetchResponse {
 
     public let status: HttpStatus
 
-    public var bodyUsed: Bool {
-        return body.used
-    }
-
     public var ok: Bool {
         return status >= 200 && status <= 299
     }

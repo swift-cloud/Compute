@@ -16,10 +16,6 @@ public class IncomingRequest {
 
     public private(set) var body: HttpBody
 
-    public var bodyUsed: Bool {
-        return body.used
-    }
-
     public let method: HttpMethod
 
     public let url: URL

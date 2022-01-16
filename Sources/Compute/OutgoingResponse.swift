@@ -112,7 +112,7 @@ public class OutgoingResponse {
     }
 
     @discardableResult
-    public func write(_ source: inout HttpBody, end: Bool = true) throws -> Self {
+    public func write(_ source: HttpBody, end: Bool = true) throws -> Self {
         try sendStreamingBodyIfNeeded()
         try source.pipeTo(&body, end: end)
         return self
