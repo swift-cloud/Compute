@@ -10,10 +10,14 @@ import Foundation
 
 public struct HttpBody {
 
+    internal let handle: BodyHandle
+
     /// Cache previously read bytes. Body can only be read once
     private var _bytes: [UInt8]? = nil
 
-    internal let handle: BodyHandle
+    internal var used: Bool {
+        return _bytes != nil
+    }
 
     internal init(_ handle: BodyHandle) {
         self.handle = handle

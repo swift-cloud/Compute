@@ -23,7 +23,9 @@ public class FetchResponse {
 
     public let status: HttpStatus
 
-    public private(set) var bodyUsed: Bool = false
+    public var bodyUsed: Bool {
+        return body.used
+    }
 
     public var ok: Bool {
         return status >= 200 && status <= 299
@@ -45,7 +47,6 @@ public class FetchResponse {
 extension FetchResponse {
 
     public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T where T: Decodable {
-        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -59,7 +60,6 @@ extension FetchResponse {
     }
 
     public func json() async throws -> Any {
-        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -73,7 +73,6 @@ extension FetchResponse {
     }
 
     public func text() async throws -> String {
-        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -87,7 +86,6 @@ extension FetchResponse {
     }
 
     public func data() async throws -> Data {
-        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -101,7 +99,6 @@ extension FetchResponse {
     }
 
     public func bytes() async throws -> [UInt8] {
-        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {

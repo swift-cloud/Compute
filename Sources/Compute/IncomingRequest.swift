@@ -16,7 +16,9 @@ public class IncomingRequest {
 
     public private(set) var body: HttpBody
 
-    public private(set) var bodyUsed: Bool = false
+    public var bodyUsed: Bool {
+        return body.used
+    }
 
     public let method: HttpMethod
 
@@ -57,7 +59,6 @@ public class IncomingRequest {
 extension IncomingRequest {
 
     public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T where T: Decodable {
-        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -71,7 +72,6 @@ extension IncomingRequest {
     }
 
     public func json() async throws -> Any {
-        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -85,7 +85,6 @@ extension IncomingRequest {
     }
 
     public func text() async throws -> String {
-        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -99,7 +98,6 @@ extension IncomingRequest {
     }
 
     public func data() async throws -> Data {
-        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
@@ -113,7 +111,6 @@ extension IncomingRequest {
     }
 
     public func bytes() async throws -> [UInt8] {
-        defer { bodyUsed = true }
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached(priority: .high) {
                 do {
