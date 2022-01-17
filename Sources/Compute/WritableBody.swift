@@ -7,15 +7,9 @@
 
 import Foundation
 
-public enum WritableBodyError: Error {
-    case invalidLockedWrite
-}
-
 public actor WritableBody {
 
     internal private(set) var body: HttpBody
-
-    public private(set) var locked: Bool = false
 
     internal init(_ body: HttpBody) {
         self.body = body
@@ -28,29 +22,20 @@ public actor WritableBody {
     public func close() throws {
         try body.close()
     }
-
-    private func lock() -> Bool {
-        guard locked == false else {
-            return false
-        }
-        locked = true
-        return true
-    }
-
-    private func unlock() {
-        locked = false
-    }
 }
 
 extension WritableBody {
 
     public func append(_ source: ReadableBody) async throws {
-        try await body.append(source.body)
+        try body.append(await source.body)
     }
 
     public func pipeFrom(_ source: ReadableBody, preventClose: Bool = false) async throws {
         try await source.pipeTo(self, preventClose: preventClose)
     }
+}
+
+extension WritableBody {
 
     public func write<T>(_ object: T, encoder: JSONEncoder = .init()) throws where T: Encodable {
         let data = try encoder.encode(object)
@@ -78,10 +63,6 @@ extension WritableBody {
     }
 
     public func write(_ bytes: [UInt8]) throws {
-        guard lock() == true else {
-            throw WritableBodyError.invalidLockedWrite
-        }
         try body.write(bytes)
-        unlock()
     }
 }

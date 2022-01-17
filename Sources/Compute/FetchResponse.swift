@@ -61,8 +61,4 @@ extension FetchResponse {
     public func bytes() async throws -> [UInt8] {
         return try await body.bytes()
     }
-
-    public func byteStream(highWaterMark: Int = highWaterMark) async -> AsyncThrowingStream<[UInt8], Error> {
-        return await body.byteStream(highWaterMark: highWaterMark)
-    }
 }

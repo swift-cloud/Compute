@@ -68,12 +68,6 @@ public class FetchRequest {
         try request.setMethod(method)
         try request.setCachePolicy(cachePolicy, surrogateKey: surrogateKey)
 
-        // Set headers
-        for (key, value) in headers {
-            guard let value = value else { continue }
-            try request.insertHeader(key, value)
-        }
-
         // Build request body
         let writableBody = WritableBody(try HttpBody())
         var streamingBody: ReadableBody? = nil
@@ -86,10 +80,19 @@ public class FetchRequest {
             try await writableBody.write(data)
         case .text(let text):
             try await writableBody.write(text)
+        case .json(let json):
+            headers["content-type"] = headers["content-type", default: "application/json"]
+            try await writableBody.write(json)
         case .stream(let readableBody):
             streamingBody = readableBody
         case .none:
             break
+        }
+
+        // Set headers
+        for (key, value) in headers {
+            guard let value = value else { continue }
+            try request.insertHeader(key, value)
         }
 
         // Issue async request
@@ -163,21 +166,22 @@ extension FetchRequest {
         case bytes(_ bytes: [UInt8])
         case data(_ data: Data)
         case text(_ text: String)
+        case json(_ json: Data)
         case stream(_ body: ReadableBody)
 
-        public static func encode<T>(_ value: T, encoder: JSONEncoder = .init()) throws -> Body where T: Encodable {
+        public static func json<T>(_ value: T, encoder: JSONEncoder = .init()) throws -> Body where T: Encodable {
             let data = try encoder.encode(value)
-            return .data(data)
+            return Body.json(data)
         }
 
         public static func json(_ jsonObject: [String: Any]) throws -> Body {
             let data = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
-            return .data(data)
+            return Body.json(data)
         }
 
         public static func json(_ jsonArray: [Any]) throws -> Body {
             let data = try JSONSerialization.data(withJSONObject: jsonArray, options: [])
-            return .data(data)
+            return Body.json(data)
         }
     }
 }

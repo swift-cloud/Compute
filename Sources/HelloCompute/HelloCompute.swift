@@ -10,22 +10,29 @@ struct HelloCompute {
     static func handleIncomingRequest(req: IncomingRequest, res: OutgoingResponse) async throws {
         print("\(req.method) \(req.url.path)\(req.url.query ?? "")")
 
-        let fetchResponse = try await fetch(
+        let file0 = try await fetch(
+            "https://cms-media-library.s3.us-east-1.amazonaws.com/barba/splitFile-segment-0000.mp3",
+            .options(cachePolicy: .ttl(seconds: 900, staleWhileRevalidate: 900))
+        )
+
+        let file1 = try await fetch(
+            "https://cms-media-library.s3.us-east-1.amazonaws.com/barba/splitFile-segment-0001.mp3",
+            .options(cachePolicy: .ttl(seconds: 900, staleWhileRevalidate: 900))
+        )
+
+        let file2 = try await fetch(
             "https://cms-media-library.s3.us-east-1.amazonaws.com/barba/splitFile-segment-0002.mp3",
-            .options(
-                headers: ["range": req.headers["range"]],
-                cachePolicy: .ttl(seconds: 900, staleWhileRevalidate: 900)
-            )
+            .options(cachePolicy: .ttl(seconds: 900, staleWhileRevalidate: 900))
         )
 
         try await res
-            .status(fetchResponse.status)
-            .header("accept-ranges", fetchResponse.headers["accept-ranges"])
-            .header("content-type", fetchResponse.headers["content-type"])
-            .header("content-length", fetchResponse.headers["content-length"])
-            .header("content-range", fetchResponse.headers["content-range"])
+            .status(200)
+            .header("accept-ranges", "none")
+            .header("content-type", file0.headers["content-type"])
             .header("x-service-version", Environment.Compute.serviceVersion)
-            .append(fetchResponse.body)
+            .append(file0.body)
+            .append(file1.body)
+            .append(file2.body)
             .end()
     }
 }
