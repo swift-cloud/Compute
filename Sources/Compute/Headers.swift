@@ -7,6 +7,8 @@
 
 public protocol HeadersRepresentable {
 
+    func getHeaderNames() throws -> [String]
+
     func getHeader(_ name: String) throws -> String?
 
     mutating func insertHeader(_ name: String, _ value: String) throws
@@ -26,6 +28,30 @@ public struct Headers<T> where T: HeadersRepresentable {
 
     internal init(_ instance: T) {
         self.instance = instance
+    }
+
+    public func keys() -> [String] {
+        let keys = try? instance.getHeaderNames()
+        return keys ?? []
+    }
+
+    public func values() -> [String] {
+        return keys().compactMap { get($0) }
+    }
+
+    public func entries() -> [(key: String, value: String)] {
+        return keys().compactMap { key in
+            guard let value = get(key), value.count > 0 else {
+                return nil
+            }
+            return (key, value)
+        }
+    }
+
+    public func dictionary() -> [String: String] {
+        return keys().reduce(into: [:]) { dict, key in
+            dict[key] = get(key)
+        }
     }
 
     public func get(_ name: String) -> String? {

@@ -4,7 +4,7 @@ import Foundation
 @main
 struct HelloCompute {
     static func main() async {
-            await onIncomingRequest(handleIncomingRequest)
+        await onIncomingRequest(handleIncomingRequest)
     }
 
     static func handleIncomingRequest(req: IncomingRequest, res: OutgoingResponse) async throws {

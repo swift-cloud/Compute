@@ -107,6 +107,10 @@ int fastly_http_req__version_set(int handle, int version);
 WASM_IMPORT("fastly_http_req", "downstream_client_ip_addr")
 int fastly_http_req__downstream_client_ip_addr(uint8_t* octets, size_t* nwritten);
 
+WASM_IMPORT("fastly_http_req", "header_names_get")
+int fastly_http_req__header_names_get(int req_handle, uint8_t *name, size_t name_len, uint32_t cursor,
+                                      int64_t *ending_cursor, size_t *nwritten);
+
 WASM_IMPORT("fastly_http_req", "header_value_get")
 int fastly_http_req__header_value_get(int resp_handle, const char *name, size_t name_len,
                                       uint8_t* value, size_t value_max_len, size_t* nwritten);
@@ -171,6 +175,10 @@ int fastly_http_resp__version_set(int handle, int version);
 
 WASM_IMPORT("fastly_http_resp", "status_set")
 int fastly_http_resp__status_set(int handle, int status);
+
+WASM_IMPORT("fastly_http_resp", "header_names_get")
+int fastly_http_resp__header_names_get(int resp_handle, uint8_t *name, size_t name_len, uint32_t cursor,
+                                       int64_t *ending_cursor, size_t *nwritten);
 
 WASM_IMPORT("fastly_http_resp", "header_value_get")
 int fastly_http_resp__header_value_get(int resp_handle, const char *name, size_t name_len,

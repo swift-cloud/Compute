@@ -87,6 +87,26 @@ public struct HttpRequest {
         }
     }
 
+    public func getHeaderNames() throws -> [String] {
+        var cursor: UInt32 = 0
+        var nextCursor: Int64 = 0
+        var bytes: [UInt8] = []
+        while true {
+            let chunk = try Array<UInt8>(unsafeUninitializedCapacity: 64)  {
+                try wasi(fastly_http_req__header_names_get(handle, $0.baseAddress, 64, cursor, &nextCursor, &$1))
+            }
+            guard chunk.count > 0 else {
+                break
+            }
+            bytes.append(contentsOf: chunk)
+            guard nextCursor >= 0 else {
+                break
+            }
+            cursor = .init(nextCursor)
+        }
+        return bytes.split { $0 == 0 }.compactMap { String(bytes: $0, encoding: .utf8) }
+    }
+
     public func getHeader(_ name: String) throws -> String? {
         try wasiString(maxBufferLength: maxHeaderLength) {
             fastly_http_req__header_value_get(handle, name, name.utf8.count, $0, $1, &$2)
