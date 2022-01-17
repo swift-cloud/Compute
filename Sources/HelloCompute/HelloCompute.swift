@@ -27,10 +27,10 @@ struct HelloCompute {
 
         let range = parseRange(req, totalContentLength: totalContentLength)
 
-        let rangeResponses = try await rangeRequests(headResponses, range: range).mapAsync { config in
-            try await fetch(config.url, .options(
+        let rangeResponses = try await rangeRequests(headResponses, range: range).mapAsync { (url, range) in
+            try await fetch(url, .options(
                 method: .get,
-                headers: ["range": "bytes=\(config.range.start)-\(config.range.end)"],
+                headers: ["range": "bytes=\(range.start)-\(range.end)"],
                 cachePolicy: .ttl(seconds: 900, staleWhileRevalidate: 900)
             ))
         }
