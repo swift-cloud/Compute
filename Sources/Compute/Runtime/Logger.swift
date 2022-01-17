@@ -6,6 +6,7 @@
 //
 
 import ComputeRuntime
+import Foundation
 
 public struct Logger {
     
@@ -23,5 +24,29 @@ public struct Logger {
         var result = 0
         try wasi(fastly_log__write(handle, message, message.utf8.count, &result))
         return result
+    }
+
+    @discardableResult
+    public func write<T>(_ value: T, encoder: JSONEncoder = .init()) throws -> Int where T: Encodable {
+        let data = try encoder.encode(value)
+        return try write(data)
+    }
+
+    @discardableResult
+    public func write(_ jsonObject: [String: Any]) throws -> Int {
+        let data = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
+        return try write(data)
+    }
+
+    @discardableResult
+    public func write(_ jsonArray: [Any]) throws -> Int {
+        let data = try JSONSerialization.data(withJSONObject: jsonArray, options: [])
+        return try write(data)
+    }
+
+    @discardableResult
+    public func write(_ data: Data) throws -> Int {
+        let text = String(bytes: data, encoding: .utf8) ?? ""
+        return try write(text)
     }
 }
