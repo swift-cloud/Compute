@@ -22,7 +22,7 @@ struct HelloCompute {
             headers: ["user-agent": "swift-compute-runtime"]
         ))
         let text = try await fetchResponse.text()
-        try res.status(200).send(text)
+        try await res.status(200).send(text)
     }
 }
 ```
