@@ -5,7 +5,6 @@
 //  Created by Andrew Barba on 1/13/22.
 //
 
-import ComputeRuntime
 import Foundation
 
 public class OutgoingResponse {
@@ -71,9 +70,9 @@ public class OutgoingResponse {
     }
 
     @discardableResult
-    public func write<T>(_ object: T, encoder: JSONEncoder = .init()) async throws -> Self where T: Encodable {
+    public func write<T>(_ value: T, encoder: JSONEncoder = .init()) async throws -> Self where T: Encodable {
         try await send(streaming: true)
-        try await body.write(object, encoder: encoder)
+        try await body.write(value, encoder: encoder)
         return self
     }
 
@@ -137,9 +136,9 @@ public class OutgoingResponse {
         return self
     }
 
-    public func send<T>(_ object: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
+    public func send<T>(_ value: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
         try defaultContentType("application/json")
-        try await body.write(object, encoder: encoder)
+        try await body.write(value, encoder: encoder)
         try await send()
     }
 

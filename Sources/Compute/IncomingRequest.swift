@@ -5,7 +5,6 @@
 //  Created by Andrew Barba on 1/13/22.
 //
 
-import ComputeRuntime
 import Foundation
 
 public class IncomingRequest {
@@ -23,12 +22,9 @@ public class IncomingRequest {
     public let httpVersion: HttpVersion
 
     internal init() throws {
-        var requestHandle: RequestHandle = 0
-        var bodyHandle: BodyHandle = 0
-        try wasi(fastly_http_req__body_downstream_get(&requestHandle, &bodyHandle))
-        let request = HttpRequest(requestHandle)
+        let (request, body) = try HttpRequest.getDownstream()
         self.request = request
-        self.body = ReadableBody(bodyHandle)
+        self.body = ReadableBody(body)
         self.headers = Headers(request)
         self.url = URL(string: try request.getUri() ?? "http://localhost")!
         self.method = try request.getMethod() ?? .get

@@ -37,8 +37,8 @@ extension WritableBody {
 
 extension WritableBody {
 
-    public func write<T>(_ object: T, encoder: JSONEncoder = .init()) throws where T: Encodable {
-        let data = try encoder.encode(object)
+    public func write<T>(_ value: T, encoder: JSONEncoder = .init()) throws where T: Encodable {
+        let data = try encoder.encode(value)
         try write(data)
     }
 

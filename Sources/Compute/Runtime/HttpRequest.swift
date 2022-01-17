@@ -128,3 +128,15 @@ public struct HttpRequest {
         try wasi(fastly_http_req__close(handle))
     }
 }
+
+extension HttpRequest {
+
+    public static func getDownstream() throws -> (request: HttpRequest, body: HttpBody) {
+        var requestHandle: RequestHandle = 0
+        var bodyHandle: BodyHandle = 0
+        try wasi(fastly_http_req__body_downstream_get(&requestHandle, &bodyHandle))
+        let request = HttpRequest(requestHandle)
+        let body = HttpBody(bodyHandle)
+        return (request, body)
+    }
+}
