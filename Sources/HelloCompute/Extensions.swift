@@ -8,7 +8,7 @@
 extension Collection {
 
     func mapAsync<T>(_ handler: @escaping (Element) async throws -> T) async rethrows -> [T] {
-        try await withThrowingTaskGroup(of: (Int, T).self, returning: [T].self) { group in
+        try await withThrowingTaskGroup(of: (index: Int, value: T).self, returning: [T].self) { group in
             var results = Array<T?>(repeating: nil, count: self.count)
             for (index, item) in self.enumerated() {
                 group.addTask(priority: .high) {
@@ -16,9 +16,9 @@ extension Collection {
                 }
             }
             for try await result in group {
-                results[result.0] = result.1
+                results[result.index] = result.value
             }
-            return results.compactMap { $0 }
+            return results as! [T]
         }
     }
 }
