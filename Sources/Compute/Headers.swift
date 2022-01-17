@@ -56,7 +56,20 @@ public struct Headers<T> where T: HeadersRepresentable {
     }
 
     public subscript(name: String) -> String? {
-        get { get(name) }
-        set { set(name, newValue) }
+        get { self.get(name) }
+        set { self.set(name, newValue) }
+    }
+
+    public subscript(name: String, default value: String) -> String {
+        self.get(name) ?? value
+    }
+
+    public subscript(name: HttpHeader) -> String? {
+        get { self.get(name.rawValue) }
+        set { self.set(name.rawValue, newValue) }
+    }
+
+    public subscript(name: HttpHeader, default value: String) -> String {
+        self.get(name.rawValue) ?? value
     }
 }

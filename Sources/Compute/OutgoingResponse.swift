@@ -28,12 +28,8 @@ public class OutgoingResponse {
     }
 
     public var contentType: String? {
-        get {
-            return headers["conent-type"]
-        }
-        set {
-            headers["content-type"] = newValue
-        }
+        get { headers[.contentType] }
+        set { headers[.contentType] = newValue }
     }
 
     internal init() throws {
@@ -65,6 +61,12 @@ public class OutgoingResponse {
 
     @discardableResult
     public func header(_ name: String, _ value: String?) -> Self {
+        headers[name] = value
+        return self
+    }
+
+    @discardableResult
+    public func header(_ name: HttpHeader, _ value: String?) -> Self {
         headers[name] = value
         return self
     }

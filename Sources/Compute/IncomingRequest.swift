@@ -13,6 +13,8 @@ public class IncomingRequest {
 
     public let headers: Headers<HttpRequest>
 
+    public let searchParams: [String: String]
+
     public let body: ReadableBody
 
     public let method: HttpMethod
@@ -23,12 +25,16 @@ public class IncomingRequest {
 
     internal init() throws {
         let (request, body) = try HttpRequest.getDownstream()
+        let url = URL(string: try request.getUri() ?? "http://localhost")!
         self.request = request
         self.body = ReadableBody(body)
         self.headers = Headers(request)
-        self.url = URL(string: try request.getUri() ?? "http://localhost")!
+        self.url = url
         self.method = try request.getMethod() ?? .get
         self.httpVersion = try request.getHttpVersion() ?? .http1_1
+        self.searchParams = URLComponents(string: url.absoluteString)?
+            .queryItems?
+            .reduce(into: [:]) { $0[$1.name] = $1.value } ?? [:]
     }
 
     public func clientIpAddress() -> IpAddress? {

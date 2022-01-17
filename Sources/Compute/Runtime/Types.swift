@@ -38,8 +38,24 @@ public enum HttpMethod: String {
     case post = "POST"
     case put = "PUT"
     case delete = "DELETE"
+    case head = "HEAD"
     case options = "OPTIONS"
     case query = "QUERY"
+}
+
+public enum HttpHeader: String {
+    case accept = "accept"
+    case acceptEncoding = "accept-encoding"
+    case acceptRanges = "accept-ranges"
+    case cacheControl = "cache-control"
+    case contentLength = "content-length"
+    case contentRange = "content-range"
+    case contentType = "content-type"
+    case host = "host"
+    case pragma = "pragma"
+    case range = "range"
+    case referer = "referer"
+    case userAgent = "user-agent"
 }
 
 public typealias HttpStatus = Int

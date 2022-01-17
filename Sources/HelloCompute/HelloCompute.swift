@@ -16,18 +16,36 @@ struct HelloCompute {
             "https://cms-media-library.s3.us-east-1.amazonaws.com/barba/splitFile-segment-0002.mp3"
         ]
 
-        let files = try await urls.mapAsync {
+        let headResponses = try await urls.mapAsync {
             try await fetch($0, .options(
+                method: .head,
                 cachePolicy: .ttl(seconds: 900, staleWhileRevalidate: 900)
             ))
         }
 
+        let totalContentLength = parseContentLength(headResponses)
+
+        let range = parseRange(req, totalContentLength: totalContentLength)
+
+        let rangeResponses = try await rangeRequests(headResponses, range: range).mapAsync { config in
+            try await fetch(config.url, .options(
+                method: .get,
+                headers: ["range": "bytes=\(config.range.start)-\(config.range.end)"],
+                cachePolicy: .ttl(seconds: 900, staleWhileRevalidate: 900)
+            ))
+        }
+
+        let partialContentLength = parseContentLength(rangeResponses)
+
+        let rangeValue = "bytes \(range.start)-\(range.start + partialContentLength - 1)/\(totalContentLength)"
+
         try await res
-            .status(200)
-            .header("accept-ranges", "none")
-            .header("content-type", "audio/mpeg")
+            .status(206)
+            .header(.acceptRanges, "bytes")
+            .header(.contentType, "audio/mpeg")
+            .header(.contentRange, rangeValue)
             .header("x-service-version", Environment.Compute.serviceVersion)
-            .append(files.map(\.body))
+            .append(rangeResponses.map(\.body))
             .end()
     }
 }
