@@ -8,7 +8,7 @@ struct HelloCompute {
     }
 
     static func handleIncomingRequest(req: IncomingRequest, res: OutgoingResponse) async throws {
-        print("\(req.method) \(req.url.path)\(req.url.query ?? "")")
+        print("\(req.method) \(req.url.path) \(req.url.query ?? "")")
 
         let urls = [
             "https://cms-media-library.s3.us-east-1.amazonaws.com/barba/splitFile-segment-0000.mp3",
