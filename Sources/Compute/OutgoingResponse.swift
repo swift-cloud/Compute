@@ -120,9 +120,20 @@ public class OutgoingResponse {
     }
 
     @discardableResult
-    public func append(_ source: ReadableBody) async throws -> Self {
+    public func append(_ sources: ReadableBody...) async throws -> Self {
         try await send(streaming: true)
-        try await body.append(source)
+        for source in sources {
+            try await body.append(source)
+        }
+        return self
+    }
+
+    @discardableResult
+    public func append(_ sources: [ReadableBody]) async throws -> Self {
+        try await send(streaming: true)
+        for source in sources {
+            try await body.append(source)
+        }
         return self
     }
 
