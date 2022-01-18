@@ -68,6 +68,19 @@ public class FetchRequest {
         try request.setMethod(method)
         try request.setCachePolicy(cachePolicy, surrogateKey: surrogateKey)
 
+        // Set default content type based on body
+        if let contentType = body?.defaultContentType {
+            let name = HttpHeader.contentType.rawValue
+            headers[name] = headers[name, default: contentType]
+        }
+
+        // Set headers
+        for (key, value) in headers {
+            guard let value = value else { continue }
+            print("header:", key, value)
+            try request.insertHeader(key, value)
+        }
+
         // Build request body
         let writableBody = WritableBody(try HttpBody())
         var streamingBody: ReadableBody? = nil
@@ -81,19 +94,11 @@ public class FetchRequest {
         case .text(let text):
             try await writableBody.write(text)
         case .json(let json):
-            headers["content-type"] = headers["content-type", default: "application/json"]
             try await writableBody.write(json)
         case .stream(let readableBody):
             streamingBody = readableBody
         case .none:
             break
-        }
-
-        // Set headers
-        for (key, value) in headers {
-            guard let value = value else { continue }
-            print("header:", key, value)
-            try request.insertHeader(key, value)
         }
 
         // Issue async request
@@ -183,6 +188,15 @@ extension FetchRequest {
         public static func json(_ jsonArray: [Any]) throws -> Body {
             let data = try JSONSerialization.data(withJSONObject: jsonArray, options: [])
             return Body.json(data)
+        }
+
+        public var defaultContentType: String? {
+            switch self {
+            case .json:
+                return "application/json"
+            default:
+                return nil
+            }
         }
     }
 }
