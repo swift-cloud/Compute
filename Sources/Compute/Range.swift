@@ -47,10 +47,10 @@ public struct Range {
         // Parse unit
         let unit = valueParts[0]
 
-        // Parse intervals parts to get [<start>-<end>, <start>-...]
+        // Parse intervals parts to get [<start>-<end>, ...]
         let intervalsParts = valueParts[1].components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
 
-        // Map over interval parts to create intervals
+        // Map over intervals parts to create intervals
         let intervals = intervalsParts.compactMap { part -> RangeInterval? in
 
             // Split part on - to get [<start>, <end>]
