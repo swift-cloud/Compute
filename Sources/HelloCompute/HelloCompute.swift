@@ -27,6 +27,8 @@ struct HelloCompute {
             ))
         }
 
+        print(headResponses[0].headers.dictionary())
+
         for headResponse in headResponses {
             guard headResponse.ok else {
                 return try await res.status(headResponse.status).append(headResponse.body).end()

@@ -47,15 +47,23 @@ public enum HttpHeader: String {
     case accept = "accept"
     case acceptEncoding = "accept-encoding"
     case acceptRanges = "accept-ranges"
+    case age = "age"
     case cacheControl = "cache-control"
+    case connection = "connection"
     case contentLength = "content-length"
     case contentRange = "content-range"
     case contentType = "content-type"
+    case date = "date"
+    case etag = "etag"
     case host = "host"
+    case lastModified = "last-modified"
     case pragma = "pragma"
     case range = "range"
     case referer = "referer"
+    case server = "server"
     case userAgent = "user-agent"
+    case via = "via"
+    case xCache = "x-cache"
 }
 
 public typealias HttpStatus = Int
