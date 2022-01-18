@@ -195,7 +195,7 @@ public class OutgoingResponse {
 
     public func redirect(_ location: String, permanent: Bool = false) async throws {
         status = permanent ? 308 : 307
-        headers["location"] = location
+        headers[.location] = location
         try await send("Redirecting to \(location)")
     }
 
