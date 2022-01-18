@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "JWTDecode",
-        "repositoryURL": "https://github.com/AndrewBarba/JWTDecode.swift.git",
+        "repositoryURL": "https://github.com/AndrewBarba/jwtdecode-swift.git",
         "state": {
           "branch": "main",
-          "revision": "7382906bbc43391b17a172066bf9a6f8a42e2cee",
+          "revision": "87213630e8f7f129610795ecfdb2a4756e5b49c3",
           "version": null
         }
       }

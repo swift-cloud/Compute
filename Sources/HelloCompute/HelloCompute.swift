@@ -2,6 +2,12 @@ import Compute
 import Foundation
 import JWTDecode
 
+/**
+Sample URL:
+
+https://hello-swift.edgecompute.app/stream.mp3?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjQzMDkyMDAwMDAsImV4cCI6MTYyNDM5NTYwMDAwMCwiZGF0YSI6eyJ1IjpbImh0dHBzOi8vY21zLW1lZGlhLWxpYnJhcnkuczMudXMtZWFzdC0xLmFtYXpvbmF3cy5jb20vYmFyYmEvc3BsaXRGaWxlLXNlZ21lbnQtMDAwMC5tcDMiLCJodHRwczovL2Ntcy1tZWRpYS1saWJyYXJ5LnMzLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tL2JhcmJhL3NwbGl0RmlsZS1zZWdtZW50LTAwMDEubXAzIiwiaHR0cHM6Ly9jbXMtbWVkaWEtbGlicmFyeS5zMy51cy1lYXN0LTEuYW1hem9uYXdzLmNvbS9iYXJiYS9zcGxpdEZpbGUtc2VnbWVudC0wMDAyLm1wMyJdLCJjIjoiYXVkaW8vbXBlZyJ9fQ.hwtTWYf2aecgmveSVhPdhaEsz8A8LQax4aeXBEvtD50
+**/
+
 @main
 struct HelloCompute {
     static func main() async {

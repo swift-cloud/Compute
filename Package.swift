@@ -15,7 +15,7 @@ let package = Package(
         .executable(name: "HelloCompute", targets: ["HelloCompute"]),
     ],
     dependencies: [
-        .package(name: "JWTDecode", url: "https://github.com/AndrewBarba/JWTDecode.swift.git", branch: "main")
+        .package(name: "JWTDecode", url: "https://github.com/AndrewBarba/jwtdecode-swift.git", branch: "main")
     ],
     targets: [
         // Swift SDK (+runtime headers) to build C@E apps
