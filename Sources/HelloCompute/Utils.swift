@@ -14,29 +14,7 @@ func parseContentLength(_ responses: [FetchResponse]) -> Int {
     }
 }
 
-func parseRange(_ request: IncomingRequest, totalContentLength: Int) -> (start: Int, end: Int) {
-    guard let rangeValue = request.headers[.range] else {
-        return (0, totalContentLength - 1)
-    }
-
-    guard let rangeString = rangeValue.components(separatedBy: "=").last else {
-        return (0, totalContentLength - 1)
-    }
-
-    let parts = rangeString.components(separatedBy: "-")
-
-    guard parts.count == 2 else {
-        return (0, totalContentLength - 1)
-    }
-
-    let start = Int(parts[0]) ?? 0
-
-    let end = Int(parts[1]) ?? (totalContentLength - 1)
-
-    return (start, end)
-}
-
-func rangeRequests(_ responses: [FetchResponse], range: (start: Int, end: Int)) -> [(url: URL, range: (start: Int, end: Int))] {
+func rangeRequests(_ responses: [FetchResponse], range: FixedRange) -> [(url: URL, range: FixedRange)] {
     guard responses.count > 0, range.start < range.end else {
         return []
     }

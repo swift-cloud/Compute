@@ -37,6 +37,13 @@ public class IncomingRequest {
             .reduce(into: [:]) { $0[$1.name] = $1.value } ?? [:]
     }
 
+    public func range() -> Range? {
+        guard let value = headers[.range] else {
+            return nil
+        }
+        return Range(from: value)
+    }
+
     public func clientIpAddress() -> IpAddress? {
         guard let octets = try? request.downstreamClientIpAddress() else {
             return nil

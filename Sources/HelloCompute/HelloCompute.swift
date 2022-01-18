@@ -41,7 +41,7 @@ struct HelloCompute {
 
         let totalContentLength = parseContentLength(headResponses)
 
-        let range = parseRange(req, totalContentLength: totalContentLength)
+        let range: FixedRange = req.range()?.intervals.first?.fixed(totalLength: totalContentLength) ?? (0, totalContentLength)
 
         let rangeConfigs = rangeRequests(headResponses, range: range)
 
