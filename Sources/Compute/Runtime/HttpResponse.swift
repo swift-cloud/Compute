@@ -50,8 +50,8 @@ public struct HttpResponse {
         var nextCursor: Int64 = 0
         var bytes: [UInt8] = []
         while true {
-            let chunk = try Array<UInt8>(unsafeUninitializedCapacity: 64)  {
-                try wasi(fastly_http_resp__header_names_get(handle, $0.baseAddress, 64, cursor, &nextCursor, &$1))
+            let chunk = try Array<UInt8>(unsafeUninitializedCapacity: 1024)  {
+                try wasi(fastly_http_resp__header_names_get(handle, $0.baseAddress, 1024, cursor, &nextCursor, &$1))
             }
             guard chunk.count > 0 else {
                 break

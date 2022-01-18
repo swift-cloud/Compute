@@ -105,6 +105,13 @@ WASM_IMPORT("fastly_http_req", "header_names_get")
 int fastly_http_req__header_names_get(int req_handle, uint8_t *name, size_t name_len, uint32_t cursor,
                                       int64_t *ending_cursor, size_t *nwritten);
 
+WASM_IMPORT("fastly_http_req", "original_header_names_get")
+int fastly_http_req__original_header_names_get(uint8_t *buf, size_t buf_len, uint32_t cursor,
+                                               int64_t *ending_cursor, size_t *nwritten);
+
+WASM_IMPORT("fastly_http_req", "original_header_count")
+int fastly_http_req__original_header_count(uint32_t *count);
+
 WASM_IMPORT("fastly_http_req", "header_value_get")
 int fastly_http_req__header_value_get(int resp_handle, const char *name, size_t name_len,
                                       uint8_t* value, size_t value_max_len, size_t* nwritten);

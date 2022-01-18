@@ -92,8 +92,8 @@ public struct HttpRequest {
         var nextCursor: Int64 = 0
         var bytes: [UInt8] = []
         while true {
-            let chunk = try Array<UInt8>(unsafeUninitializedCapacity: 64)  {
-                try wasi(fastly_http_req__header_names_get(handle, $0.baseAddress, 64, cursor, &nextCursor, &$1))
+            let chunk = try Array<UInt8>(unsafeUninitializedCapacity: 1024)  {
+                try wasi(fastly_http_req__header_names_get(handle, $0.baseAddress, 1024, cursor, &nextCursor, &$1))
             }
             guard chunk.count > 0 else {
                 break
@@ -158,5 +158,31 @@ extension HttpRequest {
         let request = HttpRequest(requestHandle)
         let body = HttpBody(bodyHandle)
         return (request, body)
+    }
+
+    public static func originalHeaderCount() throws -> UInt32 {
+        var count: UInt32 = 0
+        try wasi(fastly_http_req__original_header_count(&count))
+        return count
+    }
+
+    public static func originalHeaderNames() throws -> [String] {
+        var cursor: UInt32 = 0
+        var nextCursor: Int64 = 0
+        var bytes: [UInt8] = []
+        while true {
+            let chunk = try Array<UInt8>(unsafeUninitializedCapacity: 1024)  {
+                try wasi(fastly_http_req__original_header_names_get($0.baseAddress, 1024, cursor, &nextCursor, &$1))
+            }
+            guard chunk.count > 0 else {
+                break
+            }
+            bytes.append(contentsOf: chunk)
+            guard nextCursor >= 0 else {
+                break
+            }
+            cursor = .init(nextCursor)
+        }
+        return bytes.split { $0 == 0 }.compactMap { String(bytes: $0, encoding: .utf8) }
     }
 }
