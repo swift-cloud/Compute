@@ -3,24 +3,6 @@
     {
       "type": "lldb",
       "request": "launch",
-      "name": "Debug SwiftComputeApp",
-      "program": "${workspaceFolder}/.build/debug/SwiftComputeApp",
-      "args": [],
-      "cwd": "${workspaceFolder:SwiftCompute}",
-      "preLaunchTask": "swift: Build Debug SwiftComputeApp"
-    },
-    {
-      "type": "lldb",
-      "request": "launch",
-      "name": "Release SwiftComputeApp",
-      "program": "${workspaceFolder}/.build/release/SwiftComputeApp",
-      "args": [],
-      "cwd": "${workspaceFolder:SwiftCompute}",
-      "preLaunchTask": "swift: Build Release SwiftComputeApp"
-    },
-    {
-      "type": "lldb",
-      "request": "launch",
       "name": "Debug HelloCompute",
       "program": "${workspaceFolder}/.build/debug/HelloCompute",
       "args": [],
