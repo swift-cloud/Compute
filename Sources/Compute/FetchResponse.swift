@@ -7,10 +7,6 @@
 
 import Foundation
 
-public enum FetchResponseError: Error {
-    case bodyAlreadyUsed
-}
-
 public class FetchResponse {
 
     internal let request: FetchRequest
