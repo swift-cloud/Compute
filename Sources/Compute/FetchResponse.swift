@@ -27,6 +27,12 @@ public class FetchResponse {
         return request.url
     }
 
+    public var bodyUsed: Bool {
+        get async {
+            await body.used
+        }
+    }
+
     internal init(request: FetchRequest, response: HttpResponse, body: HttpBody) throws {
         self.request = request
         self.response = response

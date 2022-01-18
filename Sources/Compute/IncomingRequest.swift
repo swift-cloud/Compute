@@ -23,6 +23,12 @@ public class IncomingRequest {
 
     public let httpVersion: HttpVersion
 
+    public var bodyUsed: Bool {
+        get async {
+            await body.used
+        }
+    }
+
     internal init() throws {
         let (request, body) = try HttpRequest.getDownstream()
         let url = URL(string: try request.getUri() ?? "http://localhost")!

@@ -4,7 +4,7 @@
       "type": "lldb",
       "request": "launch",
       "name": "Debug HelloCompute",
-      "program": "${workspaceFolder}/.build/debug/HelloCompute",
+      "program": "${workspaceFolder:swift-compute-runtime}/.build/debug/HelloCompute",
       "args": [],
       "cwd": "${workspaceFolder:swift-compute-runtime}",
       "preLaunchTask": "swift: Build Debug HelloCompute"
@@ -13,7 +13,7 @@
       "type": "lldb",
       "request": "launch",
       "name": "Release HelloCompute",
-      "program": "${workspaceFolder}/.build/release/HelloCompute",
+      "program": "${workspaceFolder:swift-compute-runtime}/.build/release/HelloCompute",
       "args": [],
       "cwd": "${workspaceFolder:swift-compute-runtime}",
       "preLaunchTask": "swift: Build Release HelloCompute"
