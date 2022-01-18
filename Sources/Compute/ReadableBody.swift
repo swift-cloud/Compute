@@ -9,6 +9,10 @@ import Foundation
 
 public actor ReadableBody {
 
+    public var used: Bool {
+        return body.used
+    }
+
     internal private(set) var body: HttpBody
 
     internal init(_ body: HttpBody) {

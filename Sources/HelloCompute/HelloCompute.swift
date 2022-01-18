@@ -46,8 +46,6 @@ struct HelloCompute {
         let rangeConfigs = rangeRequests(headResponses, range: range)
 
         let rangeResponses = try await rangeConfigs.mapAsync { (url, _range) -> FetchResponse in
-            print(url)
-            print("range", _range.start, _range.end)
             return try await fetch(url, .options(
                 method: .get,
                 headers: ["range": "bytes=\(_range.start)-\(_range.end)"],

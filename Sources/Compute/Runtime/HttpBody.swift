@@ -10,13 +10,15 @@ import Foundation
 
 public struct HttpBody {
 
+    public private(set) var used: Bool = false
+
     internal let handle: BodyHandle
 
     internal init(_ handle: BodyHandle) {
         self.handle = handle
     }
 
-    public init() throws {
+    internal init() throws {
         var handle: BodyHandle = 0
         try wasi(fastly_http_body__new(&handle))
         self.handle = handle
@@ -24,6 +26,7 @@ public struct HttpBody {
 
     public mutating func append(_ source: HttpBody) throws {
         try wasi(fastly_http_body__append(handle, source.handle))
+        used = true
     }
 
     public mutating func close() throws {
@@ -32,6 +35,7 @@ public struct HttpBody {
 
     @discardableResult
     public mutating func write(_ bytes: [UInt8], location: BodyWriteEnd = .back) throws -> Int {
+        defer { used = true }
         var position = 0
         while position < bytes.count {
             try bytes[position..<bytes.count].withUnsafeBufferPointer {
@@ -44,6 +48,7 @@ public struct HttpBody {
     }
 
     public mutating func next(highWaterMark: Int = highWaterMark) throws -> [UInt8] {
+        defer { used = true }
         return try Array<UInt8>(unsafeUninitializedCapacity: highWaterMark) {
             var length = 0
             try wasi(fastly_http_body__read(handle, $0.baseAddress, highWaterMark, &length))
