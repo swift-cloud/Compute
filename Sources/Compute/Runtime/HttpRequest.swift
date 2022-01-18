@@ -75,8 +75,8 @@ public struct HttpRequest {
             tag = .pass
             ttl = 0
             swr = 0
-        case .ttl(let seconds, let staleWhileRevalidate):
-            tag = staleWhileRevalidate > 0 ? .ttl | .staleWhileRevalidate : .ttl
+        case .ttl(let seconds, let staleWhileRevalidate, let pciCompliant):
+            tag = .ttl | (staleWhileRevalidate > 0 ? .staleWhileRevalidate : 0) | (pciCompliant ? .pci : 0)
             ttl = .init(seconds)
             swr = .init(staleWhileRevalidate)
         }

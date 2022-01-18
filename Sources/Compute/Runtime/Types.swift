@@ -116,7 +116,7 @@ extension CacheOverrideTag {
 public enum CachePolicy {
     case origin
     case pass
-    case ttl(seconds: Int, staleWhileRevalidate: Int)
+    case ttl(_ seconds: Int, staleWhileRevalidate: Int = 0, pciCompliant: Bool = false)
 }
 
 public typealias HeaderCount = Int32

@@ -5,7 +5,7 @@
 //  Created by Andrew Barba on 1/16/22.
 //
 
-public protocol HeadersRepresentable {
+public protocol HeadersProvider {
 
     func getHeaderNames() throws -> [String]
 
@@ -18,11 +18,11 @@ public protocol HeadersRepresentable {
     mutating func removeHeader(_ name: String) throws
 }
 
-extension HttpRequest: HeadersRepresentable {}
+extension HttpRequest: HeadersProvider {}
 
-extension HttpResponse: HeadersRepresentable {}
+extension HttpResponse: HeadersProvider {}
 
-public struct Headers<T> where T: HeadersRepresentable {
+public struct Headers<T> where T: HeadersProvider {
 
     internal private(set) var instance: T
 

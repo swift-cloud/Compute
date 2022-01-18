@@ -29,7 +29,7 @@ struct HelloCompute {
         let headResponses = try await urls.mapAsync {
             try await fetch($0, .options(
                 method: .head,
-                cachePolicy: .ttl(seconds: 900, staleWhileRevalidate: 900)
+                cachePolicy: .ttl(900, staleWhileRevalidate: 900)
             ))
         }
 
@@ -49,7 +49,7 @@ struct HelloCompute {
             return try await fetch(url, .options(
                 method: .get,
                 headers: ["range": "bytes=\(_range.start)-\(_range.end)"],
-                cachePolicy: .ttl(seconds: 900, staleWhileRevalidate: 900)
+                cachePolicy: .ttl(900, staleWhileRevalidate: 900)
             ))
         }
 
