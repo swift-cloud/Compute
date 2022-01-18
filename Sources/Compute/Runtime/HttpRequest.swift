@@ -76,7 +76,7 @@ public struct HttpRequest {
             ttl = 0
             swr = 0
         case .ttl(let seconds, let staleWhileRevalidate):
-            tag = staleWhileRevalidate > 0 ? .staleWhileRevalidate : .ttl
+            tag = staleWhileRevalidate > 0 ? .ttl | .staleWhileRevalidate : .ttl
             ttl = .init(seconds)
             swr = .init(staleWhileRevalidate)
         }

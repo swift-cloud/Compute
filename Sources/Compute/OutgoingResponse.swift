@@ -114,9 +114,20 @@ public class OutgoingResponse {
     }
 
     @discardableResult
-    public func pipeFrom(_ source: ReadableBody) async throws -> Self {
+    public func pipeFrom(_ sources: ReadableBody...) async throws -> Self {
         try await send(streaming: true)
-        try await body.pipeFrom(source, preventClose: true)
+        for source in sources {
+            try await body.pipeFrom(source, preventClose: true)
+        }
+        return self
+    }
+
+    @discardableResult
+    public func pipeFrom(_ sources: [ReadableBody]) async throws -> Self {
+        try await send(streaming: true)
+        for source in sources {
+            try await body.pipeFrom(source, preventClose: true)
+        }
         return self
     }
 

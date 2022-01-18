@@ -1,5 +1,6 @@
 import Compute
 import Foundation
+import JWTDecode
 
 @main
 struct HelloCompute {
@@ -10,11 +11,14 @@ struct HelloCompute {
     static func handleIncomingRequest(req: IncomingRequest, res: OutgoingResponse) async throws {
         print("\(req.method) \(req.url.path) \(req.url.query ?? "")")
 
-        let urls = [
-            "https://cms-media-library.s3.us-east-1.amazonaws.com/barba/splitFile-segment-0000.mp3",
-            "https://cms-media-library.s3.us-east-1.amazonaws.com/barba/splitFile-segment-0001.mp3",
-            "https://cms-media-library.s3.us-east-1.amazonaws.com/barba/splitFile-segment-0002.mp3"
-        ]
+        guard
+            let token = req.searchParams["token"],
+            let decoded = try? decode(jwt: token),
+            let data = decoded.body["data"] as? [String: Any],
+            let urls = data["u"] as? [String]
+        else {
+            return try await res.status(400).send("Missing pipe-stream token.")
+        }
 
         let headResponses = try await urls.mapAsync {
             try await fetch($0, .options(
@@ -23,14 +27,24 @@ struct HelloCompute {
             ))
         }
 
+        for headResponse in headResponses {
+            guard headResponse.ok else {
+                return try await res.status(headResponse.status).append(headResponse.body).end()
+            }
+        }
+
         let totalContentLength = parseContentLength(headResponses)
 
         let range = parseRange(req, totalContentLength: totalContentLength)
 
-        let rangeResponses = try await rangeRequests(headResponses, range: range).mapAsync { (url, range) in
-            try await fetch(url, .options(
+        let rangeConfigs = rangeRequests(headResponses, range: range)
+
+        let rangeResponses = try await rangeConfigs.mapAsync { (url, _range) -> FetchResponse in
+            print(url)
+            print("range", _range.start, _range.end)
+            return try await fetch(url, .options(
                 method: .get,
-                headers: ["range": "bytes=\(range.start)-\(range.end)"],
+                headers: ["range": "bytes=\(_range.start)-\(_range.end)"],
                 cachePolicy: .ttl(seconds: 900, staleWhileRevalidate: 900)
             ))
         }

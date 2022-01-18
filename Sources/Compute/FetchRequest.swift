@@ -92,6 +92,7 @@ public class FetchRequest {
         // Set headers
         for (key, value) in headers {
             guard let value = value else { continue }
+            print("header:", key, value)
             try request.insertHeader(key, value)
         }
 

@@ -15,12 +15,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define CACHE_OVERRIDE_NONE (0u)
-#define CACHE_OVERRIDE_PASS (1u<<0)
-#define CACHE_OVERRIDE_TTL (1u<<1)
-#define CACHE_OVERRIDE_STALE_WHILE_REVALIDATE (1u<<2)
-#define CACHE_OVERRIDE_PCI (1u<<3)
-
 #define WASM_IMPORT(module, name) __attribute__((import_module(module), import_name(name)))
 
 /* FASTLY_ABI */
