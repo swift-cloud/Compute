@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "JWTDecode",
+        "repositoryURL": "https://github.com/AndrewBarba/JWTDecode.swift.git",
+        "state": {
+          "branch": "main",
+          "revision": "7382906bbc43391b17a172066bf9a6f8a42e2cee",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
