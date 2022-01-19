@@ -189,6 +189,18 @@ public class OutgoingResponse {
         try await response.send(body.body, streaming: streaming)
     }
 
+    public func proxy(_ response: FetchResponse, streaming: Bool = false) async throws {
+        status = response.status
+        for (key, value) in response.headers.entries() {
+            headers[key] = value
+        }
+        if streaming {
+            try await append(response.body).end()
+        } else {
+            try await send(response.bytes())
+        }
+    }
+
     public func end() async throws {
         try await body.close()
     }
