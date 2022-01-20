@@ -37,13 +37,26 @@ public enum HttpMethod: String {
     case get = "GET"
     case post = "POST"
     case put = "PUT"
+    case patch = "PATCH"
     case delete = "DELETE"
     case head = "HEAD"
     case options = "OPTIONS"
     case query = "QUERY"
 }
 
-public enum HttpHeader: String {
+public protocol HttpHeaderRepresentable {
+
+    var stringValue: String { get }
+}
+
+extension String: HttpHeaderRepresentable {
+
+    public var stringValue: String {
+        self
+    }
+}
+
+public enum HttpHeader: String, HttpHeaderRepresentable {
     case accept = "accept"
     case acceptCharset = "accept-charset"
     case acceptEncoding = "accept-encoding"
@@ -88,6 +101,10 @@ public enum HttpHeader: String {
     case vary = "vary"
     case via = "via"
     case xCache = "x-cache"
+
+    public var stringValue: String {
+        rawValue
+    }
 }
 
 public typealias HttpStatus = Int

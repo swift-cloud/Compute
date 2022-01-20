@@ -47,6 +47,12 @@ public class OutgoingResponse {
         return self
     }
 
+    private func send(streaming: Bool = false) async throws {
+        guard didSend == false else { return }
+        didSend = true
+        try await response.send(body.body, streaming: streaming)
+    }
+
     @discardableResult
     public func contentType(_ value: String) -> Self {
         contentType = value
@@ -70,6 +76,99 @@ public class OutgoingResponse {
         headers[name] = value
         return self
     }
+
+    public func end() async throws {
+        try await body.close()
+    }
+
+    public func cancel() throws {
+        try response.close()
+    }
+}
+
+// MARK: - Send
+
+extension OutgoingResponse {
+
+    public func send<T>(_ value: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
+        try defaultContentType("application/json")
+        try await body.write(value, encoder: encoder)
+        try await send()
+    }
+
+    public func send(_ jsonObject: [String: Any]) async throws {
+        try defaultContentType("application/json")
+        try await body.write(jsonObject)
+        try await send()
+    }
+
+    public func send(_ jsonArray: [Any]) async throws {
+        try defaultContentType("application/json")
+        try await body.write(jsonArray)
+        try await send()
+    }
+
+    public func send(_ text: String, html: Bool = false) async throws {
+        try defaultContentType(html ? "text/html" : "text/plain")
+        let data = text.data(using: .utf8) ?? .init()
+        try await send(data)
+    }
+
+    public func send(_ data: Data) async throws {
+        let bytes: [UInt8] = .init(data)
+        try await send(bytes)
+    }
+
+    public func send(_ bytes: [UInt8]) async throws {
+        try await body.write(bytes)
+        try await send()
+    }
+}
+
+// MARK: - Append
+
+extension OutgoingResponse {
+
+    @discardableResult
+    public func pipeFrom(_ sources: ReadableBody...) async throws -> Self {
+        try await send(streaming: true)
+        for source in sources {
+            try await body.pipeFrom(source, preventClose: true)
+        }
+        return self
+    }
+
+    @discardableResult
+    public func pipeFrom(_ sources: [ReadableBody]) async throws -> Self {
+        try await send(streaming: true)
+        for source in sources {
+            try await body.pipeFrom(source, preventClose: true)
+        }
+        return self
+    }
+
+    @discardableResult
+    public func append(_ sources: ReadableBody...) async throws -> Self {
+        try await send(streaming: true)
+        for source in sources {
+            try await body.append(source)
+        }
+        return self
+    }
+
+    @discardableResult
+    public func append(_ sources: [ReadableBody]) async throws -> Self {
+        try await send(streaming: true)
+        for source in sources {
+            try await body.append(source)
+        }
+        return self
+    }
+}
+
+// MARK: - Write
+
+extension OutgoingResponse {
 
     @discardableResult
     public func write<T>(_ value: T, encoder: JSONEncoder = .init()) async throws -> Self where T: Encodable {
@@ -112,82 +211,22 @@ public class OutgoingResponse {
         try await body.write(bytes)
         return self
     }
+}
 
-    @discardableResult
-    public func pipeFrom(_ sources: ReadableBody...) async throws -> Self {
-        try await send(streaming: true)
-        for source in sources {
-            try await body.pipeFrom(source, preventClose: true)
-        }
-        return self
-    }
+// MARK: - Redirect
 
-    @discardableResult
-    public func pipeFrom(_ sources: [ReadableBody]) async throws -> Self {
-        try await send(streaming: true)
-        for source in sources {
-            try await body.pipeFrom(source, preventClose: true)
-        }
-        return self
-    }
+extension OutgoingResponse {
 
-    @discardableResult
-    public func append(_ sources: ReadableBody...) async throws -> Self {
-        try await send(streaming: true)
-        for source in sources {
-            try await body.append(source)
-        }
-        return self
+    public func redirect(_ location: String, permanent: Bool = false) async throws {
+        status = permanent ? 308 : 307
+        headers[.location] = location
+        try await send("Redirecting to \(location)")
     }
+}
 
-    @discardableResult
-    public func append(_ sources: [ReadableBody]) async throws -> Self {
-        try await send(streaming: true)
-        for source in sources {
-            try await body.append(source)
-        }
-        return self
-    }
+// MARK: - Proxy
 
-    public func send<T>(_ value: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
-        try defaultContentType("application/json")
-        try await body.write(value, encoder: encoder)
-        try await send()
-    }
-
-    public func send(_ jsonObject: [String: Any]) async throws {
-        try defaultContentType("application/json")
-        try await body.write(jsonObject)
-        try await send()
-    }
-
-    public func send(_ jsonArray: [Any]) async throws {
-        try defaultContentType("application/json")
-        try await body.write(jsonArray)
-        try await send()
-    }
-
-    public func send(_ text: String, html: Bool = false) async throws {
-        try defaultContentType(html ? "text/html" : "text/plain")
-        let data = text.data(using: .utf8) ?? .init()
-        try await send(data)
-    }
-
-    public func send(_ data: Data) async throws {
-        let bytes: [UInt8] = .init(data)
-        try await send(bytes)
-    }
-
-    public func send(_ bytes: [UInt8]) async throws {
-        try await body.write(bytes)
-        try await send()
-    }
-
-    public func send(streaming: Bool = false) async throws {
-        guard didSend == false else { return }
-        didSend = true
-        try await response.send(body.body, streaming: streaming)
-    }
+extension OutgoingResponse {
 
     public func proxy(_ response: FetchResponse, streaming: Bool = false) async throws {
         status = response.status
@@ -200,18 +239,27 @@ public class OutgoingResponse {
             try await send(response.bytes())
         }
     }
+}
 
-    public func end() async throws {
-        try await body.close()
-    }
+// MARK: - CORS
 
-    public func redirect(_ location: String, permanent: Bool = false) async throws {
-        status = permanent ? 308 : 307
-        headers[.location] = location
-        try await send("Redirecting to \(location)")
-    }
+extension OutgoingResponse {
 
-    public func cancel() throws {
-        try response.close()
+    @discardableResult
+    public func cors(
+        origin: String = "*",
+        methods: [HttpMethod] = [.get, .head, .put, .patch, .post, .delete],
+        allowHeaders: [HttpHeaderRepresentable]? = nil,
+        allowCredentials: Bool? = nil,
+        exposeHeaders: [HttpHeaderRepresentable]? = nil,
+        maxAge: Int = 600
+    ) -> Self {
+        headers[.accessControlAllowOrigin] = origin
+        headers[.accessControlAllowMethods] = methods.map { $0.rawValue }.joined(separator: ", ")
+        headers[.accessControlAllowHeaders] = allowHeaders?.map { $0.stringValue }.joined(separator: ", ") ?? "*"
+        headers[.accessControlAllowCredentials] = allowCredentials?.description
+        headers[.accessControlExposeHeaders] = exposeHeaders?.map { $0.stringValue }.joined(separator: ", ")
+        headers[.accessControlMaxAge] = String(maxAge)
+        return self
     }
 }
