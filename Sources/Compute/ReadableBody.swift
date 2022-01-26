@@ -30,8 +30,8 @@ public actor ReadableBody {
 
 extension ReadableBody {
 
-    public func pipeTo(_ dest: WritableBody, preventClose: Bool = false) async throws {
-        var destBody = await dest.body
+    public func pipeTo(_ dest: isolated WritableBody, preventClose: Bool = false) throws {
+        var destBody = dest.body
         try body.read {
             try destBody.write($0)
             return .continue

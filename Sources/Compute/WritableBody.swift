@@ -30,12 +30,12 @@ public actor WritableBody {
 
 extension WritableBody {
 
-    public func append(_ source: ReadableBody) async throws {
-        try body.append(await source.body)
+    public func append(_ source: isolated ReadableBody) throws {
+        try body.append(source.body)
     }
 
-    public func pipeFrom(_ source: ReadableBody, preventClose: Bool = false) async throws {
-        try await source.pipeTo(self, preventClose: preventClose)
+    public func pipeFrom(_ source: isolated ReadableBody, preventClose: Bool = false) throws {
+        try source.pipeTo(self, preventClose: preventClose)
     }
 }
 
