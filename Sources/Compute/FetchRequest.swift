@@ -11,7 +11,7 @@ public enum FetchRequestError: Error {
     case invalidURL
 }
 
-public class FetchRequest {
+public final class FetchRequest {
 
     public var url: URL
 

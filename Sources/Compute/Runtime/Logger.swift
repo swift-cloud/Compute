@@ -8,7 +8,7 @@
 import ComputeRuntime
 import Foundation
 
-public struct Logger {
+public struct Logger: Sendable {
     
     internal let handle: EndpointHandle
     

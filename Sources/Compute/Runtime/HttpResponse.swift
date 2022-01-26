@@ -7,7 +7,7 @@
 
 import ComputeRuntime
 
-public struct HttpResponse {
+public struct HttpResponse: Sendable {
 
     internal let handle: ResponseHandle
 

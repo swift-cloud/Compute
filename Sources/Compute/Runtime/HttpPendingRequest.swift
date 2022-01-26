@@ -7,7 +7,7 @@
 
 import ComputeRuntime
 
-public struct HttpPendingRequest {
+public struct HttpPendingRequest: Sendable {
 
     internal let handle: PendingRequestHandle
 

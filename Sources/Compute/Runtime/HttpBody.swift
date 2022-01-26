@@ -8,7 +8,7 @@
 import ComputeRuntime
 import Foundation
 
-public struct HttpBody {
+public struct HttpBody: Sendable {
 
     public private(set) var used: Bool = false
 

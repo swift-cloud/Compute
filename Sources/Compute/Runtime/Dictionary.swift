@@ -7,7 +7,7 @@
 
 import ComputeRuntime
 
-public struct Dictionary {
+public struct Dictionary: Sendable {
     
     internal let handle: DictionaryHandle
     

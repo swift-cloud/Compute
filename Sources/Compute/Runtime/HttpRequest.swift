@@ -8,7 +8,7 @@
 import ComputeRuntime
 import Foundation
 
-public struct HttpRequest {
+public struct HttpRequest: Sendable {
 
     internal let handle: RequestHandle
 

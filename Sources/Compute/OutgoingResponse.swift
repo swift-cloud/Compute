@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class OutgoingResponse {
+public final class OutgoingResponse {
 
     internal private(set) var response: HttpResponse
 
@@ -248,7 +248,7 @@ extension OutgoingResponse {
     @discardableResult
     public func cors(
         origin: String = "*",
-        methods: [HttpMethod] = [.get, .head, .put, .patch, .post, .delete],
+        methods: [HttpMethod] = [.get, .head, .put, .patch, .post, .delete, .query],
         allowHeaders: [HttpHeaderRepresentable]? = nil,
         allowCredentials: Bool? = nil,
         exposeHeaders: [HttpHeaderRepresentable]? = nil,

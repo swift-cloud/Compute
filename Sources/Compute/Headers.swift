@@ -5,7 +5,7 @@
 //  Created by Andrew Barba on 1/16/22.
 //
 
-public protocol HeadersProvider {
+public protocol HeadersProvider: Sendable {
 
     func getHeaderNames() throws -> [String]
 
@@ -22,7 +22,7 @@ extension HttpRequest: HeadersProvider {}
 
 extension HttpResponse: HeadersProvider {}
 
-public struct Headers<T> where T: HeadersProvider {
+public struct Headers<T>: Sendable where T: HeadersProvider {
 
     internal private(set) var instance: T
 

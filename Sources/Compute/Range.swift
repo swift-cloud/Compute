@@ -7,7 +7,7 @@
 
 public typealias FixedRange = (start: Int, end: Int)
 
-public enum RangeInterval {
+public enum RangeInterval: Sendable {
     case open(start: Int)
     case closed(start: Int, end: Int)
     case suffix(length: Int)
@@ -24,7 +24,7 @@ public enum RangeInterval {
     }
 }
 
-public struct Range {
+public struct Range: Sendable {
 
     public let unit: String
 

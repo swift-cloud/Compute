@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class IncomingRequest {
+public final class IncomingRequest {
 
     internal let request: HttpRequest
 
