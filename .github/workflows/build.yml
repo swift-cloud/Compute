@@ -1,0 +1,15 @@
+name: Build
+
+on:
+  push: *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: ghcr.io/swiftwasm/swift:latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Swift Build
+        run: swift build
