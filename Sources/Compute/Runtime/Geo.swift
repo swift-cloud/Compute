@@ -8,9 +8,9 @@
 import ComputeRuntime
 import Foundation
 
-public struct Geo {
+public struct Geo: Sendable {
     
-    public struct IpLookup: Codable {
+    public struct IpLookup: Codable, Sendable {
         public let asName: String?
         public let asNumber: Int?
         public let areaCode: Int?

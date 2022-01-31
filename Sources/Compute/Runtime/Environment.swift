@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Environment {
+public struct Environment: Sendable {
     
     public static func get(_ key: String) -> String? {
         guard let pointer = getenv(key) else {
@@ -15,26 +15,34 @@ public struct Environment {
         }
         return String(cString: pointer)
     }
+
+    public static subscript(key: String) -> String? {
+        return self.get(key)
+    }
+
+    public static subscript(key: String, default value: String) -> String {
+        return self.get(key) ?? value
+    }
 }
 
 extension Environment {
     
     public struct Compute {
         
-        public static let cacheGeneration = Environment.get("FASTLY_CACHE_GENERATION") ?? "local"
+        public static let cacheGeneration = Environment["FASTLY_CACHE_GENERATION", default: "local"]
         
-        public static let customerId = Environment.get("FASTLY_CUSTOMER_ID") ?? "local"
+        public static let customerId = Environment["FASTLY_CUSTOMER_ID", default: "local"]
         
-        public static let hostname = Environment.get("FASTLY_HOSTNAME") ?? "localhost"
+        public static let hostname = Environment["FASTLY_HOSTNAME", default: "localhost"]
         
-        public static let pop = Environment.get("FASTLY_POP") ?? "local"
+        public static let pop = Environment["FASTLY_POP", default: "local"]
         
-        public static let region = Environment.get("FASTLY_REGION") ?? "local"
+        public static let region = Environment["FASTLY_REGION", default: "local"]
         
-        public static let serviceId = Environment.get("FASTLY_SERVICE_ID") ?? "local"
+        public static let serviceId = Environment["FASTLY_SERVICE_ID", default: "local"]
         
-        public static let serviceVersion = Environment.get("FASTLY_SERVICE_VERSION") ?? "0"
+        public static let serviceVersion = Environment["FASTLY_SERVICE_VERSION", default: "0"]
         
-        public static let traceId = Environment.get("FASTLY_TRACE_ID") ?? "local"
+        public static let traceId = Environment["FASTLY_TRACE_ID", default: "local"]
     }
 }
