@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HttpHeader Enumeration Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Enum/HttpHeader" class="dashAnchor"></a>
+    <a title="HttpHeader Enumeration Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">Compute 1.0.0-alpha.0 Docs</a> (0% documented)</p>
+        <p class="header-right"><a href="https://github.com/AndrewBarba/swift-compute-runtime"><img src="../img/gh.png" alt="GitHub"/>View on GitHub</a></p>
+        <p class="header-right"><a href="dash-feed://https%3A%2F%2Fandrewbarba.github.io%2Fswift-compute-runtime%2Fdocsets%2FCompute.xml"><img src="../img/dash.png" alt="Dash"/>Install in Dash</a></p>
+        <div class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </div>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">Compute Reference</a>
+        <img id="carat" src="../img/carat.png" alt=""/>
+        HttpHeader Enumeration Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Actors.html">Actors</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Actors/ReadableBody.html">ReadableBody</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Actors/WritableBody.html">WritableBody</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/FetchRequest.html">FetchRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FetchRequest/Options.html">– Options</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FetchRequest/Body.html">– Body</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FetchResponse.html">FetchResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IncomingRequest.html">IncomingRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OutgoingResponse.html">OutgoingResponse</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global%20Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:7Compute13highWaterMarkSivp">highWaterMark</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:7Compute24maxDictionaryEntryLengthSivp">maxDictionaryEntryLength</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:7Compute15maxHeaderLengthSivp">maxHeaderLength</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:7Compute17maxIpLookupLengthSivp">maxIpLookupLength</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:7Compute15maxMethodLengthSivp">maxMethodLength</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:7Compute12maxUriLengthSivp">maxUriLength</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/BodyScanContinuation.html">BodyScanContinuation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/BodyWriteEnd.html">BodyWriteEnd</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/CachePolicy.html">CachePolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ContentEncodings.html">ContentEncodings</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FetchRequestError.html">FetchRequestError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HttpHeader.html">HttpHeader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HttpMethod.html">HttpMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HttpVersion.html">HttpVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/IpAddress.html">IpAddress</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/RangeInterval.html">RangeInterval</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/WasiStatus.html">WasiStatus</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/CacheOverrideTag.html">CacheOverrideTag</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:7Compute5fetchyAA13FetchResponseC10Foundation3URLV_AA0C7RequestC7OptionsVtYaKF">fetch(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:7Compute5fetchyAA13FetchResponseCSS_AA0C7RequestC7OptionsVtYaKF">fetch(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:7Compute5fetch_6origin9streaming_AA13FetchResponseCAA15IncomingRequestC_SSSbAA0eH0C7OptionsVtYaKF">fetch(_:origin:streaming:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:7Compute17onIncomingRequestyyyAA0cD0C_AA16OutgoingResponseCtYaKcYaKF">onIncomingRequest(_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/HeadersProvider.html">HeadersProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HttpHeaderRepresentable.html">HttpHeaderRepresentable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/ABI.html">ABI</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Environment.html">Environment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Environment/Compute.html">– Compute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Geo.html">Geo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Geo/IpLookup.html">– IpLookup</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Headers.html">Headers</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HttpBody.html">HttpBody</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HttpPendingRequest.html">HttpPendingRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HttpRequest.html">HttpRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HttpResponse.html">HttpResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Logger.html">Logger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Range.html">Range</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute10BodyHandlea">BodyHandle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute16CacheOverrideTaga">CacheOverrideTag</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute16DictionaryHandlea">DictionaryHandle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute9DoneIndexa">DoneIndex</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute14EndpointHandlea">EndpointHandle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute10FixedRangea">FixedRange</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute11HeaderCounta">HeaderCount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute10HttpStatusa">HttpStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute6IsDonea">IsDone</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute16MultiValueCursora">MultiValueCursor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute22MultiValueCursorResulta">MultiValueCursorResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute20PendingRequestHandlea">PendingRequestHandle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute13RequestHandlea">RequestHandle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute14ResponseHandlea">ResponseHandle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Compute10WasiHandlea">WasiHandle</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>HttpHeader</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">HttpHeader</span> <span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="kt"><a href="../Protocols/HttpHeaderRepresentable.html">HttpHeaderRepresentable</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO6acceptyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/accept" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO6acceptyA2CmF">accept</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">accept</span> <span class="o">=</span> <span class="s">"accept"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO13acceptCharsetyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/acceptCharset" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO13acceptCharsetyA2CmF">acceptCharset</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">acceptCharset</span> <span class="o">=</span> <span class="s">"accept-charset"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO14acceptEncodingyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/acceptEncoding" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO14acceptEncodingyA2CmF">acceptEncoding</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">acceptEncoding</span> <span class="o">=</span> <span class="s">"accept-encoding"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO14acceptLanguageyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/acceptLanguage" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO14acceptLanguageyA2CmF">acceptLanguage</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">acceptLanguage</span> <span class="o">=</span> <span class="s">"accept-language"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO12acceptRangesyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/acceptRanges" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO12acceptRangesyA2CmF">acceptRanges</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">acceptRanges</span> <span class="o">=</span> <span class="s">"accept-ranges"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO29accessControlAllowCredentialsyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/accessControlAllowCredentials" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO29accessControlAllowCredentialsyA2CmF">accessControlAllowCredentials</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">accessControlAllowCredentials</span> <span class="o">=</span> <span class="s">"access-control-allow-credentials"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO25accessControlAllowHeadersyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/accessControlAllowHeaders" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO25accessControlAllowHeadersyA2CmF">accessControlAllowHeaders</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">accessControlAllowHeaders</span> <span class="o">=</span> <span class="s">"access-control-allow-headers"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO25accessControlAllowMethodsyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/accessControlAllowMethods" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO25accessControlAllowMethodsyA2CmF">accessControlAllowMethods</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">accessControlAllowMethods</span> <span class="o">=</span> <span class="s">"access-control-allow-methods"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO24accessControlAllowOriginyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/accessControlAllowOrigin" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO24accessControlAllowOriginyA2CmF">accessControlAllowOrigin</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">accessControlAllowOrigin</span> <span class="o">=</span> <span class="s">"access-control-allow-origin"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO26accessControlExposeHeadersyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/accessControlExposeHeaders" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO26accessControlExposeHeadersyA2CmF">accessControlExposeHeaders</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">accessControlExposeHeaders</span> <span class="o">=</span> <span class="s">"access-control-expose-headers"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO19accessControlMaxAgeyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/accessControlMaxAge" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO19accessControlMaxAgeyA2CmF">accessControlMaxAge</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">accessControlMaxAge</span> <span class="o">=</span> <span class="s">"access-control-max-age"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO3ageyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/age" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO3ageyA2CmF">age</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">age</span> <span class="o">=</span> <span class="s">"age"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO13authorizationyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/authorization" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO13authorizationyA2CmF">authorization</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">authorization</span> <span class="o">=</span> <span class="s">"authorization"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO12cacheControlyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/cacheControl" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO12cacheControlyA2CmF">cacheControl</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">cacheControl</span> <span class="o">=</span> <span class="s">"cache-control"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO10connectionyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/connection" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO10connectionyA2CmF">connection</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">connection</span> <span class="o">=</span> <span class="s">"connection"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO18contentDispositionyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/contentDisposition" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO18contentDispositionyA2CmF">contentDisposition</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">contentDisposition</span> <span class="o">=</span> <span class="s">"content-disposition"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO15contentEncodingyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/contentEncoding" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO15contentEncodingyA2CmF">contentEncoding</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">contentEncoding</span> <span class="o">=</span> <span class="s">"content-encoding"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO15contentLanguageyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/contentLanguage" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO15contentLanguageyA2CmF">contentLanguage</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">contentLanguage</span> <span class="o">=</span> <span class="s">"content-language"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO13contentLengthyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/contentLength" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO13contentLengthyA2CmF">contentLength</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">contentLength</span> <span class="o">=</span> <span class="s">"content-length"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO12contentRangeyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/contentRange" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO12contentRangeyA2CmF">contentRange</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">contentRange</span> <span class="o">=</span> <span class="s">"content-range"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO21contentSecurityPolicyyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/contentSecurityPolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO21contentSecurityPolicyyA2CmF">contentSecurityPolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">contentSecurityPolicy</span> <span class="o">=</span> <span class="s">"content-security-policy"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO11contentTypeyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/contentType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO11contentTypeyA2CmF">contentType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">contentType</span> <span class="o">=</span> <span class="s">"content-type"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO6cookieyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/cookie" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO6cookieyA2CmF">cookie</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">cookie</span> <span class="o">=</span> <span class="s">"cookie"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO25crossOriginResourcePolicyyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/crossOriginResourcePolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO25crossOriginResourcePolicyyA2CmF">crossOriginResourcePolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">crossOriginResourcePolicy</span> <span class="o">=</span> <span class="s">"cross-origin-resource-policy"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO4dateyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/date" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO4dateyA2CmF">date</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">date</span> <span class="o">=</span> <span class="s">"date"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO4etagyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/etag" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO4etagyA2CmF">etag</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">etag</span> <span class="o">=</span> <span class="s">"etag"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO7expiresyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/expires" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO7expiresyA2CmF">expires</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">expires</span> <span class="o">=</span> <span class="s">"expires"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO9forwardedyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/forwarded" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO9forwardedyA2CmF">forwarded</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">forwarded</span> <span class="o">=</span> <span class="s">"forwarded"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO4fromyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/from" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO4fromyA2CmF">from</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">from</span> <span class="o">=</span> <span class="s">"from"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO4hostyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/host" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO4hostyA2CmF">host</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">host</span> <span class="o">=</span> <span class="s">"host"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO9keepAliveyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/keepAlive" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO9keepAliveyA2CmF">keepAlive</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">keepAlive</span> <span class="o">=</span> <span class="s">"keep-alive"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO12lastModifiedyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/lastModified" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO12lastModifiedyA2CmF">lastModified</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">lastModified</span> <span class="o">=</span> <span class="s">"last-modified"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO4linkyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/link" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO4linkyA2CmF">link</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">link</span> <span class="o">=</span> <span class="s">"link"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO8locationyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/location" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO8locationyA2CmF">location</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">location</span> <span class="o">=</span> <span class="s">"location"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO6pragmayA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/pragma" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO6pragmayA2CmF">pragma</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">pragma</span> <span class="o">=</span> <span class="s">"pragma"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO5rangeyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/range" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO5rangeyA2CmF">range</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">range</span> <span class="o">=</span> <span class="s">"range"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO7refereryA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/referer" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO7refereryA2CmF">referer</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">referer</span> <span class="o">=</span> <span class="s">"referer"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO13refererPolicyyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/refererPolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO13refererPolicyyA2CmF">refererPolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">refererPolicy</span> <span class="o">=</span> <span class="s">"referer-policy"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO6serveryA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/server" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO6serveryA2CmF">server</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">server</span> <span class="o">=</span> <span class="s">"server"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO9setCookieyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/setCookie" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO9setCookieyA2CmF">setCookie</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">setCookie</span> <span class="o">=</span> <span class="s">"set-cookie"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO9userAgentyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/userAgent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO9userAgentyA2CmF">userAgent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">userAgent</span> <span class="o">=</span> <span class="s">"user-agent"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO4varyyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/vary" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO4varyyA2CmF">vary</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">vary</span> <span class="o">=</span> <span class="s">"vary"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO3viayA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/via" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO3viayA2CmF">via</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">via</span> <span class="o">=</span> <span class="s">"via"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO6xCacheyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/xCache" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO6xCacheyA2CmF">xCache</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">xCache</span> <span class="o">=</span> <span class="s">"x-cache"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Compute10HttpHeaderO11stringValueSSvp"></a>
+                    <a name="//apple_ref/swift/Property/stringValue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute10HttpHeaderO11stringValueSSvp">stringValue</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">stringValue</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2022 <a class="link" href="https://github.com/AndrewBarba" target="_blank" rel="external noopener">Andrew Barba</a>. All rights reserved. (Last updated: 2022-01-31)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>
