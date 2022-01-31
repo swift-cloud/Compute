@@ -25,7 +25,7 @@ import Compute
 
 @main
 struct HelloCompute {
-    static func main() async {
+    static func main() async throws {
         try await onIncomingRequest(handleIncomingRequest)
     }
 
