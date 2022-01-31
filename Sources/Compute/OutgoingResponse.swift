@@ -125,7 +125,9 @@ extension OutgoingResponse {
     }
 
     public func send() async throws {
-        status = 204
+        if status == 200 {
+            status = 204
+        }
         try await sendResponse()
     }
 }
