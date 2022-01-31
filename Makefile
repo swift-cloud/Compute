@@ -1,4 +1,9 @@
-docs: *
+docs: jazzy github-pages
+
+github-pages:
+	echo "compute-runtime.swift.cloud" > docs/CNAME
+
+jazzy:
 	jazzy \
 		--clean \
 		--author "Andrew Barba" \
