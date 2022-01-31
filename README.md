@@ -16,6 +16,12 @@ Install the Compute runtime:
 .package(name: "Compute", url: "https://github.com/AndrewBarba/swift-compute-runtime", branch: "main")
 ```
 
+## Documentation
+
+Complete documentation is very much a work in progress:
+
+[https://compute-runtime.swift.cloud](https://compute-runtime.swift.cloud)
+
 ## Sample App
 
 Here's what a Swift app looks like on Compute@Edge
