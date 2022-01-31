@@ -5,23 +5,13 @@
 //  Created by Andrew Barba on 1/11/22.
 //
 
-public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ res: OutgoingResponse) async throws -> Void) async {
+public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ res: OutgoingResponse) async throws -> Void) async throws {
+    let req = try IncomingRequest()
+    let res = try OutgoingResponse()
     do {
-        print("Creating incoming request...")
-        let req = try IncomingRequest()
-        print("Created incoming request.")
-        print("Creating outgoing response...")
-        let res = try OutgoingResponse()
-        print("Created outgoing response.")
-        do {
-            print("Running handler...")
-            try await handler(req, res)
-            print("Ran handler.")
-        } catch {
-            print("onIncomingRequest:error", error.localizedDescription)
-            try await res.status(500).send("Server error: \(error.localizedDescription)")
-        }
+        try await handler(req, res)
     } catch {
-        print("Fatal Error:", error.localizedDescription)
+        print("onIncomingRequest:error", error.localizedDescription)
+        try await res.status(500).send("Server error: \(error.localizedDescription)")
     }
 }
