@@ -1,5 +1,0 @@
-{
-  "sourcekit-lsp.toolchainPath": "/Library/Developer/Toolchains/swift-wasm-5.5.0-RELEASE.xctoolchain",
-  "sourcekit-lsp.inlayHints.enabled": true,
-  "swift.buildArguments": ["--triple", "wasm32-unknown-wasi"]
-}

@@ -2,7 +2,19 @@
 
 Swift runtime for Fastly Compute@Edge
 
-[https://hello-swift.edgecompute.app](https://hello-swift.edgecompute.app)
+## Getting Started
+
+Create a new swift package using the `executable` template
+
+```sh
+swift package init --type executable
+```
+
+Install the Compute runtime:
+
+```swift
+.package(name: "Compute", url: "https://github.com/AndrewBarba/swift-compute-runtime", branch: "main")
+```
 
 ## Sample App
 
