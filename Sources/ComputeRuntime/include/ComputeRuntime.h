@@ -28,7 +28,7 @@ WASM_IMPORT("fastly_dictionary", "open")
 int fastly_dictionary__open(const char* name, size_t name_len, int* handle);
 
 WASM_IMPORT("fastly_dictionary", "get")
-int fastly_dictionary__get(int32_t h, const char* key, size_t key_len, uint8_t* value, size_t value_max_len, size_t* nwritten);
+int fastly_dictionary__get(int handle, const char* key, size_t key_len, uint8_t* value, size_t value_max_len, size_t* nwritten);
 
 /* FASTLY_LOG */
 
