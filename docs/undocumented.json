@@ -1032,97 +1032,139 @@
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
       "line": 10,
-      "symbol": "Environment",
+      "symbol": "EnvironmentVariable",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
       "line": 12,
+      "symbol": "EnvironmentVariable.key",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
+      "line": 14,
+      "symbol": "EnvironmentVariable.defaultValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
+      "line": 16,
+      "symbol": "EnvironmentVariable.wrappedValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
+      "line": 20,
+      "symbol": "EnvironmentVariable.init(_:defaultValue:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
+      "line": 25,
+      "symbol": "EnvironmentVariable.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
+      "line": 31,
+      "symbol": "Environment",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
+      "line": 33,
       "symbol": "Environment.get(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 19,
+      "line": 40,
       "symbol": "Environment.subscript(_:)",
       "symbol_kind": "source.lang.swift.decl.function.subscript",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 23,
+      "line": 44,
       "symbol": "Environment.subscript(_:default:)",
       "symbol_kind": "source.lang.swift.decl.function.subscript",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 28,
+      "line": 49,
       "symbol": "Environment",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 30,
+      "line": 51,
       "symbol": "Environment.Compute",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 32,
+      "line": 54,
       "symbol": "Environment.Compute.cacheGeneration",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 34,
+      "line": 57,
       "symbol": "Environment.Compute.customerId",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 36,
+      "line": 60,
       "symbol": "Environment.Compute.hostname",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 38,
+      "line": 63,
       "symbol": "Environment.Compute.pop",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 40,
+      "line": 66,
       "symbol": "Environment.Compute.region",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 42,
+      "line": 69,
       "symbol": "Environment.Compute.serviceId",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 44,
+      "line": 72,
       "symbol": "Environment.Compute.serviceVersion",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 46,
+      "line": 75,
       "symbol": "Environment.Compute.traceId",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
