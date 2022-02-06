@@ -7,8 +7,29 @@
 
 import Foundation
 
-public struct Environment: Sendable {
+@propertyWrapper public struct EnvironmentVariable<Value: Sendable>: Sendable {
     
+    public let key: String
+
+    public let defaultValue: Value
+
+    public var wrappedValue: Value {
+        Environment.get(key) as? Value ?? defaultValue
+    }
+
+    public init(_ key: String, defaultValue: Value) where Value == String {
+        self.key = key
+        self.defaultValue = defaultValue
+    }
+
+    public init(_ key: String) where Value == String? {
+        self.key = key
+        self.defaultValue = nil
+    }
+}
+
+public struct Environment: Sendable {
+
     public static func get(_ key: String) -> String? {
         guard let pointer = getenv(key) else {
             return nil
@@ -28,21 +49,29 @@ public struct Environment: Sendable {
 extension Environment {
     
     public struct Compute {
-        
-        public static let cacheGeneration = Environment["FASTLY_CACHE_GENERATION", default: "local"]
-        
-        public static let customerId = Environment["FASTLY_CUSTOMER_ID", default: "local"]
-        
-        public static let hostname = Environment["FASTLY_HOSTNAME", default: "localhost"]
-        
-        public static let pop = Environment["FASTLY_POP", default: "local"]
-        
-        public static let region = Environment["FASTLY_REGION", default: "local"]
-        
-        public static let serviceId = Environment["FASTLY_SERVICE_ID", default: "local"]
-        
-        public static let serviceVersion = Environment["FASTLY_SERVICE_VERSION", default: "0"]
-        
-        public static let traceId = Environment["FASTLY_TRACE_ID", default: "local"]
+
+        @EnvironmentVariable("FASTLY_CACHE_GENERATION", defaultValue: "local")
+        public static var cacheGeneration
+
+        @EnvironmentVariable("FASTLY_CUSTOMER_ID", defaultValue: "local")
+        public static var customerId
+
+        @EnvironmentVariable("FASTLY_HOSTNAME", defaultValue: "localhost")
+        public static var hostname
+
+        @EnvironmentVariable("FASTLY_POP", defaultValue: "local")
+        public static var pop
+
+        @EnvironmentVariable("FASTLY_REGION", defaultValue: "local")
+        public static var region
+
+        @EnvironmentVariable("FASTLY_SERVICE_ID", defaultValue: "local")
+        public static var serviceId
+
+        @EnvironmentVariable("FASTLY_SERVICE_VERSION", defaultValue: "0")
+        public static var serviceVersion
+
+        @EnvironmentVariable("FASTLY_TRACE_ID", defaultValue: "local")
+        public static var traceId
     }
 }
