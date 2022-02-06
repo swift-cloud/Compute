@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 2/2/22.
 //
 
-import ComputeRuntime
-
 /// Note:
 /// Define all runtime functions stub which are imported from Compute environment.
 /// SwiftPM doesn't support WebAssembly target yet, so we need to define them to
