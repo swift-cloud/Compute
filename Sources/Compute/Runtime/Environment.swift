@@ -11,20 +11,16 @@ import Foundation
     
     public let key: String
 
-    public let defaultValue: Value
-
-    public var wrappedValue: Value {
-        Environment.get(key) as? Value ?? defaultValue
-    }
+    public let wrappedValue: Value
 
     public init(_ key: String, defaultValue: Value) where Value == String {
         self.key = key
-        self.defaultValue = defaultValue
+        self.wrappedValue = Environment.get(key) ?? defaultValue
     }
 
     public init(_ key: String) where Value == String? {
         self.key = key
-        self.defaultValue = nil
+        self.wrappedValue = Environment.get(key)
     }
 }
 
