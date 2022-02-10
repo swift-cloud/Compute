@@ -55,30 +55,30 @@ public struct Headers<T>: Sendable where T: HeadersProvider {
     }
 
     public func get(_ name: String) -> String? {
-        return try? instance.getHeader(name)
+        guard has(name) else {
+            return nil
+        }
+        return try? instance.getHeader(name.lowercased())
     }
 
     public func has(_ name: String) -> Bool {
-        guard let value = get(name) else {
-            return false
-        }
-        return value.count > 0
+        return keys().contains(name.lowercased())
     }
 
     public mutating func set(_ name: String, _ value: String?) {
         if let value = value {
-            try? instance.insertHeader(name, value)
+            try? instance.insertHeader(name.lowercased(), value)
         } else if has(name) {
-            try? instance.removeHeader(name)
+            try? instance.removeHeader(name.lowercased())
         }
     }
 
     public mutating func append(_ name: String, _ value: String) {
-        try? instance.appendHeader(name, value)
+        try? instance.appendHeader(name.lowercased(), value)
     }
 
     public mutating func delete(_ name: String) {
-        try? instance.removeHeader(name)
+        try? instance.removeHeader(name.lowercased())
     }
 
     public subscript(name: String) -> String? {
