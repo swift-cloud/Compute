@@ -52,4 +52,6 @@ public struct Geo: Sendable {
             fastly_geo__lookup(bytes, bytes.count, $0, $1, &$2)
         }
     }
+
+    private init() {}
 }

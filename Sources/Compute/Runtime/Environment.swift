@@ -40,6 +40,8 @@ public struct Environment: Sendable {
     public static subscript(key: String, default value: String) -> String {
         return self.get(key) ?? value
     }
+
+    private init() {}
 }
 
 extension Environment {
@@ -69,5 +71,7 @@ extension Environment {
 
         @EnvironmentVariable("FASTLY_TRACE_ID", defaultValue: "local")
         public static var traceId
+
+        private init() {}
     }
 }
