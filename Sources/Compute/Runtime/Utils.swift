@@ -42,9 +42,9 @@ internal func wasiDecode<T>(
 }
 
 internal func wasiBytes(maxBufferLength: Int, _ handler: WasiBufferReader) throws -> [UInt8] {
-    var length = 0
-    return try Array<UInt8>(unsafeUninitializedCapacity: length) {
-        try wasi(handler($0.baseAddress, length, &length))
+    return try Array<UInt8>(unsafeUninitializedCapacity: maxBufferLength) {
+        var length = 0
+        try wasi(handler($0.baseAddress, maxBufferLength, &length))
         $1 = length
     }
 }
