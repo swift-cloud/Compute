@@ -6,7 +6,6 @@
 //
 
 import ComputeRuntime
-import Foundation
 
 public struct HttpRequest: Sendable {
 
