@@ -6,6 +6,7 @@
 //
 
 public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ res: OutgoingResponse) async throws -> Void) async throws {
+    try ABI.initialize()
     let req = try IncomingRequest()
     let res = try OutgoingResponse()
     do {
