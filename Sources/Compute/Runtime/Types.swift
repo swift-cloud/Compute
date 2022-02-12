@@ -166,8 +166,15 @@ public typealias IsDone = Int32
 
 public typealias DoneIndex = Int32
 
-public enum ContentEncodings: Int32 {
+public enum ContentEncodings: UInt32 {
     case gzip = 1
+
+    public var stringValue: String {
+        switch self {
+        case .gzip:
+            return "gzip"
+        }
+    }
 }
 
 public enum BodyScanContinuation {

@@ -29,6 +29,8 @@ public final class FetchRequest {
 
     public var body: Body?
 
+    public var acceptEncoding: ContentEncodings? = nil
+
     private var request: HttpRequest
 
     public init(_ url: URL, _ options: Options = .options()) throws {
@@ -42,6 +44,7 @@ public final class FetchRequest {
         self.headers = options.headers
         self.searchParams = options.searchParams
         self.body = options.body
+        self.acceptEncoding = options.acceptEncoding
     }
 
     public func send() async throws -> FetchResponse {
@@ -67,6 +70,12 @@ public final class FetchRequest {
         try request.setUri(url.absoluteString)
         try request.setMethod(method)
         try request.setCachePolicy(cachePolicy, surrogateKey: surrogateKey)
+
+        // Set content encodings
+        if let encoding = acceptEncoding {
+            try request.setAutoDecompressResponse(encodings: encoding)
+            headers[HttpHeader.acceptEncoding.rawValue] = encoding.stringValue
+        }
 
         // Set default content type based on body
         if let contentType = body?.defaultContentType {
@@ -137,6 +146,8 @@ extension FetchRequest {
 
         public var cachePolicy: CachePolicy = .origin
 
+        public var acceptEncoding: ContentEncodings? = nil
+
         public var surrogateKey: String? = nil
 
         public var backend: String? = nil
@@ -148,6 +159,7 @@ extension FetchRequest {
             searchParams: [String: String?] = [:],
             timeout: TimeInterval = .init(Int.max),
             cachePolicy: CachePolicy = .origin,
+            acceptEncoding: ContentEncodings? = nil,
             surrogateKey: String? = nil,
             backend: String? = nil
         ) -> Options {
@@ -158,6 +170,7 @@ extension FetchRequest {
                 searchParams: searchParams,
                 timeout: timeout,
                 cachePolicy: cachePolicy,
+                acceptEncoding: acceptEncoding,
                 surrogateKey: surrogateKey,
                 backend: backend
             )
