@@ -74,6 +74,7 @@ public final class FetchRequest {
         // Set content encodings
         if let contentEncodings = acceptEncoding {
             try request.setAutoDecompressResponse(encodings: contentEncodings)
+            headers[HttpHeader.acceptEncoding.rawValue] = "gzip"
         }
 
         // Set default content type based on body
