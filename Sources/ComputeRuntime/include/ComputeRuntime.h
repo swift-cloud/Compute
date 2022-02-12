@@ -136,6 +136,9 @@ WASM_IMPORT("fastly_http_req", "send_async")
 int fastly_http_req__send_async(int req_handle, int body_handle, const char *backend,
                                 size_t backend_len, int *pending_req_out);
 
+WASM_IMPORT("fastly_http_req", "auto_decompress_response_set")
+int fastly_http_req__auto_decompress_response_set(int req_handle, uint32_t encodings);
+
 WASM_IMPORT("fastly_http_req", "send_async_streaming")
 int fastly_http_req__send_async_streaming(int req_handle, int body_handle,
                                           const char *backend, size_t backend_len,

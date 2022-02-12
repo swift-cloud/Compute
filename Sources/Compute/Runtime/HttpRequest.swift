@@ -53,6 +53,10 @@ public struct HttpRequest: Sendable {
         try wasi(fastly_http_req__version_set(handle, newValue.rawValue))
     }
 
+    public mutating func setAutoDecompressResponse(encodings: ContentEncodings) throws {
+        try wasi(fastly_http_req__auto_decompress_response_set(handle, encodings.rawValue))
+    }
+
     public func downstreamClientIpAddress() throws -> [UInt8] {
         return try Array<UInt8>(unsafeUninitializedCapacity: 16) {
             var length = 0
