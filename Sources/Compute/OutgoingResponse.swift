@@ -49,7 +49,6 @@ public final class OutgoingResponse {
 
     private func sendAndClose() async throws {
         try await response.send(body.body, streaming: false)
-        try await end()
     }
 
     private func sendAndStream() async throws {
