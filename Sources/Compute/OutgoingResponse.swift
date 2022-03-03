@@ -11,9 +11,9 @@ public final class OutgoingResponse {
 
     internal private(set) var response: HttpResponse
 
-    internal private(set) var didSend = false
-
     internal let body: WritableBody
+
+    private var didSendStream = false
 
     public private(set) var headers: Headers<HttpResponse>
 
@@ -47,10 +47,19 @@ public final class OutgoingResponse {
         return self
     }
 
-    private func sendResponse(streaming: Bool = false) async throws {
-        guard didSend == false else { return }
-        didSend = true
-        try await response.send(body.body, streaming: streaming)
+    private func sendAndClose() async throws {
+        try await response.send(body.body, streaming: false)
+        try await end()
+    }
+
+    private func sendAndStream() async throws {
+        guard didSendStream == false else {
+            return
+        }
+        defer {
+            didSendStream = true
+        }
+        try await response.send(body.body, streaming: true)
     }
 
     @discardableResult
@@ -93,19 +102,19 @@ extension OutgoingResponse {
     public func send<T>(_ value: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
         try defaultContentType("application/json")
         try await body.write(value, encoder: encoder)
-        try await sendResponse()
+        try await sendAndClose()
     }
 
     public func send(_ jsonObject: [String: Any]) async throws {
         try defaultContentType("application/json")
         try await body.write(jsonObject)
-        try await sendResponse()
+        try await sendAndClose()
     }
 
     public func send(_ jsonArray: [Any]) async throws {
         try defaultContentType("application/json")
         try await body.write(jsonArray)
-        try await sendResponse()
+        try await sendAndClose()
     }
 
     public func send(_ text: String, html: Bool = false) async throws {
@@ -121,14 +130,14 @@ extension OutgoingResponse {
 
     public func send(_ bytes: [UInt8]) async throws {
         try await body.write(bytes)
-        try await sendResponse()
+        try await sendAndClose()
     }
 
     public func send() async throws {
         if status == 200 {
             status = 204
         }
-        try await sendResponse()
+        try await sendAndClose()
     }
 }
 
@@ -138,7 +147,7 @@ extension OutgoingResponse {
 
     @discardableResult
     public func pipeFrom(_ sources: ReadableBody...) async throws -> Self {
-        try await sendResponse(streaming: true)
+        try await sendAndStream()
         for source in sources {
             try await body.pipeFrom(source, preventClose: true)
         }
@@ -147,7 +156,7 @@ extension OutgoingResponse {
 
     @discardableResult
     public func pipeFrom(_ sources: [ReadableBody]) async throws -> Self {
-        try await sendResponse(streaming: true)
+        try await sendAndStream()
         for source in sources {
             try await body.pipeFrom(source, preventClose: true)
         }
@@ -156,7 +165,7 @@ extension OutgoingResponse {
 
     @discardableResult
     public func append(_ sources: ReadableBody...) async throws -> Self {
-        try await sendResponse(streaming: true)
+        try await sendAndStream()
         for source in sources {
             try await body.append(source)
         }
@@ -165,7 +174,7 @@ extension OutgoingResponse {
 
     @discardableResult
     public func append(_ sources: [ReadableBody]) async throws -> Self {
-        try await sendResponse(streaming: true)
+        try await sendAndStream()
         for source in sources {
             try await body.append(source)
         }
@@ -179,42 +188,42 @@ extension OutgoingResponse {
 
     @discardableResult
     public func write<T>(_ value: T, encoder: JSONEncoder = .init()) async throws -> Self where T: Encodable {
-        try await sendResponse(streaming: true)
+        try await sendAndStream()
         try await body.write(value, encoder: encoder)
         return self
     }
 
     @discardableResult
     public func write(_ jsonObject: [String: Any]) async throws -> Self {
-        try await sendResponse(streaming: true)
+        try await sendAndStream()
         try await body.write(jsonObject)
         return self
     }
 
     @discardableResult
     public func write(_ jsonArray: [Any]) async throws -> Self {
-        try await sendResponse(streaming: true)
+        try await sendAndStream()
         try await body.write(jsonArray)
         return self
     }
 
     @discardableResult
     public func write(_ text: String) async throws -> Self {
-        try await sendResponse(streaming: true)
+        try await sendAndStream()
         try await body.write(text)
         return self
     }
 
     @discardableResult
     public func write(_ data: Data) async throws -> Self {
-        try await sendResponse(streaming: true)
+        try await sendAndStream()
         try await body.write(data)
         return self
     }
 
     @discardableResult
     public func write(_ bytes: [UInt8]) async throws -> Self {
-        try await sendResponse(streaming: true)
+        try await sendAndStream()
         try await body.write(bytes)
         return self
     }
