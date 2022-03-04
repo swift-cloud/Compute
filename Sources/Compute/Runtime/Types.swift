@@ -177,6 +177,11 @@ public enum ContentEncodings: UInt32 {
     }
 }
 
+public enum FramingHeadersMode: UInt32 {
+    case automatic = 1
+    case manuallyFromHeaders = 2
+}
+
 public enum BodyScanContinuation {
     case `continue`
     case `break`
