@@ -88,6 +88,6 @@ public struct HttpResponse: Sendable {
     }
 
     public mutating func setFramingHeadersMode(_ newValue: FramingHeadersMode) throws {
-        try wasi(fastly_http_resp__framing_headers_mode_set(handle, .init(newValue.rawValue)))
+        try wasi(fastly_http_resp__framing_headers_mode_set(handle, newValue.rawValue))
     }
 }
