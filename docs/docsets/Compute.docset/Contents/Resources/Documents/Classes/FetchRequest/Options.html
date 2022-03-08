@@ -113,6 +113,9 @@
                 <a href="../../Enums/FetchRequestError.html">FetchRequestError</a>
               </li>
               <li class="nav-group-task">
+                <a href="../../Enums/FramingHeadersMode.html">FramingHeadersMode</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../../Enums/HttpHeader.html">HttpHeader</a>
               </li>
               <li class="nav-group-task">
@@ -452,6 +455,33 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:7Compute12FetchRequestC7OptionsV14acceptEncodingAA16ContentEncodingsOSgvp"></a>
+                    <a name="//apple_ref/swift/Property/acceptEncoding" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute12FetchRequestC7OptionsV14acceptEncodingAA16ContentEncodingsOSgvp">acceptEncoding</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">acceptEncoding</span><span class="p">:</span> <span class="kt"><a href="../../Enums/ContentEncodings.html">ContentEncodings</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:7Compute12FetchRequestC7OptionsV12surrogateKeySSSgvp"></a>
                     <a name="//apple_ref/swift/Property/surrogateKey" class="dashAnchor"></a>
                     <a class="token" href="#/s:7Compute12FetchRequestC7OptionsV12surrogateKeySSSgvp">surrogateKey</a>
@@ -506,9 +536,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Compute12FetchRequestC7OptionsV7options6method4body7headers12searchParams7timeout11cachePolicy12surrogateKey7backendAeA10HttpMethodO_AC4BodyOSgSDyS2SSgGAUSdAA05CacheM0OA2TtFZ"></a>
-                    <a name="//apple_ref/swift/Method/options(method:body:headers:searchParams:timeout:cachePolicy:surrogateKey:backend:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Compute12FetchRequestC7OptionsV7options6method4body7headers12searchParams7timeout11cachePolicy12surrogateKey7backendAeA10HttpMethodO_AC4BodyOSgSDyS2SSgGAUSdAA05CacheM0OA2TtFZ">options(method:<wbr>body:<wbr>headers:<wbr>searchParams:<wbr>timeout:<wbr>cachePolicy:<wbr>surrogateKey:<wbr>backend:<wbr>)</a>
+                    <a name="/s:7Compute12FetchRequestC7OptionsV7options6method4body7headers12searchParams7timeout11cachePolicy14acceptEncoding12surrogateKey7backendAeA10HttpMethodO_AC4BodyOSgSDyS2SSgGAVSdAA05CacheM0OAA16ContentEncodingsOSgA2UtFZ"></a>
+                    <a name="//apple_ref/swift/Method/options(method:body:headers:searchParams:timeout:cachePolicy:acceptEncoding:surrogateKey:backend:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Compute12FetchRequestC7OptionsV7options6method4body7headers12searchParams7timeout11cachePolicy14acceptEncoding12surrogateKey7backendAeA10HttpMethodO_AC4BodyOSgSDyS2SSgGAVSdAA05CacheM0OAA16ContentEncodingsOSgA2UtFZ">options(method:<wbr>body:<wbr>headers:<wbr>searchParams:<wbr>timeout:<wbr>cachePolicy:<wbr>acceptEncoding:<wbr>surrogateKey:<wbr>backend:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -530,6 +560,7 @@
     <span class="nv">searchParams</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">String</span><span class="p">?]</span> <span class="o">=</span> <span class="p">[:],</span>
     <span class="nv">timeout</span><span class="p">:</span> <span class="kt">TimeInterval</span> <span class="o">=</span> <span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="kt">Int</span><span class="o">.</span><span class="n">max</span><span class="p">),</span>
     <span class="nv">cachePolicy</span><span class="p">:</span> <span class="kt"><a href="../../Enums/CachePolicy.html">CachePolicy</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">origin</span><span class="p">,</span>
+    <span class="nv">acceptEncoding</span><span class="p">:</span> <span class="kt"><a href="../../Enums/ContentEncodings.html">ContentEncodings</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
     <span class="nv">surrogateKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
     <span class="nv">backend</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Options</span></code></pre>
@@ -544,7 +575,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2022 <a class="link" href="https://github.com/AndrewBarba" target="_blank" rel="external noopener">Andrew Barba</a>. All rights reserved. (Last updated: 2022-02-06)</p>
+          <p>&copy; 2022 <a class="link" href="https://github.com/AndrewBarba" target="_blank" rel="external noopener">Andrew Barba</a>. All rights reserved. (Last updated: 2022-03-08)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
         </section>
       </article>

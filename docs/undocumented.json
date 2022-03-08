@@ -107,168 +107,182 @@
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 34,
+      "line": 32,
+      "symbol": "FetchRequest.acceptEncoding",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
+      "line": 36,
       "symbol": "FetchRequest.init(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 47,
+      "line": 50,
       "symbol": "FetchRequest.send()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 124,
+      "line": 133,
       "symbol": "FetchRequest",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 126,
+      "line": 135,
       "symbol": "FetchRequest.Options",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 128,
+      "line": 137,
       "symbol": "FetchRequest.Options.method",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 130,
+      "line": 139,
       "symbol": "FetchRequest.Options.body",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 132,
+      "line": 141,
       "symbol": "FetchRequest.Options.headers",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 134,
+      "line": 143,
       "symbol": "FetchRequest.Options.searchParams",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 136,
+      "line": 145,
       "symbol": "FetchRequest.Options.timeout",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 138,
+      "line": 147,
       "symbol": "FetchRequest.Options.cachePolicy",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 140,
+      "line": 149,
+      "symbol": "FetchRequest.Options.acceptEncoding",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
+      "line": 151,
       "symbol": "FetchRequest.Options.surrogateKey",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 142,
+      "line": 153,
       "symbol": "FetchRequest.Options.backend",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 144,
-      "symbol": "FetchRequest.Options.options(method:body:headers:searchParams:timeout:cachePolicy:surrogateKey:backend:)",
+      "line": 155,
+      "symbol": "FetchRequest.Options.options(method:body:headers:searchParams:timeout:cachePolicy:acceptEncoding:surrogateKey:backend:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 168,
+      "line": 181,
       "symbol": "FetchRequest",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 170,
+      "line": 183,
       "symbol": "FetchRequest.Body",
       "symbol_kind": "source.lang.swift.decl.enum",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 171,
+      "line": 184,
       "symbol": "FetchRequest.Body.bytes(_:)",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 172,
+      "line": 185,
       "symbol": "FetchRequest.Body.data(_:)",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 173,
+      "line": 186,
       "symbol": "FetchRequest.Body.text(_:)",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 174,
+      "line": 187,
       "symbol": "FetchRequest.Body.json(_:)",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 175,
+      "line": 188,
       "symbol": "FetchRequest.Body.stream(_:)",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 177,
+      "line": 190,
       "symbol": "FetchRequest.Body.json(_:encoder:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 182,
+      "line": 195,
       "symbol": "FetchRequest.Body.json(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 187,
+      "line": 200,
       "symbol": "FetchRequest.Body.json(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/FetchRequest.swift",
-      "line": 192,
+      "line": 205,
       "symbol": "FetchRequest.Body.defaultContentType",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
@@ -450,7 +464,7 @@
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Headers.swift",
-      "line": 61,
+      "line": 64,
       "symbol": "Headers.has(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -604,84 +618,70 @@
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 57,
+      "line": 68,
       "symbol": "OutgoingResponse.contentType(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 63,
+      "line": 74,
       "symbol": "OutgoingResponse.status(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 69,
-      "symbol": "OutgoingResponse.header(_:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 75,
-      "symbol": "OutgoingResponse.header(_:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
       "line": 80,
-      "symbol": "OutgoingResponse.end()",
+      "symbol": "OutgoingResponse.header(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 84,
-      "symbol": "OutgoingResponse.cancel()",
+      "line": 86,
+      "symbol": "OutgoingResponse.header(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
       "line": 91,
+      "symbol": "OutgoingResponse.end()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
+      "line": 95,
+      "symbol": "OutgoingResponse.cancel()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
+      "line": 102,
       "symbol": "OutgoingResponse",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 93,
+      "line": 104,
       "symbol": "OutgoingResponse.send(_:encoder:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 99,
+      "line": 110,
       "symbol": "OutgoingResponse.send(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 105,
-      "symbol": "OutgoingResponse.send(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 111,
-      "symbol": "OutgoingResponse.send(_:html:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 117,
+      "line": 116,
       "symbol": "OutgoingResponse.send(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -689,48 +689,55 @@
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
       "line": 122,
+      "symbol": "OutgoingResponse.send(_:html:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
+      "line": 128,
       "symbol": "OutgoingResponse.send(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 127,
+      "line": 133,
+      "symbol": "OutgoingResponse.send(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
+      "line": 138,
       "symbol": "OutgoingResponse.send()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 137,
+      "line": 148,
       "symbol": "OutgoingResponse",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 140,
+      "line": 151,
       "symbol": "OutgoingResponse.pipeFrom(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 149,
+      "line": 160,
       "symbol": "OutgoingResponse.pipeFrom(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 158,
-      "symbol": "OutgoingResponse.append(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 167,
+      "line": 169,
       "symbol": "OutgoingResponse.append(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -738,63 +745,56 @@
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
       "line": 178,
+      "symbol": "OutgoingResponse.append(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
+      "line": 189,
       "symbol": "OutgoingResponse",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 181,
+      "line": 192,
       "symbol": "OutgoingResponse.write(_:encoder:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 188,
+      "line": 199,
       "symbol": "OutgoingResponse.write(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 195,
+      "line": 206,
       "symbol": "OutgoingResponse.write(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 202,
+      "line": 213,
       "symbol": "OutgoingResponse.write(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 209,
+      "line": 220,
       "symbol": "OutgoingResponse.write(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 216,
-      "symbol": "OutgoingResponse.write(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 225,
-      "symbol": "OutgoingResponse",
-      "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
       "line": 227,
-      "symbol": "OutgoingResponse.redirect(_:permanent:)",
+      "symbol": "OutgoingResponse.write(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
@@ -808,20 +808,34 @@
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
       "line": 238,
-      "symbol": "OutgoingResponse.proxy(_:streaming:)",
+      "symbol": "OutgoingResponse.redirect(_:permanent:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 253,
+      "line": 247,
       "symbol": "OutgoingResponse",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
-      "line": 256,
+      "line": 249,
+      "symbol": "OutgoingResponse.proxy(_:streaming:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
+      "line": 264,
+      "symbol": "OutgoingResponse",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/OutgoingResponse.swift",
+      "line": 267,
       "symbol": "OutgoingResponse.cors(origin:methods:allowHeaders:allowCredentials:exposeHeaders:maxAge:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -990,6 +1004,13 @@
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/ABI.swift",
       "line": 12,
+      "symbol": "ABI.currentABIVersion",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/ABI.swift",
+      "line": 15,
       "symbol": "ABI.initialize(version:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
@@ -1094,280 +1115,280 @@
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 45,
+      "line": 47,
       "symbol": "Environment",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 47,
+      "line": 49,
       "symbol": "Environment.Compute",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 50,
+      "line": 52,
       "symbol": "Environment.Compute.cacheGeneration",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 53,
+      "line": 55,
       "symbol": "Environment.Compute.customerId",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 56,
+      "line": 58,
       "symbol": "Environment.Compute.hostname",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 59,
+      "line": 61,
       "symbol": "Environment.Compute.pop",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 62,
+      "line": 64,
       "symbol": "Environment.Compute.region",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 65,
+      "line": 67,
       "symbol": "Environment.Compute.serviceId",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 68,
+      "line": 70,
       "symbol": "Environment.Compute.serviceVersion",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Environment.swift",
-      "line": 71,
+      "line": 73,
       "symbol": "Environment.Compute.traceId",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 11,
+      "line": 10,
       "symbol": "Geo",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 13,
+      "line": 12,
       "symbol": "Geo.IpLookup",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 14,
+      "line": 13,
       "symbol": "Geo.IpLookup.asName",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 15,
+      "line": 14,
       "symbol": "Geo.IpLookup.asNumber",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 16,
+      "line": 15,
       "symbol": "Geo.IpLookup.areaCode",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 17,
+      "line": 16,
       "symbol": "Geo.IpLookup.city",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 18,
+      "line": 17,
       "symbol": "Geo.IpLookup.connSpeed",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 19,
+      "line": 18,
       "symbol": "Geo.IpLookup.connType",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 20,
+      "line": 19,
       "symbol": "Geo.IpLookup.continent",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 21,
+      "line": 20,
       "symbol": "Geo.IpLookup.countryCode",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 22,
+      "line": 21,
       "symbol": "Geo.IpLookup.countryCode3",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 23,
+      "line": 22,
       "symbol": "Geo.IpLookup.countryName",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 24,
+      "line": 23,
       "symbol": "Geo.IpLookup.gmtOffset",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 25,
+      "line": 24,
       "symbol": "Geo.IpLookup.latitude",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 26,
+      "line": 25,
       "symbol": "Geo.IpLookup.longitude",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 27,
+      "line": 26,
       "symbol": "Geo.IpLookup.metroCode",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 28,
+      "line": 27,
       "symbol": "Geo.IpLookup.postalCode",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 29,
+      "line": 28,
       "symbol": "Geo.IpLookup.proxyDescription",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 30,
+      "line": 29,
       "symbol": "Geo.IpLookup.proxyType",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 31,
+      "line": 30,
       "symbol": "Geo.IpLookup.region",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 32,
+      "line": 31,
       "symbol": "Geo.IpLookup.utcOffset",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 35,
+      "line": 34,
       "symbol": "Geo.lookup(ip:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Geo.swift",
-      "line": 50,
+      "line": 49,
       "symbol": "Geo.lookup(ip:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpBody.swift",
-      "line": 11,
+      "line": 10,
       "symbol": "HttpBody",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpBody.swift",
-      "line": 13,
+      "line": 12,
       "symbol": "HttpBody.used",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpBody.swift",
-      "line": 27,
+      "line": 26,
       "symbol": "HttpBody.append(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpBody.swift",
-      "line": 32,
+      "line": 31,
       "symbol": "HttpBody.close()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpBody.swift",
-      "line": 37,
+      "line": 36,
       "symbol": "HttpBody.write(_:location:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpBody.swift",
-      "line": 50,
+      "line": 49,
       "symbol": "HttpBody.next(highWaterMark:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpBody.swift",
-      "line": 59,
+      "line": 58,
       "symbol": "HttpBody.read(highWaterMark:onChunk:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -1388,14 +1409,14 @@
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 11,
+      "line": 10,
       "symbol": "HttpRequest",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 19,
+      "line": 18,
       "symbol": "HttpRequest.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -1409,147 +1430,154 @@
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 25,
+      "line": 24,
       "symbol": "HttpRequest.getMethod()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 32,
+      "line": 31,
       "symbol": "HttpRequest.setMethod(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 37,
+      "line": 36,
       "symbol": "HttpRequest.getUri()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 43,
+      "line": 42,
       "symbol": "HttpRequest.setUri(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 47,
+      "line": 46,
       "symbol": "HttpRequest.getHttpVersion()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 53,
+      "line": 52,
       "symbol": "HttpRequest.setHttpVersion(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 57,
+      "line": 56,
+      "symbol": "HttpRequest.setAutoDecompressResponse(encodings:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
+      "line": 60,
       "symbol": "HttpRequest.downstreamClientIpAddress()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 65,
+      "line": 68,
       "symbol": "HttpRequest.setCachePolicy(_:surrogateKey:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 90,
+      "line": 93,
       "symbol": "HttpRequest.getHeaderNames()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 110,
+      "line": 113,
       "symbol": "HttpRequest.getHeader(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 116,
+      "line": 119,
       "symbol": "HttpRequest.insertHeader(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 120,
+      "line": 123,
       "symbol": "HttpRequest.appendHeader(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 124,
+      "line": 127,
       "symbol": "HttpRequest.removeHeader(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 128,
+      "line": 131,
       "symbol": "HttpRequest.send(_:backend:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 135,
+      "line": 138,
       "symbol": "HttpRequest.sendAsync(_:backend:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 141,
+      "line": 144,
       "symbol": "HttpRequest.sendAsyncStreaming(_:backend:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 147,
+      "line": 150,
       "symbol": "HttpRequest.close()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 152,
+      "line": 155,
       "symbol": "HttpRequest",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 154,
+      "line": 157,
       "symbol": "HttpRequest.getDownstream()",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 163,
+      "line": 166,
       "symbol": "HttpRequest.originalHeaderCount()",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpRequest.swift",
-      "line": 169,
+      "line": 172,
       "symbol": "HttpRequest.originalHeaderNames()",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
@@ -1649,6 +1677,13 @@
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpResponse.swift",
       "line": 86,
       "symbol": "HttpResponse.close()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/HttpResponse.swift",
+      "line": 90,
+      "symbol": "HttpResponse.setFramingHeadersMode(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
@@ -2480,63 +2515,91 @@
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
-      "line": 173,
+      "line": 172,
+      "symbol": "ContentEncodings.stringValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
+      "line": 180,
+      "symbol": "FramingHeadersMode",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
+      "line": 181,
+      "symbol": "FramingHeadersMode.automatic",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
+      "line": 182,
+      "symbol": "FramingHeadersMode.manuallyFromHeaders",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
+      "line": 185,
       "symbol": "BodyScanContinuation",
       "symbol_kind": "source.lang.swift.decl.enum",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
-      "line": 174,
+      "line": 186,
       "symbol": "BodyScanContinuation.continue",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
-      "line": 175,
+      "line": 187,
       "symbol": "BodyScanContinuation.break",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
-      "line": 178,
+      "line": 190,
       "symbol": "maxHeaderLength",
       "symbol_kind": "source.lang.swift.decl.var.global",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
-      "line": 180,
+      "line": 192,
       "symbol": "maxMethodLength",
       "symbol_kind": "source.lang.swift.decl.var.global",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
-      "line": 182,
+      "line": 194,
       "symbol": "maxUriLength",
       "symbol_kind": "source.lang.swift.decl.var.global",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
-      "line": 184,
+      "line": 196,
       "symbol": "maxIpLookupLength",
       "symbol_kind": "source.lang.swift.decl.var.global",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
-      "line": 186,
+      "line": 198,
       "symbol": "maxDictionaryEntryLength",
       "symbol_kind": "source.lang.swift.decl.var.global",
       "warning": "undocumented"
     },
     {
       "file": "/Users/andrewbarba/Code/Personal/swift-compute-runtime/Sources/Compute/Runtime/Types.swift",
-      "line": 188,
+      "line": 200,
       "symbol": "highWaterMark",
       "symbol_kind": "source.lang.swift.decl.var.global",
       "warning": "undocumented"
