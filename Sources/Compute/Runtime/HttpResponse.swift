@@ -86,4 +86,8 @@ public struct HttpResponse: Sendable {
     public mutating func close() throws {
         try wasi(fastly_http_resp__close(handle))
     }
+
+    public mutating func setFramingHeadersMode(_ newValue: FramingHeadersMode) throws {
+        try wasi(fastly_http_resp__framing_headers_mode_set(handle, newValue.rawValue))
+    }
 }

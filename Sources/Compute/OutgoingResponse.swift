@@ -48,6 +48,9 @@ public final class OutgoingResponse {
     }
 
     private func sendAndClose() async throws {
+        if headers[.contentLength] != nil {
+            try response.setFramingHeadersMode(.manuallyFromHeaders)
+        }
         try await response.send(body.body, streaming: false)
     }
 
@@ -57,6 +60,9 @@ public final class OutgoingResponse {
         }
         defer {
             didSendStream = true
+        }
+        if headers[.contentLength] != nil {
+            try response.setFramingHeadersMode(.manuallyFromHeaders)
         }
         try await response.send(body.body, streaming: true)
     }
