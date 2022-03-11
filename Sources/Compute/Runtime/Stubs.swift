@@ -124,4 +124,6 @@ func fastly_http_resp__header_append(_ resp_handle: Int32, _ name: UnsafePointer
 
 func fastly_http_resp__header_remove(_ resp_handle: Int32, _ name: UnsafePointer<CChar>!, _ name_len: Int) -> Int32 { fatalError() }
 
+func fastly_http_resp__framing_headers_mode_set(_ resp_handle: Int32, _ mode: UInt32) -> Int32 { fatalError() }
+
 #endif
