@@ -52,6 +52,14 @@ extension FetchResponse {
         return try await body.json()
     }
 
+    public func jsonObject() async throws -> [String: Any] {
+        return try await body.jsonObject()
+    }
+
+    public func jsonArray() async throws -> [Any] {
+        return try await body.jsonArray()
+    }
+
     public func text() async throws -> String {
         return try await body.text()
     }

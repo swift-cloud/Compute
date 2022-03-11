@@ -54,6 +54,14 @@ extension ReadableBody {
         return try JSONSerialization.jsonObject(with: data, options: [])
     }
 
+    public func jsonObject() throws -> [String: Any] {
+        return try json() as! [String: Any]
+    }
+
+    public func jsonArray() throws -> [Any] {
+        return try json() as! [Any]
+    }
+
     public func text() throws -> String {
         let data = try data()
         return String(data: data, encoding: .utf8) ?? ""
