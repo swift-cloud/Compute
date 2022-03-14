@@ -46,7 +46,7 @@ public struct HttpBody: Sendable {
         return position
     }
 
-    public mutating func next(highWaterMark: Int = highWaterMark) throws -> [UInt8] {
+    public mutating func scan(highWaterMark: Int = highWaterMark) throws -> [UInt8] {
         defer { used = true }
         return try Array<UInt8>(unsafeUninitializedCapacity: highWaterMark) {
             var length = 0
@@ -58,7 +58,7 @@ public struct HttpBody: Sendable {
     public mutating func read(highWaterMark: Int = highWaterMark, onChunk: ([UInt8]) throws -> BodyScanContinuation) throws {
         while true {
             // Read chunk based on appropriate offset
-            let chunk = try next(highWaterMark: highWaterMark)
+            let chunk = try scan(highWaterMark: highWaterMark)
 
             // Make sure we read new bytes, else break
             guard chunk.count > 0 else {
