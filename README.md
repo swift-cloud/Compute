@@ -20,7 +20,7 @@ Install the Compute runtime:
 
 Complete documentation is very much a work in progress:
 
-[https://compute-runtime.swift.cloud](https://compute-runtime.swift.cloud)
+[https://compute-runtime.swift.cloud/documentation/compute/](https://compute-runtime.swift.cloud/documentation/compute/)
 
 ## Sample App
 
