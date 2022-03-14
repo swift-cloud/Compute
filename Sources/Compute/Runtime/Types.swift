@@ -187,11 +187,11 @@ public enum BodyScanContinuation {
     case `break`
 }
 
-public let maxHeaderLength = 4096
+public let maxHeaderLength = 69000
 
 public let maxMethodLength = 1024
 
-public let maxUriLength = 4096
+public let maxUriLength = 8192
 
 public let maxIpLookupLength = 2048
 
