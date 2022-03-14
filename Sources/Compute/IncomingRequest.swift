@@ -50,10 +50,8 @@ public final class IncomingRequest {
         return Range(from: value)
     }
 
-    public func clientIpAddress() -> IpAddress? {
-        guard let octets = try? request.downstreamClientIpAddress() else {
-            return nil
-        }
+    public func clientIpAddress() -> IpAddress {
+        let octets = (try? request.downstreamClientIpAddress()) ?? []
         switch octets.count {
         case 4:
             return .v4(octets.map(String.init).joined(separator: "."))
@@ -62,7 +60,7 @@ public final class IncomingRequest {
                 .map { $0.map { String(format: "%02X", $0) }.joined(separator: "") }
                 .joined(separator: ":"))
         default:
-            return nil
+            return .localhost
         }
     }
 }

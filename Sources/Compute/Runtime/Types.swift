@@ -126,6 +126,10 @@ public enum IpAddress {
             return text
         }
     }
+
+    public static var localhost: IpAddress {
+        .v4("127.0.0.1")
+    }
 }
 
 public typealias BodyHandle = WasiHandle
