@@ -49,17 +49,18 @@ extension ReadableBody {
         return try decoder.decode(type, from: data)
     }
 
-    public func json() throws -> Any {
+    public func json() throws -> Sendable {
         let data = try data()
-        return try JSONSerialization.jsonObject(with: data, options: [])
+        let dict = try JSONSerialization.jsonObject(with: data, options: [])
+        return dict as! Sendable
     }
 
-    public func jsonObject() throws -> [String: Any] {
-        return try json() as! [String: Any]
+    public func jsonObject() throws -> [String: Sendable] {
+        return try json() as! [String: Sendable]
     }
 
-    public func jsonArray() throws -> [Any] {
-        return try json() as! [Any]
+    public func jsonArray() throws -> [Sendable] {
+        return try json() as! [Sendable]
     }
 
     public func text() throws -> String {

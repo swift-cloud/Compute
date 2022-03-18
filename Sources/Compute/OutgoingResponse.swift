@@ -107,13 +107,13 @@ extension OutgoingResponse {
         try await sendAndClose()
     }
 
-    public func send(_ jsonObject: [String: Any]) async throws {
+    public func send(_ jsonObject: [String: Sendable]) async throws {
         try defaultContentType("application/json")
         try await body.write(jsonObject)
         try await sendAndClose()
     }
 
-    public func send(_ jsonArray: [Any]) async throws {
+    public func send(_ jsonArray: [Sendable]) async throws {
         try defaultContentType("application/json")
         try await body.write(jsonArray)
         try await sendAndClose()
@@ -196,14 +196,14 @@ extension OutgoingResponse {
     }
 
     @discardableResult
-    public func write(_ jsonObject: [String: Any]) async throws -> Self {
+    public func write(_ jsonObject: [String: Sendable]) async throws -> Self {
         try await sendAndStream()
         try await body.write(jsonObject)
         return self
     }
 
     @discardableResult
-    public func write(_ jsonArray: [Any]) async throws -> Self {
+    public func write(_ jsonArray: [Sendable]) async throws -> Self {
         try await sendAndStream()
         try await body.write(jsonArray)
         return self

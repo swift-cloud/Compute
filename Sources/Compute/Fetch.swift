@@ -7,17 +7,101 @@
 
 import Foundation
 
+public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
+    // Create underlying http request
+    var httpRequest = try HttpRequest()
+
+    // Build url components from request url
+    guard var urlComponents = URLComponents(string: request.url.absoluteString) else {
+        throw FetchRequestError.invalidURL
+    }
+
+    // Set default query params
+    urlComponents.queryItems = urlComponents.queryItems ?? []
+
+    // Build search params
+    for (key, value) in request.searchParams {
+        urlComponents.queryItems?.append(.init(name: key, value: value))
+    }
+
+    // Parse final url
+    guard let url = urlComponents.url else {
+        throw FetchRequestError.invalidURL
+    }
+
+    // Set request resources
+    try httpRequest.setUri(url.absoluteString)
+    try httpRequest.setMethod(request.method)
+    try httpRequest.setCachePolicy(request.cachePolicy, surrogateKey: request.surrogateKey)
+
+    // Set content encodings
+    if let encoding = request.acceptEncoding {
+        try httpRequest.setAutoDecompressResponse(encodings: encoding)
+        try httpRequest.insertHeader(HttpHeader.acceptEncoding.rawValue, encoding.stringValue)
+    }
+
+    // Set default content type based on body
+    if let contentType = request.body?.defaultContentType {
+        let name = HttpHeader.contentType.rawValue
+        try httpRequest.insertHeader(name, request.headers[name] ?? contentType)
+    }
+
+    // Set headers
+    for (key, value) in request.headers {
+        try httpRequest.insertHeader(key, value)
+    }
+
+    // Build request body
+    let writableBody = WritableBody(try HttpBody())
+    var streamingBody: ReadableBody? = nil
+
+    // Write bytes to body
+    switch request.body {
+    case .bytes(let bytes):
+        try await writableBody.write(bytes)
+    case .data(let data):
+        try await writableBody.write(data)
+    case .text(let text):
+        try await writableBody.write(text)
+    case .json(let json):
+        try await writableBody.write(json)
+    case .stream(let readableBody):
+        streamingBody = readableBody
+    case .none:
+        break
+    }
+
+    // Issue async request
+    let pendingRequest: HttpPendingRequest
+    if let streamingBody = streamingBody {
+        pendingRequest = try await httpRequest.sendAsyncStreaming(writableBody.body, backend: request.backend)
+        try await streamingBody.pipeTo(writableBody)
+    } else {
+        pendingRequest = try await httpRequest.sendAsync(writableBody.body, backend: request.backend)
+    }
+
+    while true {
+        // Poll request to see if its done
+        if let (response, body) = try pendingRequest.poll() {
+            return try .init(request: request, response: response, body: body)
+        }
+
+        // Sleep for a bit before polling
+        try await Task.sleep(nanoseconds: 1_000_000)
+    }
+}
+
 public func fetch(_ url: URL, _ options: FetchRequest.Options = .options()) async throws -> FetchResponse {
-    let request = try FetchRequest(url, options)
-    return try await request.send()
+    let request = FetchRequest(url, options)
+    return try await fetch(request)
 }
 
 public func fetch(_ urlPath: String, _ options: FetchRequest.Options = .options()) async throws -> FetchResponse {
     guard let url = URL(string: urlPath) else {
         throw FetchRequestError.invalidURL
     }
-    let request = try FetchRequest(url, options)
-    return try await request.send()
+    let request = FetchRequest(url, options)
+    return try await fetch(request)
 }
 
 public func fetch (

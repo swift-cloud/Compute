@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class FetchResponse {
+public struct FetchResponse: Sendable {
 
     internal let request: FetchRequest
 

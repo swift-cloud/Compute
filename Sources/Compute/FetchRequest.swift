@@ -7,11 +7,11 @@
 
 import Foundation
 
-public enum FetchRequestError: Error {
+public enum FetchRequestError: Error, Sendable {
     case invalidURL
 }
 
-public final class FetchRequest {
+public struct FetchRequest: Sendable {
 
     public var url: URL
 
@@ -23,19 +23,15 @@ public final class FetchRequest {
 
     public var surrogateKey: String?
 
-    public var headers: [String: String?]
+    public var headers: [String: String]
 
-    public var searchParams: [String: String?]
+    public var searchParams: [String: String]
 
     public var body: Body?
 
     public var acceptEncoding: ContentEncodings? = nil
 
-    private var request: HttpRequest
-
-    public init(_ url: URL, _ options: Options = .options()) throws {
-        let request = try HttpRequest()
-        self.request = request
+    public init(_ url: URL, _ options: Options = .options()) {
         self.url = url
         self.backend = options.backend ?? url.host ?? "localhost"
         self.method = options.method
@@ -45,88 +41,6 @@ public final class FetchRequest {
         self.searchParams = options.searchParams
         self.body = options.body
         self.acceptEncoding = options.acceptEncoding
-    }
-
-    public func send() async throws -> FetchResponse {
-        guard var urlComponents = URLComponents(string: url.absoluteString) else {
-            throw FetchRequestError.invalidURL
-        }
-
-        // Set default query params
-        urlComponents.queryItems = urlComponents.queryItems ?? []
-
-        // Build search params
-        for (key, value) in searchParams {
-            guard let value = value else { continue }
-            urlComponents.queryItems?.append(.init(name: key, value: value))
-        }
-
-        // Parse final url
-        guard let url = urlComponents.url else {
-            throw FetchRequestError.invalidURL
-        }
-
-        // Set request resources
-        try request.setUri(url.absoluteString)
-        try request.setMethod(method)
-        try request.setCachePolicy(cachePolicy, surrogateKey: surrogateKey)
-
-        // Set content encodings
-        if let encoding = acceptEncoding {
-            try request.setAutoDecompressResponse(encodings: encoding)
-            headers[HttpHeader.acceptEncoding.rawValue] = encoding.stringValue
-        }
-
-        // Set default content type based on body
-        if let contentType = body?.defaultContentType {
-            let name = HttpHeader.contentType.rawValue
-            headers[name] = headers[name, default: contentType]
-        }
-
-        // Set headers
-        for (key, value) in headers {
-            guard let value = value else { continue }
-            try request.insertHeader(key, value)
-        }
-
-        // Build request body
-        let writableBody = WritableBody(try HttpBody())
-        var streamingBody: ReadableBody? = nil
-
-        // Write bytes to body
-        switch body {
-        case .bytes(let bytes):
-            try await writableBody.write(bytes)
-        case .data(let data):
-            try await writableBody.write(data)
-        case .text(let text):
-            try await writableBody.write(text)
-        case .json(let json):
-            try await writableBody.write(json)
-        case .stream(let readableBody):
-            streamingBody = readableBody
-        case .none:
-            break
-        }
-
-        // Issue async request
-        let pendingRequest: HttpPendingRequest
-        if let streamingBody = streamingBody {
-            pendingRequest = try await request.sendAsyncStreaming(writableBody.body, backend: backend)
-            try await streamingBody.pipeTo(writableBody)
-        } else {
-            pendingRequest = try await request.sendAsync(writableBody.body, backend: backend)
-        }
-
-        while true {
-            // Poll request to see if its done
-            if let (response, body) = try pendingRequest.poll() {
-                return try .init(request: self, response: response, body: body)
-            }
-
-            // Sleep for a bit before polling
-            try await Task.sleep(nanoseconds: 1_000_000)
-        }
     }
 }
 
@@ -138,9 +52,9 @@ extension FetchRequest {
 
         public var body: Body? = nil
 
-        public var headers: [String: String?] = [:]
+        public var headers: [String: String] = [:]
 
-        public var searchParams: [String: String?] = [:]
+        public var searchParams: [String: String] = [:]
 
         public var timeout: TimeInterval = .init(Int.max)
 
@@ -155,8 +69,8 @@ extension FetchRequest {
         public static func options(
             method: HttpMethod = .get,
             body: Body? = nil,
-            headers: [String: String?] = [:],
-            searchParams: [String: String?] = [:],
+            headers: [String: String] = [:],
+            searchParams: [String: String] = [:],
             timeout: TimeInterval = .init(Int.max),
             cachePolicy: CachePolicy = .origin,
             acceptEncoding: ContentEncodings? = nil,
@@ -180,7 +94,7 @@ extension FetchRequest {
 
 extension FetchRequest {
 
-    public enum Body {
+    public enum Body: Sendable {
         case bytes(_ bytes: [UInt8])
         case data(_ data: Data)
         case text(_ text: String)

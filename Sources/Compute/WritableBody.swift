@@ -7,7 +7,7 @@
 
 import Foundation
 
-public actor WritableBody {
+public actor WritableBody: Sendable {
 
     public var used: Bool {
         return body.used
@@ -46,12 +46,12 @@ extension WritableBody {
         try write(data)
     }
 
-    public func write(_ jsonObject: [String: Any]) throws {
+    public func write(_ jsonObject: [String: Sendable]) throws {
         let data = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
         try write(data)
     }
 
-    public func write(_ jsonArray: [Any]) throws {
+    public func write(_ jsonArray: [Sendable]) throws {
         let data = try JSONSerialization.data(withJSONObject: jsonArray, options: [])
         try write(data)
     }

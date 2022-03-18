@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class IncomingRequest: Sendable {
+public struct IncomingRequest: Sendable {
 
     internal let request: HttpRequest
 
