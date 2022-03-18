@@ -9,7 +9,7 @@ import ComputeRuntime
 
 public typealias WasiHandle = Int32
 
-public enum WasiStatus: Int32, Error, CaseIterable {
+public enum WasiStatus: Int32, Error, CaseIterable, Sendable {
     case ok = 0
     case genericError
     case invalidArgument
@@ -25,7 +25,7 @@ public enum WasiStatus: Int32, Error, CaseIterable {
     case httpInvalidStatus
 }
 
-public enum HttpVersion: Int32 {
+public enum HttpVersion: Int32, Sendable {
     case http0_9 = 0
     case http1_0
     case http1_1
@@ -33,7 +33,7 @@ public enum HttpVersion: Int32 {
     case h3
 }
 
-public enum HttpMethod: String {
+public enum HttpMethod: String, Sendable {
     case get = "GET"
     case post = "POST"
     case put = "PUT"
@@ -56,7 +56,7 @@ extension String: HttpHeaderRepresentable {
     }
 }
 
-public enum HttpHeader: String, HttpHeaderRepresentable {
+public enum HttpHeader: String, HttpHeaderRepresentable, Sendable {
     case accept = "accept"
     case acceptCharset = "accept-charset"
     case acceptEncoding = "accept-encoding"
@@ -109,12 +109,12 @@ public enum HttpHeader: String, HttpHeaderRepresentable {
 
 public typealias HttpStatus = Int
 
-public enum BodyWriteEnd: Int32 {
+public enum BodyWriteEnd: Int32, Sendable {
     case back = 0
     case front
 }
 
-public enum IpAddress {
+public enum IpAddress: Sendable {
     case v4(String)
     case v6(String)
 
@@ -158,7 +158,7 @@ extension CacheOverrideTag {
     public static let pci: Self = 10
 }
 
-public enum CachePolicy {
+public enum CachePolicy: Sendable {
     case origin
     case pass
     case ttl(_ seconds: Int, staleWhileRevalidate: Int = 0, pciCompliant: Bool = false)
@@ -170,7 +170,7 @@ public typealias IsDone = Int32
 
 public typealias DoneIndex = Int32
 
-public enum ContentEncodings: UInt32 {
+public enum ContentEncodings: UInt32, Sendable {
     case gzip = 1
 
     public var stringValue: String {
@@ -181,12 +181,12 @@ public enum ContentEncodings: UInt32 {
     }
 }
 
-public enum FramingHeadersMode: UInt32 {
+public enum FramingHeadersMode: UInt32, Sendable {
     case automatic = 0
     case manuallyFromHeaders = 1
 }
 
-public enum BodyScanContinuation {
+public enum BodyScanContinuation: Sendable {
     case `continue`
     case `break`
 }

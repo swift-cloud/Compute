@@ -101,7 +101,7 @@ public final class OutgoingResponse {
 
 extension OutgoingResponse {
 
-    public func send<T>(_ value: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
+    public func send<T>(_ value: T, encoder: JSONEncoder = .init()) async throws where T: Encodable & Sendable {
         try defaultContentType("application/json")
         try await body.write(value, encoder: encoder)
         try await sendAndClose()
@@ -189,7 +189,7 @@ extension OutgoingResponse {
 extension OutgoingResponse {
 
     @discardableResult
-    public func write<T>(_ value: T, encoder: JSONEncoder = .init()) async throws -> Self where T: Encodable {
+    public func write<T>(_ value: T, encoder: JSONEncoder = .init()) async throws -> Self where T: Encodable & Sendable {
         try await sendAndStream()
         try await body.write(value, encoder: encoder)
         return self

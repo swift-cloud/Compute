@@ -7,7 +7,7 @@
 
 import Foundation
 
-public actor ReadableBody {
+public actor ReadableBody: Sendable {
 
     public var used: Bool {
         return body.used

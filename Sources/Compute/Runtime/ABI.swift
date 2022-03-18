@@ -7,7 +7,7 @@
 
 import ComputeRuntime
 
-public struct ABI {
+public struct ABI: Sendable {
 
     public static let currentABIVersion = 1
 
