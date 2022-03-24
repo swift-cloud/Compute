@@ -246,7 +246,7 @@ extension OutgoingResponse {
 
 extension OutgoingResponse {
 
-    public func proxy(_ response: FetchResponse, streaming: Bool = false) async throws {
+    public func proxy(_ response: FetchResponse, streaming: Bool = true) async throws {
         status = response.status
         for (key, value) in response.headers.entries() {
             headers[key] = value
