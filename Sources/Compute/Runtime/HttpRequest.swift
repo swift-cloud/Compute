@@ -150,6 +150,10 @@ public struct HttpRequest: Sendable {
     public mutating func close() throws {
         try wasi(fastly_http_req__close(handle))
     }
+
+    public mutating func setFramingHeadersMode(_ newValue: FramingHeadersMode) throws {
+        try wasi(fastly_http_req__framing_headers_mode_set(handle, newValue.rawValue))
+    }
 }
 
 extension HttpRequest {

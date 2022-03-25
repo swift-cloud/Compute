@@ -98,6 +98,8 @@ func fastly_http_req__pending_req_select(_ req_handles: UnsafeMutablePointer<Int
 
 func fastly_http_req__auto_decompress_response_set(_ req_handle: Int32, _ encodings: UInt32) -> Int32 { fatalError() }
 
+func fastly_http_req__framing_headers_mode_set(_ req_handle: Int32, _ mode: UInt32) -> Int32 { fatalError() }
+
 /* FASTLY_HTTP_RESP */
 
 func fastly_http_resp__new(_ handle: UnsafeMutablePointer<Int32>!) -> Int32 { fatalError() }

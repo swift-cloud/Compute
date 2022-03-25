@@ -157,6 +157,9 @@ int fastly_http_req__pending_req_select(int req_handles[], size_t req_handles_le
                                         uint32_t *done_idx_out, int *resp_handle_out,
                                         int *resp_body_handle_out);
 
+WASM_IMPORT("fastly_http_req", "framing_headers_mode_set")
+int fastly_http_req__framing_headers_mode_set(int req_handle, uint32_t mode);
+
 /* FASTLY_HTTP_RESP */
 
 WASM_IMPORT("fastly_http_resp", "new")
