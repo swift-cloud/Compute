@@ -38,6 +38,8 @@ func fastly_kv__open(_ name: UnsafePointer<CChar>!, _ name_len: Int, _ handle: U
 
 func fastly_kv__lookup(_ handle: Int32, _ key: UnsafePointer<CChar>!, _ key_len: Int, _ body_handle: UnsafeMutablePointer<Int32>!) -> Int32 { fatalError() }
 
+func fastly_kv__insert(_ handle: Int32, _ key: UnsafePointer<CChar>!, _ key_len: Int, _ body_handle: Int32, _ max_age: UInt32, _ inserted: UnsafeMutablePointer<UInt32>!) -> Int32 { fatalError() }
+
 /* FASTLY_HTTP_BODY */
 
 func fastly_http_body__new(_ handle: UnsafeMutablePointer<Int32>!) -> Int32 { fatalError() }
