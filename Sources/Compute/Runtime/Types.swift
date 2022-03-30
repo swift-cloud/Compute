@@ -144,6 +144,8 @@ public typealias EndpointHandle = WasiHandle
 
 public typealias DictionaryHandle = WasiHandle
 
+public typealias StoreHandle = WasiHandle
+
 public typealias MultiValueCursor = Int32
 
 public typealias MultiValueCursorResult = Int64
