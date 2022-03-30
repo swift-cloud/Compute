@@ -204,3 +204,5 @@ public let maxIpLookupLength = 2048
 public let maxDictionaryEntryLength = 8000
 
 public let highWaterMark = 4096
+
+public let localStoreName = "__fastly-local-store"

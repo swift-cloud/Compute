@@ -32,8 +32,10 @@ public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ re
 
 private let computeStatusRequestMethods: Set<HttpMethod> = [.get, .head, .options, .query]
 
+private let computeStatusPath = "/__compute-status"
+
 private func isComputeStatusRequest(_ req: IncomingRequest) -> Bool {
-    return computeStatusRequestMethods.contains(req.method) && req.url.path == "/__compute-status"
+    return computeStatusRequestMethods.contains(req.method) && req.url.path == computeStatusPath
 }
 
 private func sendComputeStatusResponse(_ res: OutgoingResponse) async throws {
