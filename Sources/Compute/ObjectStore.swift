@@ -54,17 +54,17 @@ public struct ObjectStore: Sendable {
 
     public func insert(_ key: String, jsonObject: [String: Any], maxAge: Int = 0) throws {
         let data = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
-        return try insert(key, data: data, maxAge: maxAge)
+        try insert(key, data: data, maxAge: maxAge)
     }
 
     public func insert(_ key: String, jsonArray: [Any], maxAge: Int = 0) throws {
         let data = try JSONSerialization.data(withJSONObject: jsonArray, options: [])
-        return try insert(key, data: data, maxAge: maxAge)
+        try insert(key, data: data, maxAge: maxAge)
     }
 
     public func insert<T>(_ key: String, value: T, encoder: JSONEncoder = .init(), maxAge: Int = 0) throws where T: Encodable {
         let data = try encoder.encode(value)
-        return try insert(key, data: data, maxAge: maxAge)
+        try insert(key, data: data, maxAge: maxAge)
     }
 }
 

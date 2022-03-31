@@ -38,6 +38,6 @@ public struct Store: Sendable {
     public func insert(_ key: String, bytes: [UInt8], maxAge: Int = 0) throws {
         var body = try HttpBody()
         try body.write(bytes)
-        return try insert(key, body: body, maxAge: maxAge)
+        try insert(key, body: body, maxAge: maxAge)
     }
 }
