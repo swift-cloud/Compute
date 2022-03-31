@@ -6,5 +6,5 @@
 //
 
 public func LocalStore() throws -> ObjectStore {
-    try .init(name: localStoreName)
+    return try .init(name: localStoreName)
 }

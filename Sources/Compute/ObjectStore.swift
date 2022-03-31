@@ -2,50 +2,45 @@
 //  ObjectStore.swift
 //  
 //
-//  Created by Andrew Barba on 3/30/22.
+//  Created by Andrew Barba on 3/31/22.
 //
 
-import ComputeRuntime
 import Foundation
 
 public struct ObjectStore: Sendable {
 
-    internal let handle: StoreHandle
+    internal let store: Store
 
-    public let name: String
-
-    internal init(name: String) throws {
-        var handle: StoreHandle = 0
-        try wasi(fastly_kv__open(name, name.utf8.count, &handle))
-        self.handle = handle
-        self.name = name
+    public init(name: String) throws {
+        store = try .init(name: name)
     }
 
-    public func lookup(_ key: String) throws -> ReadableBody {
-        var bodyHandle: BodyHandle = 0
-        try wasi(fastly_kv__lookup(handle, key, key.utf8.count, &bodyHandle))
-        let body = HttpBody(bodyHandle)
-        return ReadableBody(body)
+    public var name: String {
+        store.name
     }
 
-    public func has(_ key: String) -> Bool {
-        do {
-            _ = try lookup(key)
+    public func lookup(_ key: String) throws -> ReadableBody? {
+        guard let body = try store.lookup(key) else {
+            return nil
+        }
+        return .init(body)
+    }
+
+    public func has(_ key: String) throws -> Bool {
+        switch try lookup(key) {
+        case .some:
             return true
-        } catch {
+        case .none:
             return false
         }
     }
 
     public func insert(_ key: String, body: HttpBody, maxAge: Int = 0) throws {
-        var inserted: UInt32 = 0
-        try wasi(fastly_kv__insert(handle, key, key.utf8.count, body.handle, .init(maxAge), &inserted))
+        try store.insert(key, body: body, maxAge: maxAge)
     }
 
     public func insert(_ key: String, bytes: [UInt8], maxAge: Int = 0) throws {
-        var body = try HttpBody()
-        try body.write(bytes)
-        return try insert(key, body: body, maxAge: maxAge)
+        try store.insert(key, bytes: bytes, maxAge: maxAge)
     }
 
     public func insert(_ key: String, data: Data, maxAge: Int = 0) throws {
@@ -72,3 +67,4 @@ public struct ObjectStore: Sendable {
         return try insert(key, data: data, maxAge: maxAge)
     }
 }
+
