@@ -35,36 +35,36 @@ public struct ObjectStore: Sendable {
         }
     }
 
-    public func insert(_ key: String, body: ReadableBody, maxAge: Int = 0) async throws {
-        try await store.insert(key, body: body.body, maxAge: maxAge)
+    public func insert(_ key: String, body: ReadableBody) async throws {
+        try await store.insert(key, body: body.body, maxAge: 0)
     }
 
-    public func insert(_ key: String, bytes: [UInt8], maxAge: Int = 0) async throws {
-        try store.insert(key, bytes: bytes, maxAge: maxAge)
+    public func insert(_ key: String, bytes: [UInt8]) async throws {
+        try store.insert(key, bytes: bytes, maxAge: 0)
     }
 
-    public func insert(_ key: String, data: Data, maxAge: Int = 0) async throws {
-        try await insert(key, bytes: .init(data), maxAge: maxAge)
+    public func insert(_ key: String, data: Data) async throws {
+        try await insert(key, bytes: .init(data))
     }
 
-    public func insert(_ key: String, text: String, maxAge: Int = 0) async throws {
+    public func insert(_ key: String, text: String) async throws {
         let data = text.data(using: .utf8) ?? .init()
-        try await insert(key, data: data, maxAge: maxAge)
+        try await insert(key, data: data)
     }
 
-    public func insert(_ key: String, jsonObject: [String: Any], maxAge: Int = 0) async throws {
+    public func insert(_ key: String, jsonObject: [String: Any]) async throws {
         let data = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
-        try await insert(key, data: data, maxAge: maxAge)
+        try await insert(key, data: data)
     }
 
-    public func insert(_ key: String, jsonArray: [Any], maxAge: Int = 0) async throws {
+    public func insert(_ key: String, jsonArray: [Any]) async throws {
         let data = try JSONSerialization.data(withJSONObject: jsonArray, options: [])
-        try await insert(key, data: data, maxAge: maxAge)
+        try await insert(key, data: data)
     }
 
-    public func insert<T>(_ key: String, value: T, encoder: JSONEncoder = .init(), maxAge: Int = 0) async throws where T: Encodable {
+    public func insert<T>(_ key: String, value: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
         let data = try encoder.encode(value)
-        try await insert(key, data: data, maxAge: maxAge)
+        try await insert(key, data: data)
     }
 }
 

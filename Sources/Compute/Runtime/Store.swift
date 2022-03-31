@@ -30,12 +30,12 @@ public struct Store: Sendable {
         }
     }
 
-    public func insert(_ key: String, body: HttpBody, maxAge: Int = 0) throws {
+    public func insert(_ key: String, body: HttpBody, maxAge: Int) throws {
         var inserted: UInt32 = 0
         try wasi(fastly_kv__insert(handle, key, key.utf8.count, body.handle, .init(maxAge), &inserted))
     }
 
-    public func insert(_ key: String, bytes: [UInt8], maxAge: Int = 0) throws {
+    public func insert(_ key: String, bytes: [UInt8], maxAge: Int) throws {
         var body = try HttpBody()
         try body.write(bytes)
         try insert(key, body: body, maxAge: maxAge)
