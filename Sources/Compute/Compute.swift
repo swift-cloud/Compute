@@ -30,7 +30,7 @@ public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ re
     }
 }
 
-private let computeStatusRequestMethods: Set<HttpMethod> = [.get, .head, .options, .query]
+private let computeStatusRequestMethods: Set<HTTPMethod> = [.get, .head, .options, .query]
 
 private let computeStatusPath = "/__compute-status"
 

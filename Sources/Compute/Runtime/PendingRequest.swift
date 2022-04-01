@@ -1,5 +1,5 @@
 //
-//  HttpPendingRequest.swift
+//  PendingRequest.swift
 //  
 //
 //  Created by Andrew Barba on 1/14/22.
@@ -7,25 +7,25 @@
 
 import ComputeRuntime
 
-public struct HttpPendingRequest: Sendable {
+public struct PendingRequest: Sendable {
 
     internal let handle: PendingRequestHandle
 
-    public let request: HttpRequest
+    public let request: Request
 
-    internal init(_ handle: PendingRequestHandle, request: HttpRequest) {
+    internal init(_ handle: PendingRequestHandle, request: Request) {
         self.handle = handle
         self.request = request
     }
 
-    internal func wait() throws -> (response: HttpResponse, body: HttpBody) {
+    internal func wait() throws -> (response: Response, body: Body) {
         var responseHandle: ResponseHandle = 0
         var bodyHandle: BodyHandle = 0
         try wasi(fastly_http_req__pending_req_wait(handle, &responseHandle, &bodyHandle))
         return (.init(responseHandle), .init(bodyHandle))
     }
 
-    internal func poll() throws -> (response: HttpResponse, body: HttpBody)? {
+    internal func poll() throws -> (response: Response, body: Body)? {
         var isDone: UInt32 = 0
         var responseHandle: ResponseHandle = 0
         var bodyHandle: BodyHandle = 0
@@ -36,7 +36,7 @@ public struct HttpPendingRequest: Sendable {
         return (.init(responseHandle), .init(bodyHandle))
     }
 
-    internal static func select(_ requests: [HttpPendingRequest]) throws -> (index: Int, response: HttpResponse, body: HttpBody) {
+    internal static func select(_ requests: [PendingRequest]) throws -> (index: Int, response: Response, body: Body) {
         var handles = requests.map(\.handle)
         var doneIndex: UInt32 = 0
         var responseHandle: ResponseHandle = 0

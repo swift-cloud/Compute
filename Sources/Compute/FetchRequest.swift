@@ -17,7 +17,7 @@ public struct FetchRequest: Sendable {
 
     public var backend: String
 
-    public var method: HttpMethod
+    public var method: HTTPMethod
 
     public var cachePolicy: CachePolicy
 
@@ -48,7 +48,7 @@ extension FetchRequest {
 
     public struct Options {
 
-        public var method: HttpMethod = .get
+        public var method: HTTPMethod = .get
 
         public var body: Body? = nil
 
@@ -67,7 +67,7 @@ extension FetchRequest {
         public var backend: String? = nil
 
         public static func options(
-            method: HttpMethod = .get,
+            method: HTTPMethod = .get,
             body: Body? = nil,
             headers: [String: String] = [:],
             searchParams: [String: String] = [:],

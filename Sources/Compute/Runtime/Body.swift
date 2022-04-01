@@ -1,5 +1,5 @@
 //
-//  HttpBody.swift
+//  Body.swift
 //  
 //
 //  Created by Andrew Barba on 1/13/22.
@@ -7,7 +7,7 @@
 
 import ComputeRuntime
 
-public struct HttpBody: Sendable {
+public struct Body: Sendable {
 
     public private(set) var used: Bool = false
 
@@ -23,7 +23,7 @@ public struct HttpBody: Sendable {
         self.handle = handle
     }
 
-    public mutating func append(_ source: HttpBody) throws {
+    public mutating func append(_ source: Body) throws {
         try wasi(fastly_http_body__append(handle, source.handle))
         used = true
     }

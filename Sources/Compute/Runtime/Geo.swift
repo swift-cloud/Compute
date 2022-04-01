@@ -31,7 +31,7 @@ public struct Geo: Sendable {
         public let utcOffset: Int?
     }
     
-    public static func lookup(ip: IpAddress) throws -> IpLookup {
+    public static func lookup(ip: IPAddress) throws -> IpLookup {
         switch ip {
         case .v4(let text):
             let bytes = text.components(separatedBy: ".").compactMap { UInt8($0) }

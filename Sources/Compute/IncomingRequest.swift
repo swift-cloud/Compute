@@ -9,19 +9,19 @@ import Foundation
 
 public struct IncomingRequest: Sendable {
 
-    internal let request: HttpRequest
+    internal let request: Request
 
-    public let headers: Headers<HttpRequest>
+    public let headers: Headers<Request>
 
     public let searchParams: [String: String]
 
     public let body: ReadableBody
 
-    public let method: HttpMethod
+    public let method: HTTPMethod
 
     public let url: URL
 
-    public let httpVersion: HttpVersion
+    public let httpVersion: HTTPVersion
 
     public var bodyUsed: Bool {
         get async {
@@ -30,14 +30,14 @@ public struct IncomingRequest: Sendable {
     }
 
     internal init() throws {
-        let (request, body) = try HttpRequest.getDownstream()
+        let (request, body) = try Request.getDownstream()
         let url = URL(string: try request.getUri() ?? "http://localhost")!
         self.request = request
         self.body = ReadableBody(body)
         self.headers = Headers(request)
         self.url = url
         self.method = try request.getMethod() ?? .get
-        self.httpVersion = try request.getHttpVersion() ?? .http1_1
+        self.httpVersion = try request.getHTTPVersion() ?? .http1_1
         self.searchParams = URLComponents(string: url.absoluteString)?
             .queryItems?
             .reduce(into: [:]) { $0[$1.name] = $1.value } ?? [:]
@@ -50,7 +50,7 @@ public struct IncomingRequest: Sendable {
         return Range(from: value)
     }
 
-    public func clientIpAddress() -> IpAddress {
+    public func clientIpAddress() -> IPAddress {
         let octets = (try? request.downstreamClientIpAddress()) ?? []
         switch octets.count {
         case 4:

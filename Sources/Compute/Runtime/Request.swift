@@ -1,5 +1,5 @@
 //
-//  HttpRequest.swift
+//  Request.swift
 //  
 //
 //  Created by Andrew Barba on 1/13/22.
@@ -7,7 +7,7 @@
 
 import ComputeRuntime
 
-public struct HttpRequest: Sendable {
+public struct Request: Sendable {
 
     internal let handle: RequestHandle
 
@@ -21,14 +21,14 @@ public struct HttpRequest: Sendable {
         self.handle = handle
     }
 
-    public func getMethod() throws -> HttpMethod? {
+    public func getMethod() throws -> HTTPMethod? {
         let text = try wasiString(maxBufferLength: maxMethodLength) {
             fastly_http_req__method_get(handle, $0, $1, &$2)
         }
-        return HttpMethod(rawValue: text ?? "")
+        return HTTPMethod(rawValue: text ?? "")
     }
 
-    public mutating func setMethod(_ newValue: HttpMethod) throws {
+    public mutating func setMethod(_ newValue: HTTPMethod) throws {
         let text = newValue.rawValue
         try wasi(fastly_http_req__method_set(handle, text, text.utf8.count))
     }
@@ -43,13 +43,13 @@ public struct HttpRequest: Sendable {
         try wasi(fastly_http_req__uri_set(handle, newValue, newValue.utf8.count))
     }
 
-    public func getHttpVersion() throws -> HttpVersion? {
+    public func getHTTPVersion() throws -> HTTPVersion? {
         var version: Int32 = 0
         try wasi(fastly_http_req__version_get(handle, &version))
-        return HttpVersion(rawValue: version)
+        return HTTPVersion(rawValue: version)
     }
 
-    public mutating func setHttpVersion(_ newValue: HttpVersion) throws {
+    public mutating func setHTTPVersion(_ newValue: HTTPVersion) throws {
         try wasi(fastly_http_req__version_set(handle, newValue.rawValue))
     }
 
@@ -128,20 +128,20 @@ public struct HttpRequest: Sendable {
         try wasi(fastly_http_req__header_remove(handle, name, name.utf8.count))
     }
 
-    public mutating func send(_ body: HttpBody, backend: String) throws -> (response: HttpResponse, body: HttpBody) {
+    public mutating func send(_ body: Body, backend: String) throws -> (response: Response, body: Body) {
         var responseHandle: ResponseHandle = 0
         var bodyHandle: BodyHandle = 0
         try wasi(fastly_http_req__send(handle, body.handle, backend, backend.utf8.count, &responseHandle, &bodyHandle))
         return (.init(responseHandle), .init(bodyHandle))
     }
 
-    public mutating func sendAsync(_ body: HttpBody, backend: String) throws -> HttpPendingRequest {
+    public mutating func sendAsync(_ body: Body, backend: String) throws -> PendingRequest {
         var pendingRequestHandle: PendingRequestHandle = 0
         try wasi(fastly_http_req__send_async(handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
         return .init(pendingRequestHandle, request: self)
     }
 
-    public mutating func sendAsyncStreaming(_ body: HttpBody, backend: String) throws -> HttpPendingRequest {
+    public mutating func sendAsyncStreaming(_ body: Body, backend: String) throws -> PendingRequest {
         var pendingRequestHandle: PendingRequestHandle = 0
         try wasi(fastly_http_req__send_async_streaming(handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
         return .init(pendingRequestHandle, request: self)
@@ -156,14 +156,14 @@ public struct HttpRequest: Sendable {
     }
 }
 
-extension HttpRequest {
+extension Request {
 
-    public static func getDownstream() throws -> (request: HttpRequest, body: HttpBody) {
+    public static func getDownstream() throws -> (request: Request, body: Body) {
         var requestHandle: RequestHandle = 0
         var bodyHandle: BodyHandle = 0
         try wasi(fastly_http_req__body_downstream_get(&requestHandle, &bodyHandle))
-        let request = HttpRequest(requestHandle)
-        let body = HttpBody(bodyHandle)
+        let request = Request(requestHandle)
+        let body = Body(bodyHandle)
         return (request, body)
     }
 

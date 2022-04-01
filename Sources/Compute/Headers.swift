@@ -18,9 +18,9 @@ public protocol HeadersProvider: Sendable {
     mutating func removeHeader(_ name: String) throws
 }
 
-extension HttpRequest: HeadersProvider {}
+extension Request: HeadersProvider {}
 
-extension HttpResponse: HeadersProvider {}
+extension Response: HeadersProvider {}
 
 public struct Headers<T>: Sendable where T: HeadersProvider {
 
@@ -90,12 +90,12 @@ public struct Headers<T>: Sendable where T: HeadersProvider {
         self.get(name) ?? value
     }
 
-    public subscript(name: HttpHeader) -> String? {
+    public subscript(name: HTTPHeader) -> String? {
         get { self.get(name.rawValue) }
         set { self.set(name.rawValue, newValue) }
     }
 
-    public subscript(name: HttpHeader, default value: String) -> String {
+    public subscript(name: HTTPHeader, default value: String) -> String {
         self.get(name.rawValue) ?? value
     }
 }
