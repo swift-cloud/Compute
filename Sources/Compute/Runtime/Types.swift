@@ -25,7 +25,7 @@ public enum WasiStatus: Int32, Error, CaseIterable, Sendable {
     case httpInvalidStatus
 }
 
-public enum HttpVersion: Int32, Sendable {
+public enum HTTPVersion: Int32, Sendable {
     case http0_9 = 0
     case http1_0
     case http1_1
@@ -33,7 +33,7 @@ public enum HttpVersion: Int32, Sendable {
     case h3
 }
 
-public enum HttpMethod: String, Sendable {
+public enum HTTPMethod: String, Sendable {
     case get = "GET"
     case post = "POST"
     case put = "PUT"
@@ -44,19 +44,19 @@ public enum HttpMethod: String, Sendable {
     case query = "QUERY"
 }
 
-public protocol HttpHeaderRepresentable {
+public protocol HTTPHeaderRepresentable {
 
     var stringValue: String { get }
 }
 
-extension String: HttpHeaderRepresentable {
+extension String: HTTPHeaderRepresentable {
 
     public var stringValue: String {
         self
     }
 }
 
-public enum HttpHeader: String, HttpHeaderRepresentable, Sendable {
+public enum HTTPHeader: String, HTTPHeaderRepresentable, Sendable {
     case accept = "accept"
     case acceptCharset = "accept-charset"
     case acceptEncoding = "accept-encoding"
@@ -108,14 +108,14 @@ public enum HttpHeader: String, HttpHeaderRepresentable, Sendable {
     }
 }
 
-public typealias HttpStatus = Int
+public typealias HTTPStatus = Int
 
 public enum BodyWriteEnd: Int32, Sendable {
     case back = 0
     case front
 }
 
-public enum IpAddress: Sendable {
+public enum IPAddress: Sendable {
     case v4(String)
     case v6(String)
 
@@ -128,7 +128,7 @@ public enum IpAddress: Sendable {
         }
     }
 
-    public static var localhost: IpAddress {
+    public static var localhost: IPAddress {
         .v4("127.0.0.1")
     }
 }

@@ -11,13 +11,13 @@ public struct FetchResponse: Sendable {
 
     internal let request: FetchRequest
 
-    internal let response: HttpResponse
+    internal let response: Response
 
     public let body: ReadableBody
 
-    public let headers: Headers<HttpResponse>
+    public let headers: Headers<Response>
 
-    public let status: HttpStatus
+    public let status: HTTPStatus
 
     public var ok: Bool {
         return status >= 200 && status <= 299
@@ -33,7 +33,7 @@ public struct FetchResponse: Sendable {
         }
     }
 
-    internal init(request: FetchRequest, response: HttpResponse, body: HttpBody) throws {
+    internal init(request: FetchRequest, response: Response, body: Body) throws {
         self.request = request
         self.response = response
         self.body = ReadableBody(body)

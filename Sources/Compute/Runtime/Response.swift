@@ -1,5 +1,5 @@
 //
-//  HttpResponse.swift
+//  Response.swift
 //  
 //
 //  Created by Andrew Barba on 1/13/22.
@@ -7,7 +7,7 @@
 
 import ComputeRuntime
 
-public struct HttpResponse: Sendable {
+public struct Response: Sendable {
 
     internal let handle: ResponseHandle
 
@@ -21,27 +21,27 @@ public struct HttpResponse: Sendable {
         self.handle = handle
     }
 
-    public func getStatus() throws -> HttpStatus {
+    public func getStatus() throws -> HTTPStatus {
         var status: Int32 = 0
         try wasi(fastly_http_resp__status_get(handle, &status))
         return .init(status)
     }
 
-    public mutating func setStatus(_ newValue: HttpStatus) throws {
+    public mutating func setStatus(_ newValue: HTTPStatus) throws {
         try wasi(fastly_http_resp__status_set(handle, .init(newValue)))
     }
 
-    public func getHttpVersion() throws -> HttpVersion? {
+    public func getHTTPVersion() throws -> HTTPVersion? {
         var version: Int32 = 0
         try wasi(fastly_http_resp__version_get(handle, &version))
-        return HttpVersion(rawValue: version)
+        return HTTPVersion(rawValue: version)
     }
 
-    public mutating func setHttpVersion(_ newValue: HttpVersion) throws {
+    public mutating func setHTTPVersion(_ newValue: HTTPVersion) throws {
         try wasi(fastly_http_resp__version_set(handle, newValue.rawValue))
     }
 
-    public mutating func send(_ body: HttpBody, streaming: Bool = false) throws {
+    public mutating func send(_ body: Body, streaming: Bool = false) throws {
         try wasi(fastly_http_resp__send_downstream(handle, body.handle, Int32(streaming ? 1 : 0)))
     }
 

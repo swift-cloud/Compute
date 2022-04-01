@@ -9,7 +9,7 @@ import Foundation
 
 public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     // Create underlying http request
-    var httpRequest = try HttpRequest()
+    var httpRequest = try Request()
 
     // Build url components from request url
     guard var urlComponents = URLComponents(string: request.url.absoluteString) else {
@@ -37,12 +37,12 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     // Set content encodings
     if let encoding = request.acceptEncoding {
         try httpRequest.setAutoDecompressResponse(encodings: encoding)
-        try httpRequest.insertHeader(HttpHeader.acceptEncoding.rawValue, encoding.stringValue)
+        try httpRequest.insertHeader(HTTPHeader.acceptEncoding.rawValue, encoding.stringValue)
     }
 
     // Set default content type based on body
     if let contentType = request.body?.defaultContentType {
-        let name = HttpHeader.contentType.rawValue
+        let name = HTTPHeader.contentType.rawValue
         try httpRequest.insertHeader(name, request.headers[name] ?? contentType)
     }
 
@@ -52,7 +52,7 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     }
 
     // Build request body
-    let writableBody = WritableBody(try HttpBody())
+    let writableBody = WritableBody(try Body())
     var streamingBody: ReadableBody? = nil
 
     // Write bytes to body
@@ -72,7 +72,7 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     }
 
     // Issue async request
-    let pendingRequest: HttpPendingRequest
+    let pendingRequest: PendingRequest
     if let streamingBody = streamingBody {
         pendingRequest = try await httpRequest.sendAsyncStreaming(writableBody.body, backend: request.backend)
         try await streamingBody.pipeTo(writableBody)

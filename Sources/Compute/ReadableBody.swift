@@ -13,9 +13,9 @@ public actor ReadableBody: Sendable {
         return body.used
     }
 
-    internal private(set) var body: HttpBody
+    internal private(set) var body: Body
 
-    internal init(_ body: HttpBody) {
+    internal init(_ body: Body) {
         self.body = body
     }
 

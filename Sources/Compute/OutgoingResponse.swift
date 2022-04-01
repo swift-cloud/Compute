@@ -9,15 +9,15 @@ import Foundation
 
 public final class OutgoingResponse {
 
-    internal private(set) var response: HttpResponse
+    internal private(set) var response: Response
 
     internal let body: WritableBody
 
     private var didSendStream = false
 
-    public private(set) var headers: Headers<HttpResponse>
+    public private(set) var headers: Headers<Response>
 
-    public var status: HttpStatus {
+    public var status: HTTPStatus {
         get {
             let value = try? response.getStatus()
             return value ?? 200
@@ -33,9 +33,9 @@ public final class OutgoingResponse {
     }
 
     internal init() throws {
-        let response = try HttpResponse()
+        let response = try Response()
         self.response = response
-        self.body = WritableBody(try HttpBody())
+        self.body = WritableBody(try Body())
         self.headers = Headers(response)
     }
 
@@ -71,7 +71,7 @@ public final class OutgoingResponse {
     }
 
     @discardableResult
-    public func status(_ newValue: HttpStatus) -> Self {
+    public func status(_ newValue: HTTPStatus) -> Self {
         status = newValue
         return self
     }
@@ -83,7 +83,7 @@ public final class OutgoingResponse {
     }
 
     @discardableResult
-    public func header(_ name: HttpHeader, _ value: String?) -> Self {
+    public func header(_ name: HTTPHeader, _ value: String?) -> Self {
         headers[name] = value
         return self
     }
@@ -266,10 +266,10 @@ extension OutgoingResponse {
     @discardableResult
     public func cors(
         origin: String = "*",
-        methods: [HttpMethod] = [.get, .head, .put, .patch, .post, .delete, .query],
-        allowHeaders: [HttpHeaderRepresentable]? = nil,
+        methods: [HTTPMethod] = [.get, .head, .put, .patch, .post, .delete, .query],
+        allowHeaders: [HTTPHeaderRepresentable]? = nil,
         allowCredentials: Bool? = nil,
-        exposeHeaders: [HttpHeaderRepresentable]? = nil,
+        exposeHeaders: [HTTPHeaderRepresentable]? = nil,
         maxAge: Int = 600
     ) -> Self {
         headers[.accessControlAllowOrigin] = origin
