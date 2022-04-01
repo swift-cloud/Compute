@@ -68,6 +68,7 @@ public enum HttpHeader: String, HttpHeaderRepresentable, Sendable {
     case accessControlAllowOrigin = "access-control-allow-origin"
     case accessControlExposeHeaders = "access-control-expose-headers"
     case accessControlMaxAge = "access-control-max-age"
+    case altSvc = "alt-svc"
     case age = "age"
     case authorization = "authorization"
     case cacheControl = "cache-control"

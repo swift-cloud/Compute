@@ -281,3 +281,14 @@ extension OutgoingResponse {
         return self
     }
 }
+
+// MARK: - HTTP3
+
+extension OutgoingResponse {
+
+    @discardableResult
+    public func upgradeToHTTP3(maxAge: Int = 86400) -> Self {
+        headers[.altSvc] = #"h3=":443"; ma=\#(maxAge), h3-29=":443"; ma=\#(maxAge), h3-27=":443"; ma=\#(maxAge)"#
+        return self
+    }
+}
