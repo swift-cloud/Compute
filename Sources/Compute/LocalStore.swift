@@ -31,6 +31,10 @@ public struct LocalStore: Sendable {
         }
     }
 
+    public func remove(_ key: String) throws {
+        try store.remove(key)
+    }
+
     public func insert(_ key: String, bytes: [UInt8], maxAge: Int = .max) throws {
         try store.insert(key, bytes: bytes, maxAge: maxAge)
     }

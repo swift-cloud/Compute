@@ -40,4 +40,8 @@ public struct Store: Sendable {
         try body.write(bytes)
         try insert(key, body: body, maxAge: maxAge)
     }
+
+    public func remove(_ key: String) throws {
+        try wasi(fastly_kv__remove(handle, key, key.utf8.count))
+    }
 }
