@@ -293,8 +293,8 @@ extension OutgoingResponse {
 extension OutgoingResponse {
 
     @discardableResult
-    public func upgradeToHTTP3(maxAge: Int = 2592000) -> Self {
-        headers[.altSvc] = #"h3=":443"; ma=\#(maxAge),h3-29=":443"; ma=\#(maxAge),h3-Q050=":443"; ma=\#(maxAge),h3-Q046=":443"; ma=\#(maxAge),h3-Q043=":443"; ma=\#(maxAge),quic=":443"; ma=\#(maxAge); v="46,43""#
+    public func upgradeToHTTP3(maxAge: Int = 86400) -> Self {
+        headers[.altSvc] = #"h3=":443";ma=\#(maxAge),h3-29=":443";ma=\#(maxAge),h3-27=":443";ma=\#(maxAge)"#
         return self
     }
 }
