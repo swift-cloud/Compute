@@ -249,7 +249,8 @@ extension OutgoingResponse {
     public func proxy(_ response: FetchResponse, streaming: Bool = true) async throws {
         status = response.status
         for (key, value) in response.headers.entries() {
-            headers[key] = value
+            guard invalidProxyHeaders.contains(key) == false else { continue }
+            headers[key] = headers[key] ?? value
         }
         if streaming {
             try await append(response.body).end()
@@ -258,6 +259,11 @@ extension OutgoingResponse {
         }
     }
 }
+
+private let invalidProxyHeaders: Set<String> = [
+    HTTPHeader.altSvc.rawValue,
+    HTTPHeader.transferEncoding.rawValue
+]
 
 // MARK: - CORS
 
