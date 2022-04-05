@@ -198,10 +198,6 @@ public enum HTTPStatus: Int, Sendable {
     case connectionTimedOut = 522
     case networkReadTimeoutErrorUnknown = 598
     case networkConnectTimeoutErrorUnknown = 599
-
-    public var intValue: Int {
-        rawValue
-    }
 }
 
 public enum BodyWriteEnd: Int32, Sendable {
