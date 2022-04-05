@@ -83,18 +83,6 @@ public final class Router {
 
 extension Router {
 
-    public func run(_ req: IncomingRequest, _ res: OutgoingResponse) async throws {
-        guard let (handler, pathParams) = handler(for: req) else {
-            return try await res.status(404).send("Not Found: \(req.url.path)")
-        }
-        var req = req
-        req.pathParams = pathParams
-        try await handler(req, res)
-    }
-}
-
-extension Router {
-
     @discardableResult
     public func get(_ path: String, _ handler: @escaping Handler) -> Self {
         add(method: .head, path: path) { req, res in
@@ -132,5 +120,17 @@ extension Router {
     @discardableResult
     public func head(_ path: String, _ handler: @escaping Handler) -> Self {
         return add(method: .head, path: path, handler: handler)
+    }
+}
+
+extension Router {
+
+    public func run(_ req: IncomingRequest, _ res: OutgoingResponse) async throws {
+        guard let (handler, pathParams) = handler(for: req) else {
+            return try await res.status(404).send("Not Found: \(req.url.path)")
+        }
+        var req = req
+        req.pathParams = pathParams
+        try await handler(req, res)
     }
 }

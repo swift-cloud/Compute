@@ -21,13 +21,13 @@ public struct Response: Sendable {
         self.handle = handle
     }
 
-    public func getStatus() throws -> HTTPStatus {
+    public func getStatus() throws -> Int {
         var status: Int32 = 0
         try wasi(fastly_http_resp__status_get(handle, &status))
         return .init(status)
     }
 
-    public mutating func setStatus(_ newValue: HTTPStatus) throws {
+    public mutating func setStatus(_ newValue: Int) throws {
         try wasi(fastly_http_resp__status_set(handle, .init(newValue)))
     }
 

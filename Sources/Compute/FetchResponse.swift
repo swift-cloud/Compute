@@ -17,7 +17,7 @@ public struct FetchResponse: Sendable {
 
     public let headers: Headers<Response>
 
-    public let status: HTTPStatus
+    public let status: Int
 
     public var ok: Bool {
         return status >= 200 && status <= 299

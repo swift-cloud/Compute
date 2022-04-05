@@ -15,6 +15,7 @@ public struct IncomingRequest: Sendable {
 
     public let searchParams: [String: String]
 
+    /// `pathParams` will only be set when used with a `Router`
     public internal(set) var pathParams: [String: String] = [:]
 
     public let body: ReadableBody
