@@ -13,7 +13,7 @@ public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ re
     let req = try IncomingRequest()
 
     // Create downstream response
-    let res = try OutgoingResponse()
+    let res = try OutgoingResponse(writableBody: req.method != .head)
 
     do {
         // Check for special compute request, useful for pre-warming

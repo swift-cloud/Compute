@@ -15,12 +15,16 @@ public actor WritableBody: Sendable {
 
     internal private(set) var body: Body
 
-    internal init(_ body: Body) {
+    internal let writable: Bool
+
+    internal init(_ body: Body, writable: Bool = true) {
         self.body = body
+        self.writable = writable
     }
 
-    internal init(_ bodyHandle: BodyHandle) {
+    internal init(_ bodyHandle: BodyHandle, writable: Bool = true) {
         self.body = .init(bodyHandle)
+        self.writable = writable
     }
 
     public func close() throws {
@@ -31,10 +35,12 @@ public actor WritableBody: Sendable {
 extension WritableBody {
 
     public func append(_ source: isolated ReadableBody) throws {
+        guard writable else { return }
         try body.append(source.body)
     }
 
     public func pipeFrom(_ source: isolated ReadableBody, preventClose: Bool = false) throws {
+        guard writable else { return }
         try source.pipeTo(self, preventClose: preventClose)
     }
 }
@@ -67,6 +73,7 @@ extension WritableBody {
     }
 
     public func write(_ bytes: [UInt8]) throws {
+        guard writable else { return }
         try body.write(bytes)
     }
 }

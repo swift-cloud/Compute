@@ -85,10 +85,7 @@ extension Router {
 
     @discardableResult
     public func get(_ path: String, _ handler: @escaping Handler) -> Self {
-        add(method: .head, path: path) { req, res in
-            try await handler(req, res)
-            try await res.send()
-        }
+        add(method: .head, path: path, handler: handler)
         return add(method: .get, path: path, handler: handler)
     }
 

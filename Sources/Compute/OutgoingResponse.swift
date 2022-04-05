@@ -32,10 +32,10 @@ public final class OutgoingResponse {
         set { headers[.contentType] = newValue }
     }
 
-    internal init() throws {
+    internal init(writableBody: Bool) throws {
         let response = try Response()
         self.response = response
-        self.body = WritableBody(try Body())
+        self.body = WritableBody(try Body(), writable: writableBody)
         self.headers = Headers(response)
     }
 
