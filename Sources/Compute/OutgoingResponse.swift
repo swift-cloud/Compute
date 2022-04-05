@@ -17,7 +17,7 @@ public final class OutgoingResponse {
 
     public private(set) var headers: Headers<Response>
 
-    public var status: HTTPStatus {
+    public var status: Int {
         get {
             let value = try? response.getStatus()
             return value ?? 200
@@ -71,8 +71,14 @@ public final class OutgoingResponse {
     }
 
     @discardableResult
-    public func status(_ newValue: HTTPStatus) -> Self {
+    public func status(_ newValue: Int) -> Self {
         status = newValue
+        return self
+    }
+
+    @discardableResult
+    public func status(_ newValue: HTTPStatus) -> Self {
+        status = newValue.rawValue
         return self
     }
 
@@ -249,7 +255,8 @@ extension OutgoingResponse {
     public func proxy(_ response: FetchResponse, streaming: Bool = true) async throws {
         status = response.status
         for (key, value) in response.headers.entries() {
-            headers[key] = value
+            guard invalidProxyHeaders.contains(key) == false else { continue }
+            headers[key] = headers[key] ?? value
         }
         if streaming {
             try await append(response.body).end()
@@ -258,6 +265,11 @@ extension OutgoingResponse {
         }
     }
 }
+
+private let invalidProxyHeaders: Set<String> = [
+    HTTPHeader.altSvc.rawValue,
+    HTTPHeader.transferEncoding.rawValue
+]
 
 // MARK: - CORS
 
@@ -288,7 +300,7 @@ extension OutgoingResponse {
 
     @discardableResult
     public func upgradeToHTTP3(maxAge: Int = 86400) -> Self {
-        headers[.altSvc] = #"h3=":443"; ma=\#(maxAge), h3-29=":443"; ma=\#(maxAge), h3-27=":443"; ma=\#(maxAge)"#
+        headers[.altSvc] = #"h3=":443";ma=\#(maxAge),h3-29=":443";ma=\#(maxAge),h3-27=":443";ma=\#(maxAge)"#
         return self
     }
 }
