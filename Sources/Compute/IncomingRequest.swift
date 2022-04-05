@@ -15,6 +15,8 @@ public struct IncomingRequest: Sendable {
 
     public let searchParams: [String: String]
 
+    public internal(set) var pathParams: [String: String] = [:]
+
     public let body: ReadableBody
 
     public let method: HTTPMethod
