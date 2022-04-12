@@ -22,17 +22,12 @@ public struct Store: Sendable {
     }
 
     public func lookup(_ key: String) throws -> Body? {
-        var bodyHandle: BodyHandle = 0
         do {
+            var bodyHandle: BodyHandle = InvalidWasiHandle
             try wasi(fastly_kv__lookup(handle, key, key.utf8.count, &bodyHandle))
-            print("bodyHandle[ok]:", bodyHandle)
-            return Body(bodyHandle)
+            return bodyHandle == InvalidWasiHandle ? nil : Body(bodyHandle)
         } catch WasiStatus.none {
-            print("bodyHandle[none]:", bodyHandle)
             return nil
-        } catch {
-            print("bodyHandle[error]:", bodyHandle, error)
-            throw error
         }
     }
 
