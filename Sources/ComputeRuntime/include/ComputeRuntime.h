@@ -49,7 +49,7 @@ WASM_IMPORT("fastly_kv", "open")
 int fastly_kv__open(const char* name, size_t name_len, uint32_t* handle);
 
 WASM_IMPORT("fastly_kv", "lookup")
-int fastly_kv__lookup(uint32_t handle, const char* key, size_t key_len, int* body_handle);
+int fastly_kv__lookup(uint32_t handle, const char* key, size_t key_len, uint32_t* body_handle);
 
 WASM_IMPORT("fastly_kv", "insert")
 int fastly_kv__insert(uint32_t handle, const char* key, size_t key_len, uint32_t body_handle, uint32_t max_age, uint32_t* inserted);
