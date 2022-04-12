@@ -54,8 +54,9 @@ int fastly_kv__lookup(int handle, const char* key, size_t key_len, int* body_han
 WASM_IMPORT("fastly_kv", "insert")
 int fastly_kv__insert(int handle, const char* key, size_t key_len, int body_handle, uint32_t max_age, uint32_t* inserted);
 
-WASM_IMPORT("fastly_kv", "remove")
-int fastly_kv__remove(int handle, const char* key, size_t key_len);
+// TODO: Enable remove once fastly adds the host call
+// WASM_IMPORT("fastly_kv", "remove")
+// int fastly_kv__remove(int handle, const char* key, size_t key_len);
 
 /* FASTLY_HTTP_BODY */
 
