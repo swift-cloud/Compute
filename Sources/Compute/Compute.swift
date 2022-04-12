@@ -13,7 +13,7 @@ public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ re
     let req = try IncomingRequest()
 
     // Create downstream response
-    let res = try OutgoingResponse()
+    let res = try OutgoingResponse(writableBody: req.method != .head)
 
     do {
         // Check for special compute request, useful for pre-warming
@@ -25,7 +25,7 @@ public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ re
         try await handler(req, res)
     } catch {
         // Catch handler error by returning a 500
-        print("onIncomingRequest:error", error.localizedDescription)
+        console.error("onIncomingRequest:error", error.localizedDescription)
         try await res.status(500).send("Server error: \(error.localizedDescription)")
     }
 }

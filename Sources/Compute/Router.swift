@@ -30,13 +30,13 @@ public final class Router {
     }
 
     internal func handler(for req: IncomingRequest) -> (handler: Handler, pathComponents: PathParameters)? {
-        guard let _handlers = handlers[req.method.rawValue] else {
+        guard let handlers = handlers[req.method.rawValue] else {
             return nil
         }
 
-        let parts = req.url.path.components(separatedBy: "/").filter { $0.count > 0 }
+        let parts = req.url.path.components(separatedBy: "/").filter { $0.isEmpty == false }
 
-        for handler in _handlers {
+        for handler in handlers {
             if isMatchingPath(internalComponents: handler.paths, externalComponents: parts) {
                 let pathParamaters = parsePathParameters(internalComponents: handler.paths, externalComponents: parts)
                 return (handler.handler, pathParamaters)
@@ -85,10 +85,7 @@ extension Router {
 
     @discardableResult
     public func get(_ path: String, _ handler: @escaping Handler) -> Self {
-        add(method: .head, path: path) { req, res in
-            try await handler(req, res)
-            try await res.send()
-        }
+        add(method: .head, path: path, handler: handler)
         return add(method: .get, path: path, handler: handler)
     }
 
@@ -120,6 +117,14 @@ extension Router {
     @discardableResult
     public func head(_ path: String, _ handler: @escaping Handler) -> Self {
         return add(method: .head, path: path, handler: handler)
+    }
+
+    @discardableResult
+    public func all(_ path: String, _ handler: @escaping Handler) -> Self {
+        for method in HTTPMethod.allCases {
+            add(method: method, path: path, handler: handler)
+        }
+        return self
     }
 }
 

@@ -33,7 +33,7 @@ public enum HTTPVersion: Int32, Sendable {
     case h3
 }
 
-public enum HTTPMethod: String, Sendable {
+public enum HTTPMethod: String, Sendable, CaseIterable {
     case get = "GET"
     case post = "POST"
     case put = "PUT"
