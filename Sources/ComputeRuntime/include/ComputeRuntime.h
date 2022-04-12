@@ -17,9 +17,7 @@
 
 #define WASM_IMPORT(module, name) __attribute__((import_module(module), import_name(name)))
 
-typedef struct {
-    uint32_t handle;
-} WasiHandle;
+typedef uint32_t WasiHandle;
 
 /* FASTLY_ABI */
 
