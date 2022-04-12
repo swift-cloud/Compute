@@ -36,7 +36,7 @@ func fastly_geo__lookup(_ ip: UnsafePointer<UInt8>!, _ ip_len: Int, _ value: Uns
 
 func fastly_kv__open(_ name: UnsafePointer<CChar>!, _ name_len: Int, _ handle: UnsafeMutablePointer<WasiHandle>!) -> Int32 { fatalError() }
 
-func fastly_kv__lookup(_ handle: WasiHandle, _ key: UnsafePointer<CUnsignedChar>!, _ key_len: UInt32, _ body_handle: UnsafeMutablePointer<WasiHandle>!) -> Int32 { fatalError() }
+func fastly_kv__lookup(_ handle: WasiHandle, _ key: UnsafePointer<CChar>!, _ key_len: Int, _ body_handle: UnsafeMutablePointer<WasiHandle>!) -> Int32 { fatalError() }
 
 func fastly_kv__insert(_ handle: WasiHandle, _ key: UnsafePointer<CChar>!, _ key_len: Int, _ body_handle: WasiHandle, _ max_age: UInt32, _ inserted: UnsafeMutablePointer<WasiHandle>!) -> Int32 { fatalError() }
 
