@@ -16,17 +16,23 @@ public struct Store: Sendable {
     internal init(name: String) throws {
         var handle: StoreHandle = 0
         try wasi(fastly_kv__open(name, name.utf8.count, &handle))
+        print("store handle:", handle)
         self.handle = handle
         self.name = name
     }
 
     public func lookup(_ key: String) throws -> Body? {
+        var bodyHandle: BodyHandle = 0
         do {
-            var bodyHandle: BodyHandle = 0
             try wasi(fastly_kv__lookup(handle, key, key.utf8.count, &bodyHandle))
+            print("bodyHandle[ok]:", bodyHandle)
             return Body(bodyHandle)
         } catch WasiStatus.none {
+            print("bodyHandle[none]:", bodyHandle)
             return nil
+        } catch {
+            print("bodyHandle[error]:", bodyHandle)
+            throw error
         }
     }
 
