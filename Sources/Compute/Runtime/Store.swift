@@ -42,6 +42,7 @@ public struct Store: Sendable {
     }
 
     public func remove(_ key: String) throws {
-        try wasi(fastly_kv__remove(handle, key, key.utf8.count))
+        // TODO: Enable remove once fastly adds the host call
+        // try wasi(fastly_kv__remove(handle, key, key.utf8.count))
     }
 }

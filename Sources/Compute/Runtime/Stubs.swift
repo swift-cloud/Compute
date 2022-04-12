@@ -40,7 +40,8 @@ func fastly_kv__lookup(_ handle: Int32, _ key: UnsafePointer<CChar>!, _ key_len:
 
 func fastly_kv__insert(_ handle: Int32, _ key: UnsafePointer<CChar>!, _ key_len: Int, _ body_handle: Int32, _ max_age: UInt32, _ inserted: UnsafeMutablePointer<UInt32>!) -> Int32 { fatalError() }
 
-func fastly_kv__remove(_ handle: Int32, _ key: UnsafePointer<CChar>!, _ key_len: Int) -> Int32 { fatalError() }
+// TODO: Enable remove once fastly adds the host call
+// func fastly_kv__remove(_ handle: Int32, _ key: UnsafePointer<CChar>!, _ key_len: Int) -> Int32 { fatalError() }
 
 /* FASTLY_HTTP_BODY */
 
