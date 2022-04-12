@@ -7,7 +7,9 @@
 
 import ComputeRuntime
 
-public typealias WasiHandle = Int32
+public typealias WasiHandle = UInt32
+
+public let InvalidWasiHandle = UInt32.max - 1
 
 public enum WasiStatus: Int32, Error, CaseIterable, Sendable {
     case ok = 0
