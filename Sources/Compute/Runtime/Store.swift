@@ -30,9 +30,6 @@ public struct Store: Sendable {
         } catch WasiStatus.none {
             print("bodyHandle[none]:", bodyHandle)
             return nil
-        } catch WasiStatus.invalidArgument {
-            print("bodyHandle[invalidArgument]:", bodyHandle)
-            return nil
         } catch {
             print("bodyHandle[error]:", bodyHandle, error)
             throw error
