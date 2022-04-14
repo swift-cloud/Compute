@@ -27,7 +27,7 @@ public struct ObjectStore: Sendable {
     }
 
     public func has(_ key: String) async throws -> Bool {
-        switch try await lookup(key) {
+        switch try store.lookup(key) {
         case .some:
             return true
         case .none:
