@@ -16,7 +16,6 @@ public struct Store: Sendable {
     internal init(name: String) throws {
         var handle: StoreHandle = 0
         try wasi(fastly_kv__open(name, name.utf8.count, &handle))
-        print("store handle:", handle)
         self.handle = handle
         self.name = name
     }
