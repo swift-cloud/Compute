@@ -7,7 +7,9 @@
 
 import ComputeRuntime
 
-public typealias WasiHandle = Int32
+public typealias WasiHandle = UInt32
+
+public let InvalidWasiHandle = UInt32.max - 1
 
 public enum WasiStatus: Int32, Error, CaseIterable, Sendable {
     case ok = 0
@@ -236,6 +238,8 @@ public typealias EndpointHandle = WasiHandle
 
 public typealias DictionaryHandle = WasiHandle
 
+public typealias StoreHandle = WasiHandle
+
 public typealias MultiValueCursor = Int32
 
 public typealias MultiValueCursorResult = Int64
@@ -294,3 +298,5 @@ public let maxIpLookupLength = 2048
 public let maxDictionaryEntryLength = 8000
 
 public let highWaterMark = 4096
+
+public let localStoreName = "__fastly-local-store"

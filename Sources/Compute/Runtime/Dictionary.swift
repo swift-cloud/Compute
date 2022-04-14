@@ -10,11 +10,14 @@ import ComputeRuntime
 public struct Dictionary: Sendable {
     
     internal let handle: DictionaryHandle
+
+    public let name: String
     
     public init(name: String) throws {
         var handle: DictionaryHandle = 0
         try wasi(fastly_dictionary__open(name, name.utf8.count, &handle))
         self.handle = handle
+        self.name = name
     }
 
     public func get(_ key: String) -> String? {
