@@ -19,7 +19,7 @@ public struct ObjectStore: Sendable {
         store.name
     }
 
-    public func lookup(_ key: String) async throws -> ReadableBody? {
+    public func get(_ key: String) async throws -> ReadableBody? {
         guard let body = try store.lookup(key) else {
             return nil
         }
