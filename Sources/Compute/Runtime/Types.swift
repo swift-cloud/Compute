@@ -101,11 +101,15 @@ public enum HTTPHeader: String, HTTPHeaderRepresentable, Sendable {
     case server = "server"
     case setCookie = "set-cookie"
     case surrogateControl = "surrogate-control"
+    case surrogateKey = "surrogate-key"
+    case trailer = "trailer"
     case transferEncoding = "transfer-encoding"
+    case upgrade = "upgrade"
     case userAgent = "user-agent"
     case vary = "vary"
     case via = "via"
     case xCache = "x-cache"
+    case xCacheHits = "x-cache-hits"
 
     public var stringValue: String {
         rawValue
