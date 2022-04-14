@@ -100,6 +100,7 @@ public enum HTTPHeader: String, HTTPHeaderRepresentable, Sendable {
     case refererPolicy = "referer-policy"
     case server = "server"
     case setCookie = "set-cookie"
+    case surrogateControl = "surrogate-control"
     case transferEncoding = "transfer-encoding"
     case userAgent = "user-agent"
     case vary = "vary"
