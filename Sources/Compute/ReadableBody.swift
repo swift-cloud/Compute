@@ -65,6 +65,15 @@ extension ReadableBody {
         return try json() as! [Sendable]
     }
 
+    public func formValues() throws -> [String: String] {
+        let query = try text()
+        let components = URLComponents(string: "?\(query)")
+        let queryItems = components?.queryItems ?? []
+        return queryItems.reduce(into: [:]) { values, item in
+            values[item.name] = item.value
+        }
+    }
+
     public func text() throws -> String {
         let data = try data()
         return String(data: data, encoding: .utf8) ?? ""
