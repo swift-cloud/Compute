@@ -107,8 +107,12 @@ public final class OutgoingResponse {
 
 extension OutgoingResponse {
 
-    public func send<T>(_ value: T, encoder: JSONEncoder = .init()) async throws where T: Encodable & Sendable {
-        try defaultContentType("application/json")
+    public func send<T>(
+        _ value: T,
+        encoder: JSONEncoder = .init(),
+        contentType: String = "application/json"
+    ) async throws where T: Encodable & Sendable {
+        try defaultContentType(contentType)
         try await body.write(value, encoder: encoder)
         try await sendAndClose()
     }
