@@ -15,6 +15,8 @@ public actor ReadableBody: Sendable {
 
     internal private(set) var body: Body
 
+    private var _bytes: [UInt8]? = nil
+
     internal init(_ body: Body) {
         self.body = body
     }
@@ -74,11 +76,24 @@ extension ReadableBody {
     }
 
     public func bytes() throws -> [UInt8] {
+        // Check if we've already ready the bytes from this stream
+        if let _bytes = _bytes {
+            return _bytes
+        }
+
+        // Create new bytes array
         var bytes: [UInt8] = []
+
+        // Scan all bytes into new bytes array
         try body.read { chunk in
             bytes.append(contentsOf: chunk)
             return .continue
         }
+
+        // Save bytes for future reads
+        _bytes = bytes
+
+        // Return new bytes array
         return bytes
     }
 }
