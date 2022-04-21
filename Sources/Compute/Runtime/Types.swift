@@ -251,11 +251,11 @@ public typealias MultiValueCursorResult = Int64
 public typealias CacheOverrideTag = UInt32
 
 extension CacheOverrideTag {
-    public static let none: Self = 1
-    public static let pass: Self = 2
-    public static let ttl: Self = 4
-    public static let staleWhileRevalidate: Self = 8
-    public static let pci: Self = 10
+    public static let none: Self = 0
+    public static let pass: Self = 1 << 0
+    public static let ttl: Self = 1 << 1
+    public static let staleWhileRevalidate: Self = 1 << 2
+    public static let pci: Self = 1 << 3
 }
 
 public enum CachePolicy: Sendable {
