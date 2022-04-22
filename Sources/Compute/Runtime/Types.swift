@@ -254,7 +254,7 @@ extension CacheOverrideTag {
     public static let none: Self = 0
     public static let pass: Self = 1 << 0
     public static let ttl: Self = 1 << 1
-    public static let staleWhileRevalidate: Self = 1 << 2
+    public static let swr: Self = 1 << 2
     public static let pci: Self = 1 << 3
 }
 

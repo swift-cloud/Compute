@@ -79,7 +79,7 @@ public struct Request: Sendable {
             ttl = 0
             swr = 0
         case .ttl(let seconds, let staleWhileRevalidate, let pciCompliant):
-            tag = .ttl | (staleWhileRevalidate > 0 ? .staleWhileRevalidate : 0) | (pciCompliant ? .pci : 0)
+            tag = .ttl | (staleWhileRevalidate > 0 ? .swr : 0) | (pciCompliant ? .pci : 0)
             ttl = .init(seconds)
             swr = .init(staleWhileRevalidate)
         }
