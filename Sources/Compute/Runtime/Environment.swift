@@ -7,7 +7,7 @@
 
 import Foundation
 
-@propertyWrapper public struct EnvironmentVariable<Value: Sendable>: Sendable {
+@propertyWrapper public struct EnvironmentVariable<Value> {
     
     public let key: String
 
@@ -23,6 +23,8 @@ import Foundation
         self.wrappedValue = Environment.get(key)
     }
 }
+
+extension EnvironmentVariable: Sendable where Value: Sendable {}
 
 public struct Environment: Sendable {
 
