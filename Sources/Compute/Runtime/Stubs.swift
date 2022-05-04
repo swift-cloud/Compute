@@ -111,6 +111,8 @@ func fastly_http_req__auto_decompress_response_set(_ req_handle: WasiHandle, _ e
 
 func fastly_http_req__framing_headers_mode_set(_ req_handle: WasiHandle, _ mode: UInt32) -> Int32 { fatalError() }
 
+func fastly_http_req__upgrade_websocket(_ backend: UnsafePointer<CChar>!, _ backend_len: Int) -> Int32 { fatalError() }
+
 /* FASTLY_HTTP_RESP */
 
 func fastly_http_resp__new(_ handle: UnsafeMutablePointer<WasiHandle>!) -> Int32 { fatalError() }

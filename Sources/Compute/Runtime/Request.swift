@@ -193,3 +193,10 @@ extension Request {
         return bytes.split { $0 == 0 }.compactMap { String(bytes: $0, encoding: .utf8) }
     }
 }
+
+extension Request {
+
+    public static func upgradeWebsocket(backend: String) throws {
+        try wasi(fastly_http_req__upgrade_websocket(backend, backend.utf8.count))
+    }
+}

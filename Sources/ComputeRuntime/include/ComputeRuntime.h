@@ -177,6 +177,9 @@ int fastly_http_req__pending_req_select(WasiHandle req_handles[], size_t req_han
 WASM_IMPORT("fastly_http_req", "framing_headers_mode_set")
 int fastly_http_req__framing_headers_mode_set(WasiHandle req_handle, uint32_t mode);
 
+WASM_IMPORT("fastly_http_req", "upgrade_websocket")
+int fastly_http_req__upgrade_websocket(const char *backend, size_t backend_len);
+
 /* FASTLY_HTTP_RESP */
 
 WASM_IMPORT("fastly_http_resp", "new")
