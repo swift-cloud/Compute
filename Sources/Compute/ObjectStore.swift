@@ -35,10 +35,6 @@ public struct ObjectStore: Sendable {
         }
     }
 
-    public func remove(_ key: String) async throws {
-        try store.remove(key)
-    }
-
     public func insert(_ key: String, body: ReadableBody) async throws {
         try await store.insert(key, body: body.body, maxAge: 0)
     }
