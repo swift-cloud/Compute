@@ -16,6 +16,12 @@ Install the Compute runtime:
 .package(name: "Compute", url: "https://github.com/AndrewBarba/swift-compute-runtime", branch: "main")
 ```
 
+## Deploy
+
+The easiest way to deploy a Swift app to Fastly is through [Swift Cloud](https://swift.cloud).
+
+Swift Cloud is a fully managed platform as a service for deploying SwiftWasm apps to Fastly. You can connect your Github account and deploy your apps in 1 click.
+
 ## Documentation
 
 Complete documentation is very much a work in progress:
