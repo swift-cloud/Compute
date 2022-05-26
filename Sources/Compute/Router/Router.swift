@@ -22,17 +22,17 @@ public final class Router {
 
     @discardableResult
     private func add(method: HTTPMethod, path: String, handler: @escaping Handler) -> Self {
-        let pathComponents = buildFullPathComponents(method: method, path: path).map(PathComponent.init)
+        let pathComponents = buildPathComponents(method: method, path: path).map(PathComponent.init)
         router.register(handler, at: pathComponents)
         return self
     }
 
     private func handler(for req: inout IncomingRequest) -> Handler? {
-        let path = buildFullPathComponents(method: req.method, path: req.url.path)
+        let path = buildPathComponents(method: req.method, path: req.url.path)
         return router.route(path: path, parameters: &req.pathParams)
     }
 
-    private func buildFullPathComponents(method: HTTPMethod, path: String) -> [String] {
+    private func buildPathComponents(method: HTTPMethod, path: String) -> [String] {
         let parts = path.components(separatedBy: "/").filter { $0.isEmpty == false }
         return ["__\(method.rawValue)__", "__\(prefix)__"] + parts
     }
