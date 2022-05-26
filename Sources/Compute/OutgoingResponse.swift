@@ -129,8 +129,20 @@ extension OutgoingResponse {
         try await sendAndClose()
     }
 
-    public func send(_ text: String, html: Bool = false) async throws {
-        try defaultContentType(html ? "text/html" : "text/plain")
+    public func send(_ text: String) async throws {
+        try defaultContentType("text/plain")
+        let data = text.data(using: .utf8) ?? .init()
+        try await send(data)
+    }
+
+    public func send(html text: String) async throws {
+        try defaultContentType("text/html")
+        let data = text.data(using: .utf8) ?? .init()
+        try await send(data)
+    }
+
+    public func send(xml text: String) async throws {
+        try defaultContentType("application/xml")
         let data = text.data(using: .utf8) ?? .init()
         try await send(data)
     }
