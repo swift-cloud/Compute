@@ -15,26 +15,23 @@ public final class Router {
 
     private let router: TrieRouter<Handler>
 
-    public init(prefix path: String = "") {
+    public init(prefix path: String = "/") {
         self.prefix = path
         self.router = TrieRouter()
     }
 
     @discardableResult
     private func add(method: HTTPMethod, path: String, handler: @escaping Handler) -> Self {
-        let pathComponents = buildPathComponents(method: method, path: path).map(PathComponent.init)
-        router.register(handler, at: pathComponents)
+        let pathComponents = path.components(separatedBy: "/").filter { $0.isEmpty == false }
+        let prefixComponents = prefix.components(separatedBy: "/").filter { $0.isEmpty == false }
+        let combinedComponents = [method.rawValue] + prefixComponents + pathComponents
+        router.register(handler, at: combinedComponents.map { .init(stringLiteral: $0) })
         return self
     }
 
     private func handler(for req: inout IncomingRequest) -> Handler? {
-        let path = buildPathComponents(method: req.method, path: req.url.path)
-        return router.route(path: path, parameters: &req.pathParams)
-    }
-
-    private func buildPathComponents(method: HTTPMethod, path: String) -> [String] {
-        let parts = path.components(separatedBy: "/").filter { $0.isEmpty == false }
-        return ["__\(method.rawValue)__", "__\(prefix)__"] + parts
+        let pathComponents = req.url.pathComponents.dropFirst()
+        return router.route(path: [req.method.rawValue] + pathComponents, parameters: &req.pathParams)
     }
 }
 
