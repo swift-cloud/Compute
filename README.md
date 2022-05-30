@@ -2,6 +2,8 @@
 
 Swift runtime for Fastly Compute@Edge
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAndrewBarba%2Fswift-compute-runtime%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/AndrewBarba/swift-compute-runtime) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAndrewBarba%2Fswift-compute-runtime%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/AndrewBarba/swift-compute-runtime)
+
 ## Getting Started
 
 Create a new swift package using the `executable` template
