@@ -13,7 +13,13 @@ public final class OutgoingResponse {
 
     internal let body: WritableBody
 
-    private var didSendStream = false
+    internal var didSendAndClose = false
+
+    internal var didSendStream = false
+
+    internal var didSend: Bool {
+        didSendAndClose || didSendStream
+    }
 
     public private(set) var headers: Headers<Response>
 
@@ -48,6 +54,9 @@ public final class OutgoingResponse {
     }
 
     private func sendAndClose() async throws {
+        defer {
+            didSendAndClose = true
+        }
         try await response.send(body.body, streaming: false)
     }
 
