@@ -2,7 +2,7 @@
 
 Swift runtime for Fastly Compute@Edge
 
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAndrewBarba%2Fswift-compute-runtime%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/AndrewBarba/swift-compute-runtime) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAndrewBarba%2Fswift-compute-runtime%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/AndrewBarba/swift-compute-runtime)
+[![Compatibility Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAndrewBarba%2Fswift-compute-runtime%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/AndrewBarba/swift-compute-runtime) [![Platform Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAndrewBarba%2Fswift-compute-runtime%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/AndrewBarba/swift-compute-runtime)
 
 ## Getting Started
 
@@ -61,7 +61,7 @@ Swift on Compute@Edge is made possible by the incredible [SwiftWasm](https://swi
 
 The Compute package incldues an Express style router based on [Vapor's routing-kit](https://github.com/vapor/routing-kit). Here are some basic ways to use the router:
 
-### GET
+### GET Route
 
 ```swift
 import Compute
@@ -84,7 +84,7 @@ struct App {
 }
 ```
 
-### POST
+### POST Route
 
 ```swift
 import Compute
@@ -115,13 +115,13 @@ The Compute package provides the `fetch(_ url: String)` function for sending asy
 
 **Important:** In order to use `fetch` you must pre-define the hostnames that you will be calling out to. For example, if you are integrating with the Stripe API you must pre-define `api.stripe.com` in your Fastly service. Swift Cloud also makes this really easy to define all of your external origins when creating your project. We sincerely hope this is a short term limitation of the Fastly platform and believe they are working on a mechanism to call arbitrary backends without the need to pre-define them.
 
-### GET
+### GET Request
 
 ```swift
 let data = try await fetch("https://httpbin.org/json").json()
 ```
 
-### POST
+### POST Request
 
 ```swift
 let res = try await fetch("https://httpbin.org/json", .options(
