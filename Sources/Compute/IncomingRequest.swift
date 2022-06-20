@@ -66,4 +66,12 @@ public struct IncomingRequest: Sendable {
             return .localhost
         }
     }
+
+    public func isUpgradeWebsocketRequest() -> Bool {
+        return headers[.upgrade]?.lowercased() == "websocket" && headers[.connection]?.lowercased() == "upgrade"
+    }
+
+    public func upgradeWebsocket(backend: String) throws {
+        try request.upgradeWebsocket(backend: backend)
+    }
 }
