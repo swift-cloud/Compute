@@ -154,6 +154,10 @@ public struct Request: Sendable {
     public mutating func setFramingHeadersMode(_ newValue: FramingHeadersMode) throws {
         try wasi(fastly_http_req__framing_headers_mode_set(handle, newValue.rawValue))
     }
+
+    public func upgradeWebsocket(backend: String) throws {
+        try wasi(fastly_http_req__upgrade_websocket(backend, backend.utf8.count))
+    }
 }
 
 extension Request {
@@ -191,12 +195,5 @@ extension Request {
             cursor = .init(nextCursor)
         }
         return bytes.split { $0 == 0 }.compactMap { String(bytes: $0, encoding: .utf8) }
-    }
-}
-
-extension Request {
-
-    public static func upgradeWebsocket(backend: String) throws {
-        try wasi(fastly_http_req__upgrade_websocket(backend, backend.utf8.count))
     }
 }
