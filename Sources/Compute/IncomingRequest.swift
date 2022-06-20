@@ -60,7 +60,7 @@ public struct IncomingRequest: Sendable {
             return .v4(octets.map(String.init).joined(separator: "."))
         case 16:
             return .v6(octets.chunked(into: 2)
-                .map { $0.map { String(format: "%02X", $0) }.joined(separator: "") }
+                .map { $0.map { .init(format: "%02X", $0) }.joined(separator: "") }
                 .joined(separator: ":"))
         default:
             return .localhost
@@ -68,7 +68,9 @@ public struct IncomingRequest: Sendable {
     }
 
     public func isUpgradeWebsocketRequest() -> Bool {
-        return headers[.upgrade]?.lowercased() == "websocket" && headers[.connection]?.lowercased() == "upgrade"
+        let connection = headers[.connection, default: ""].lowercased()
+        let upgrade = headers[.upgrade, default: ""].lowercased()
+        return connection.contains("upgrade") && upgrade.contains("websocket")
     }
 
     public func upgradeWebsocket(backend: String) throws {
