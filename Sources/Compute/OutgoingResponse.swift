@@ -373,7 +373,7 @@ extension OutgoingResponse {
             case .httpOnly:
                 return "HttpOnly"
             case .maxAge(let seconds):
-                return "Max-Age=\(seconds)"
+                return "Max-Age=\(Int(seconds))"
             case .path(let path):
                 return "Path=\(path)"
             case .sameSite(let value):
