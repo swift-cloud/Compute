@@ -351,7 +351,7 @@ extension OutgoingResponse {
         // HttpOnly
         case httpOnly
 
-        // Max-Age
+        // Max-Age=
         case maxAge(_ seconds: TimeInterval)
 
         // Path=
@@ -403,7 +403,7 @@ extension OutgoingResponse {
         let encodedValue = value.addingPercentEncoding(withAllowedCharacters: .javascriptURLAllowed) ?? value
         let parts = ["\(encodedName)=\(encodedValue)"] + options.map(\.value)
         let header = parts.joined(separator: "; ")
-        headers.append(HTTPHeader.setCookie.rawValue, header)
+        headers.append(.setCookie, header)
         return self
     }
 }
