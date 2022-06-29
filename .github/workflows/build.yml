@@ -5,7 +5,7 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: swift:5.6
+    container: ghcr.io/swiftwasm/swift:5.6
 
     steps:
       - uses: actions/checkout@v2
