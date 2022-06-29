@@ -75,9 +75,10 @@ extension CharacterSet {
 
 extension DateFormatter {
 
-    static let httpDate: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E, dd MMM yyyy HH:mm:ss 'GMT'"
-        return formatter
-    }()
+// TODO: enable this once it's available in WASM
+//    static let httpDate: DateFormatter = {
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "E, dd MMM yyyy HH:mm:ss 'GMT'"
+//        return formatter
+//    }()
 }

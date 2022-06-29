@@ -345,7 +345,8 @@ extension OutgoingResponse {
         case domain(_ domain: String)
 
         // Expires=
-        case expires(_ date: Date)
+        // TODO: enable this once DateFormatter.dateFormat is available in WASM
+        // case expires(_ date: Date)
 
         // HttpOnly
         case httpOnly
@@ -366,8 +367,9 @@ extension OutgoingResponse {
             switch self {
             case .domain(let domain):
                 return "Domain=\(domain)"
-            case .expires(let date):
-                return "Expires=\(DateFormatter.httpDate.string(from: date))"
+            // TODO: enable this once DateFormatter.dateFormat is available in WASM
+            // case .expires(let date):
+            //     return "Expires=\(DateFormatter.httpDate.string(from: date))"
             case .httpOnly:
                 return "HttpOnly"
             case .maxAge(let seconds):
