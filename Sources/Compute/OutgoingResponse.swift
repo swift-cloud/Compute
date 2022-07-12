@@ -329,3 +329,81 @@ extension OutgoingResponse {
         return self
     }
 }
+
+// MARK: - Cookie
+
+extension OutgoingResponse {
+
+    public enum CookieOption {
+        public enum SameSite: String {
+            case strict = "Strict"
+            case lax = "Lax"
+            case none = "None"
+        }
+
+        // Domain=
+        case domain(_ domain: String)
+
+        // Expires=
+        // TODO: enable this once DateFormatter.dateFormat is available in WASM
+        // case expires(_ date: Date)
+
+        // HttpOnly
+        case httpOnly
+
+        // Max-Age=
+        case maxAge(_ seconds: TimeInterval)
+
+        // Path=
+        case path(_ path: String)
+
+        // SameSite=
+        case sameSite(_ value: SameSite)
+
+        // Secure
+        case secure
+
+        var value: String {
+            switch self {
+            case .domain(let domain):
+                return "Domain=\(domain)"
+            // TODO: enable this once DateFormatter.dateFormat is available in WASM
+            // case .expires(let date):
+            //     return "Expires=\(DateFormatter.httpDate.string(from: date))"
+            case .httpOnly:
+                return "HttpOnly"
+            case .maxAge(let seconds):
+                return "Max-Age=\(Int(seconds))"
+            case .path(let path):
+                return "Path=\(path)"
+            case .sameSite(let value):
+                return "SameSite=\(value.rawValue)"
+            case .secure:
+                return "Secure"
+            }
+        }
+    }
+
+    @discardableResult
+    public func cookie(
+        _ name: String,
+        _ value: String,
+        _ options: CookieOption...
+    ) -> Self {
+        return cookie(name, value, options)
+    }
+
+    @discardableResult
+    public func cookie(
+        _ name: String,
+        _ value: String,
+        _ options: [CookieOption]
+    ) -> Self {
+        let encodedName = name.addingPercentEncoding(withAllowedCharacters: .javascriptURLAllowed) ?? name
+        let encodedValue = value.addingPercentEncoding(withAllowedCharacters: .javascriptURLAllowed) ?? value
+        let parts = ["\(encodedName)=\(encodedValue)"] + options.map(\.value)
+        let header = parts.joined(separator: "; ")
+        headers.append(.setCookie, header)
+        return self
+    }
+}

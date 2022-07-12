@@ -54,6 +54,10 @@ public struct Headers<T>: Sendable where T: HeadersProvider {
         }
     }
 
+    public func get(_ name: HTTPHeader) -> String? {
+        return get(name.rawValue)
+    }
+
     public func get(_ name: String) -> String? {
         guard has(name) else {
             return nil
@@ -61,8 +65,16 @@ public struct Headers<T>: Sendable where T: HeadersProvider {
         return try? instance.getHeader(name.lowercased())
     }
 
+    public func has(_ name: HTTPHeader) -> Bool {
+        return has(name.rawValue)
+    }
+
     public func has(_ name: String) -> Bool {
         return keys().contains(name.lowercased())
+    }
+
+    public mutating func set(_ name: HTTPHeader, _ value: String?) {
+        set(name.rawValue, value)
     }
 
     public mutating func set(_ name: String, _ value: String?) {
@@ -73,8 +85,16 @@ public struct Headers<T>: Sendable where T: HeadersProvider {
         }
     }
 
+    public mutating func append(_ name: HTTPHeader, _ value: String) {
+        append(name.rawValue, value)
+    }
+
     public mutating func append(_ name: String, _ value: String) {
         try? instance.appendHeader(name.lowercased(), value)
+    }
+
+    public mutating func delete(_ name: HTTPHeader) {
+        delete(name.rawValue)
     }
 
     public mutating func delete(_ name: String) {
