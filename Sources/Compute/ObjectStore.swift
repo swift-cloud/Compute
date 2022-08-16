@@ -36,11 +36,11 @@ public struct ObjectStore: Sendable {
     }
 
     public func insert(_ key: String, body: ReadableBody) async throws {
-        try await store.insert(key, body: body.body, maxAge: 0)
+        try await store.insert(key, body: body.body)
     }
 
     public func insert(_ key: String, bytes: [UInt8]) async throws {
-        try store.insert(key, bytes: bytes, maxAge: 0)
+        try store.insert(key, bytes: bytes)
     }
 
     public func insert(_ key: String, data: Data) async throws {
