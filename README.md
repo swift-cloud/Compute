@@ -1,4 +1,4 @@
-# swift-compute-runtime
+# Compute
 
 Swift runtime for Fastly Compute@Edge
 
