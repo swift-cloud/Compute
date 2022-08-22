@@ -45,6 +45,17 @@ int fastly_log__write(WasiHandle handle, const char* msg, size_t msg_len, size_t
 WASM_IMPORT("fastly_geo", "lookup")
 int fastly_geo__lookup(const uint8_t* ip, size_t ip_len, uint8_t* value, size_t value_max_len, size_t* nwritten);
 
+/* FASTLY_OBJECT_STORE */
+
+WASM_IMPORT("fastly_object_store", "open")
+int fastly_object_store__open(const char* name, size_t name_len, WasiHandle* handle);
+
+WASM_IMPORT("fastly_object_store", "lookup")
+int fastly_object_store__lookup(WasiHandle handle, const char* key, size_t key_len, uint32_t* body_handle);
+
+WASM_IMPORT("fastly_object_store", "insert")
+int fastly_object_store__insert(WasiHandle handle, const char* key, size_t key_len, uint32_t body_handle);
+
 /* FASTLY_HTTP_BODY */
 
 WASM_IMPORT("fastly_http_body", "new")
