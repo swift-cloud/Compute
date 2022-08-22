@@ -18,12 +18,27 @@ public struct ObjectStore: Sendable {
     public var name: String {
         store.name
     }
+}
 
-    public func get(_ key: String) async throws -> ReadableBody? {
+// MARK: - Entry
+
+extension ObjectStore {
+
+    public struct Entry: Sendable {
+
+        public let body: ReadableBody
+    }
+}
+
+// MARK: - Read
+
+extension ObjectStore {
+
+    public func get(_ key: String) async throws -> Entry? {
         guard let body = try store.lookup(key) else {
             return nil
         }
-        return .init(body)
+        return .init(body: .init(body))
     }
 
     public func has(_ key: String) async throws -> Bool {
@@ -34,37 +49,42 @@ public struct ObjectStore: Sendable {
             return false
         }
     }
+}
 
-    public func insert(_ key: String, body: ReadableBody) async throws {
+// MARK: - Update
+
+extension ObjectStore {
+
+    public func put(_ key: String, body: ReadableBody) async throws {
         try await store.insert(key, body: body.body)
     }
 
-    public func insert(_ key: String, bytes: [UInt8]) async throws {
+    public func put(_ key: String, bytes: [UInt8]) async throws {
         try store.insert(key, bytes: bytes)
     }
 
-    public func insert(_ key: String, data: Data) async throws {
-        try await insert(key, bytes: .init(data))
+    public func put(_ key: String, data: Data) async throws {
+        try await put(key, bytes: .init(data))
     }
 
-    public func insert(_ key: String, text: String) async throws {
+    public func put(_ key: String, text: String) async throws {
         let data = text.data(using: .utf8) ?? .init()
-        try await insert(key, data: data)
+        try await put(key, data: data)
     }
 
-    public func insert(_ key: String, jsonObject: [String: Any]) async throws {
+    public func put(_ key: String, jsonObject: [String: Any]) async throws {
         let data = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
-        try await insert(key, data: data)
+        try await put(key, data: data)
     }
 
-    public func insert(_ key: String, jsonArray: [Any]) async throws {
+    public func put(_ key: String, jsonArray: [Any]) async throws {
         let data = try JSONSerialization.data(withJSONObject: jsonArray, options: [])
-        try await insert(key, data: data)
+        try await put(key, data: data)
     }
 
-    public func insert<T>(_ key: String, value: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
+    public func put<T>(_ key: String, value: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
         let data = try encoder.encode(value)
-        try await insert(key, data: data)
+        try await put(key, data: data)
     }
 }
 
