@@ -110,6 +110,42 @@ func fastly_http_req__framing_headers_mode_set(_ req_handle: WasiHandle, _ mode:
 
 func fastly_http_req__upgrade_websocket(_ backend: UnsafePointer<CChar>!, _ backend_len: Int) -> Int32 { fatalError() }
 
+func fastly_http_req__register_dynamic_backend(_ name: UnsafePointer<CChar>!, _ name_len: Int, _ target: UnsafePointer<CChar>!, _ target_len: Int, _ backend_config_mask: UInt32, _ backend_configuration: UnsafeMutablePointer<DynamicBackendConfig>!) -> Int32 { fatalError() }
+
+struct DynamicBackendConfig {
+    var host_override: UnsafePointer<CChar>!
+    var host_override_len: Int
+    var connect_timeout_ms: Int
+    var first_byte_timeout_ms: Int
+    var between_bytes_timeout_ms: Int
+    var ssl_min_version: Int
+    var ssl_max_version: Int
+    var sni_hostname: UnsafePointer<CChar>!
+    var sni_hostname_len: Int
+
+    init(
+        host_override: UnsafePointer<CChar>! = nil,
+        host_override_len: Int = 0,
+        connect_timeout_ms: Int = 0,
+        first_byte_timeout_ms: Int = 0,
+        between_bytes_timeout_ms: Int = 0,
+        ssl_min_version: Int = 0,
+        ssl_max_version: Int = 0,
+        sni_hostname: UnsafePointer<CChar>! = nil,
+        sni_hostname_len: Int = 0
+    ) {
+        self.host_override = host_override
+        self.host_override_len = host_override_len
+        self.connect_timeout_ms = connect_timeout_ms
+        self.first_byte_timeout_ms = first_byte_timeout_ms
+        self.between_bytes_timeout_ms = between_bytes_timeout_ms
+        self.ssl_min_version = ssl_min_version
+        self.ssl_max_version = ssl_max_version
+        self.sni_hostname = sni_hostname
+        self.sni_hostname_len = sni_hostname_len
+    }
+}
+
 /* FASTLY_HTTP_RESP */
 
 func fastly_http_resp__new(_ handle: UnsafeMutablePointer<WasiHandle>!) -> Int32 { fatalError() }
