@@ -72,7 +72,9 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     }
 
     // Register the backend
-    try httpRequest.registerDynamicBackend(name: request.backend, target: request.backend)
+    if Environment.Compute.viceroy {
+        try registerDynamicBackend(request.backend, for: httpRequest)
+    }
 
     // Issue async request
     let pendingRequest: PendingRequest
@@ -148,4 +150,19 @@ public func fetch (
         surrogateKey: options.surrogateKey,
         backend: options.backend
     ))
+}
+
+private var dynamicBackends: Set<String> = []
+
+private func registerDynamicBackend(_ backend: String, for request: Request) throws {
+    // Make sure we didn't already register the backend
+    guard dynamicBackends.contains(backend) == false else {
+        return
+    }
+
+    // Attempt to register the backend
+    try request.registerDynamicBackend(name: backend, target: backend)
+
+    // Mark the backend as registered
+    dynamicBackends.insert(backend)
 }

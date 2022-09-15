@@ -196,47 +196,43 @@ extension Request {
         try target.withCString { targetPointer in
 
             // host override
-//            mask.insert(.hostOverride)
-//            config.host_override = .init(mutating: targetPointer)
-//            config.host_override_len = .init(target.utf8.count)
-//            print("set host_override:", mask.rawValue, target, target.utf8.count)
+            mask.insert(.hostOverride)
+            config.host_override = targetPointer
+            config.host_override_len = target.utf8.count
 
-//            // connect timeout
-//            mask.insert(.connectTimeout)
-//            config.connect_timeout_ms = options.connectTimeoutMs
+            // connect timeout
+            mask.insert(.connectTimeout)
+            config.connect_timeout_ms = options.connectTimeoutMs
 
-//            // first byte timeout
-//            mask.insert(.firstByteTimeout)
-//            config.first_byte_timeout_ms = options.firstByteTimeoutMs
+            // first byte timeout
+            mask.insert(.firstByteTimeout)
+            config.first_byte_timeout_ms = options.firstByteTimeoutMs
 
-//            // between bytes timeout
-//            mask.insert(.betweenBytesTimeout)
-//            config.between_bytes_timeout_ms = options.betweenBytesTimeoutMs
+            // between bytes timeout
+            mask.insert(.betweenBytesTimeout)
+            config.between_bytes_timeout_ms = options.betweenBytesTimeoutMs
 
             // ssl
             if options.ssl {
                 mask.insert(.useSSL)
-                print("set ssl:", mask.rawValue)
 
-//                // ssl min version
-//                mask.insert(.sslMinVersion)
-//                config.ssl_min_version = options.sslMinVersion.rawValue
+                // ssl min version
+                mask.insert(.sslMinVersion)
+                config.ssl_min_version = options.sslMinVersion.rawValue
 
-//                // ssl max version
-//                mask.insert(.sslMaxVersion)
-//                config.ssl_max_version = options.sslMaxVersion.rawValue
+                // ssl max version
+                mask.insert(.sslMaxVersion)
+                config.ssl_max_version = options.sslMaxVersion.rawValue
 
-//                // cert hostname
-//                mask.insert(.certHostname)
-//                config.cert_hostname = .init(targetPointer)
-//                config.cert_hostname_len = target.utf8.count
-//                print("set cert_hostname:", mask.rawValue)
+                // cert hostname
+                mask.insert(.certHostname)
+                config.cert_hostname = targetPointer
+                config.cert_hostname_len = target.utf8.count
 
-//                // sni hostname
-//                mask.insert(.sniHostname)
-//                config.sni_hostname = .init(targetPointer)
-//                config.sni_hostname_len = target.utf8.count
-//                print("set sni_hostname:", mask.rawValue)
+                // sni hostname
+                mask.insert(.sniHostname)
+                config.sni_hostname = targetPointer
+                config.sni_hostname_len = target.utf8.count
             }
 
             try wasi(fastly_http_req__register_dynamic_backend(
