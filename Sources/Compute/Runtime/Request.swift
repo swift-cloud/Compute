@@ -188,7 +188,7 @@ extension Request {
     }
 
     public func registerDynamicBackend(name: String, target: String, options: DynamicBackendOptions = .init()) throws {
-        var mask: BackendConfigOptions = []
+        var mask: BackendConfigOptions = .hostOverride
 
         var config = DynamicBackendConfig()
 
@@ -196,9 +196,9 @@ extension Request {
         try target.withCString { targetPointer in
 
             // host override
-            mask = mask.union(.hostOverride)
             config.host_override = .init(targetPointer)
             config.host_override_len = target.utf8.count
+            print("set host_override:", mask.rawValue)
 
 //            // connect timeout
 //            mask = mask.union(.connectTimeout)
@@ -214,7 +214,7 @@ extension Request {
 
             // ssl
             if options.ssl {
-                mask = mask.union(.useSSL)
+                mask.insert(.useSSL)
                 print("set ssl:", mask.rawValue)
 
 //                // ssl min version
@@ -226,13 +226,13 @@ extension Request {
 //                config.ssl_max_version = options.sslMaxVersion.rawValue
 
                 // cert hostname
-                mask = mask.union(.certHostname)
+                mask.insert(.certHostname)
                 config.cert_hostname = .init(targetPointer)
                 config.cert_hostname_len = target.utf8.count
                 print("set cert_hostname:", mask.rawValue)
 
                 // sni hostname
-                mask = mask.union(.sniHostname)
+                mask.insert(.sniHostname)
                 config.sni_hostname = .init(targetPointer)
                 config.sni_hostname_len = target.utf8.count
                 print("set sni_hostname:", mask.rawValue)
