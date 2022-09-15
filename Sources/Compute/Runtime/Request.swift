@@ -190,11 +190,17 @@ extension Request {
     public func registerDynamicBackend(name: String, target: String, options: DynamicBackendOptions = .init()) throws {
         var mask: BackendConfigOptions = [
             .useSSL,
+            .connectTimeout,
+            .firstByteTimeout,
+            .betweenBytesTimeout
 //            .sslMinVersion,
 //            .sslMaxVersion
         ]
 
         var config = DynamicBackendConfig()
+        config.connect_timeout_ms = options.connectTimeoutMs
+        config.first_byte_timeout_ms = options.firstByteTimeoutMs
+        config.between_bytes_timeout_ms = options.betweenBytesTimeoutMs
 //        config.ssl_min_version = options.sslMinVersion.rawValue
 //        config.ssl_max_version = options.sslMaxVersion.rawValue
 
