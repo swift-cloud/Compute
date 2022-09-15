@@ -196,10 +196,10 @@ extension Request {
         try target.withCString { targetPointer in
 
             // host override
-            mask.insert(.hostOverride)
-            config.host_override = .init(mutating: targetPointer)
-            config.host_override_len = .init(target.utf8.count)
-            print("set host_override:", mask.rawValue, target, target.utf8.count)
+//            mask.insert(.hostOverride)
+//            config.host_override = .init(mutating: targetPointer)
+//            config.host_override_len = .init(target.utf8.count)
+//            print("set host_override:", mask.rawValue, target, target.utf8.count)
 
 //            // connect timeout
 //            mask.insert(.connectTimeout)
@@ -215,8 +215,8 @@ extension Request {
 
             // ssl
             if options.ssl {
-                mask.insert(.useSSL)
-                print("set ssl:", mask.rawValue)
+//                mask.insert(.useSSL)
+//                print("set ssl:", mask.rawValue)
 
 //                // ssl min version
 //                mask.insert(.sslMinVersion)
