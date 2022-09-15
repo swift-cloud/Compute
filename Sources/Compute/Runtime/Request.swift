@@ -199,7 +199,7 @@ extension Request {
 //            mask.insert(.hostOverride)
             config.host_override = .init(targetPointer)
             config.host_override_len = target.utf8.count
-            print("set host_override:", mask.rawValue)
+            print("set host_override:", mask.rawValue, target, target.utf8.count)
 
 //            // connect timeout
 //            mask = mask.union(.connectTimeout)
