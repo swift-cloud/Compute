@@ -67,7 +67,7 @@ public final class OutgoingResponse {
         defer {
             didSendStream = true
         }
-        if headers[.contentLength] != nil {
+        if headers[.contentLength] != nil, Environment.Compute.viceroy == false {
             try response.setFramingHeadersMode(.manuallyFromHeaders)
         }
         try await response.send(body.body, streaming: true)
