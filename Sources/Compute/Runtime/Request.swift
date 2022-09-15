@@ -66,7 +66,7 @@ public struct Request: Sendable {
     }
 
     public mutating func setCachePolicy(_ policy: CachePolicy, surrogateKey: String? = nil) throws {
-        let tag: CacheOverrideTag
+        var tag: CacheOverrideTag
         let ttl: UInt32
         let swr: UInt32
         switch policy {
@@ -79,14 +79,14 @@ public struct Request: Sendable {
             ttl = 0
             swr = 0
         case .ttl(let seconds, let staleWhileRevalidate, let pciCompliant):
-            tag = .ttl | (staleWhileRevalidate > 0 ? .swr : 0) | (pciCompliant ? .pci : 0)
+            tag = .ttl.union(staleWhileRevalidate > 0 ? .swr : .none).union(pciCompliant ? .pci : .none)
             ttl = .init(seconds)
             swr = .init(staleWhileRevalidate)
         }
         if let surrogateKey = surrogateKey {
-            try wasi(fastly_http_req__cache_override_v2_set(handle, tag, ttl, swr, surrogateKey, surrogateKey.utf8.count))
+            try wasi(fastly_http_req__cache_override_v2_set(handle, tag.rawValue, ttl, swr, surrogateKey, surrogateKey.utf8.count))
         } else {
-            try wasi(fastly_http_req__cache_override_set(handle, tag, ttl, swr))
+            try wasi(fastly_http_req__cache_override_set(handle, tag.rawValue, ttl, swr))
         }
     }
 
@@ -157,6 +157,55 @@ public struct Request: Sendable {
 
     public func upgradeWebsocket(backend: String) throws {
         try wasi(fastly_http_req__upgrade_websocket(backend, backend.utf8.count))
+    }
+}
+
+extension Request {
+
+    public struct DynamicBackendOptions {
+        public var hostOverride: String?
+        public var connectTimeoutMs: Double
+        public var firstByteTimeoutMs: Double
+        public var betweenBytesTimeoutMs: Double
+        public var sslMinVersion: TLSVersion
+        public var sslMaxVersion: TLSVersion
+        public var caCert: String?
+        public var ciphers: String?
+        public var sniHostname: String?
+
+        public init(
+            hostOverride: String? = nil,
+            connectTimeoutMs: Double = 1_000,
+            firstByteTimeoutMs: Double = 15_000,
+            betweenBytesTimeoutMs: Double = 10_000,
+            sslMinVersion: TLSVersion = .v1_1,
+            sslMaxVersion: TLSVersion = .v1_3,
+            caCert: String? = nil,
+            ciphers: String? = nil,
+            sniHostname: String? = nil
+        ) {
+            self.hostOverride = hostOverride
+            self.connectTimeoutMs = connectTimeoutMs
+            self.firstByteTimeoutMs = firstByteTimeoutMs
+            self.betweenBytesTimeoutMs = betweenBytesTimeoutMs
+            self.sslMinVersion = sslMinVersion
+            self.sslMaxVersion = sslMaxVersion
+            self.caCert = caCert
+            self.ciphers = ciphers
+            self.sniHostname = sniHostname
+        }
+    }
+
+    public func registerDynamicBackend(name: String, target: String, options: DynamicBackendOptions = .init()) throws {
+        var mask: BackendConfigOptions = []
+        var config = DynamicBackendConfig()
+        // host override
+        let ptr = UnsafePointer<CChar>(target)
+        defer { ptr.deallocate() }
+        mask = mask.union(.hostOverride)
+        config.host_override = ptr
+        config.host_override_len = target.utf8.count
+        try wasi(fastly_http_req__register_dynamic_backend(name, name.utf8.count, target, target.utf8.count, 0, &config))
     }
 }
 

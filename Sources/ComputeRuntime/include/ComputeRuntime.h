@@ -19,6 +19,24 @@
 
 typedef uint32_t WasiHandle;
 
+typedef struct {
+    const char* host_override;
+    size_t host_override_len;
+    size_t connect_timeout_ms;
+    size_t first_byte_timeout_ms;
+    size_t between_bytes_timeout_ms;
+    size_t ssl_min_version;
+    size_t ssl_max_version;
+    const char* cert_hostname;
+    size_t cert_hostname_len;
+    const char* ca_cert;
+    size_t ca_cert_len;
+    const char* ciphers;
+    size_t ciphers_len;
+    const char* sni_hostname;
+    size_t sni_hostname_len;
+} DynamicBackendConfig;
+
 /* FASTLY_ABI */
 
 WASM_IMPORT("fastly_abi", "init")
@@ -175,6 +193,14 @@ int fastly_http_req__framing_headers_mode_set(WasiHandle req_handle, uint32_t mo
 
 WASM_IMPORT("fastly_http_req", "upgrade_websocket")
 int fastly_http_req__upgrade_websocket(const char *backend, size_t backend_len);
+
+WASM_IMPORT("fastly_http_req", "register_dynamic_backend")
+int fastly_http_req__register_dynamic_backend(const char *name,
+                                              size_t name_len,
+                                              const char *target,
+                                              size_t target_len,
+                                              uint32_t backend_config_mask,
+                                              DynamicBackendConfig *backend_configuration);
 
 /* FASTLY_HTTP_RESP */
 

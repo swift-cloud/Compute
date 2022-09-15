@@ -248,14 +248,21 @@ public typealias MultiValueCursor = Int32
 
 public typealias MultiValueCursorResult = Int64
 
-public typealias CacheOverrideTag = UInt32
+public struct CacheOverrideTag: OptionSet {
+
+    public let rawValue: UInt32
+
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+}
 
 extension CacheOverrideTag {
-    public static let none: Self = 0
-    public static let pass: Self = 1 << 0
-    public static let ttl: Self = 1 << 1
-    public static let swr: Self = 1 << 2
-    public static let pci: Self = 1 << 3
+    public static let none: CacheOverrideTag = []
+    public static let pass = CacheOverrideTag(rawValue: 1 << 0)
+    public static let ttl = CacheOverrideTag(rawValue: 1 << 1)
+    public static let swr = CacheOverrideTag(rawValue: 1 << 2)
+    public static let pci = CacheOverrideTag(rawValue: 1 << 3)
 }
 
 public enum CachePolicy: Sendable {
@@ -286,9 +293,40 @@ public enum FramingHeadersMode: UInt32, Sendable {
     case manuallyFromHeaders = 1
 }
 
+public enum TLSVersion: UInt32, Sendable {
+    case v1 = 0
+    case v1_1 = 1
+    case v1_2 = 3
+    case v1_3 = 4
+}
+
 public enum BodyScanContinuation: Sendable {
     case `continue`
     case `break`
+}
+
+public struct BackendConfigOptions: OptionSet, Sendable {
+
+    public let rawValue: UInt32
+
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+}
+
+extension BackendConfigOptions {
+    public static let reserved: BackendConfigOptions = []
+    public static let hostOverride = BackendConfigOptions(rawValue: 1 << 0)
+    public static let connectTimeout = BackendConfigOptions(rawValue: 1 << 1)
+    public static let firstByteTimeout = BackendConfigOptions(rawValue: 1 << 2)
+    public static let betweenBytesTimeout = BackendConfigOptions(rawValue: 1 << 3)
+    public static let useSSL = BackendConfigOptions(rawValue: 1 << 4)
+    public static let sslMinVersion = BackendConfigOptions(rawValue: 1 << 5)
+    public static let sslMaxVersion = BackendConfigOptions(rawValue: 1 << 6)
+    public static let certHostname = BackendConfigOptions(rawValue: 1 << 7)
+    public static let caCert = BackendConfigOptions(rawValue: 1 << 8)
+    public static let ciphers = BackendConfigOptions(rawValue: 1 << 9)
+    public static let sniHostname = BackendConfigOptions(rawValue: 1 << 10)
 }
 
 public let maxHeaderLength = 69000

@@ -54,7 +54,7 @@ extension ReadableBody {
     public func json() throws -> Sendable {
         let data = try data()
         let dict = try JSONSerialization.jsonObject(with: data, options: [])
-        return dict as! Sendable
+        return dict
     }
 
     public func jsonObject() throws -> [String: Sendable] {
