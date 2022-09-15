@@ -194,10 +194,9 @@ extension Request {
             .sslMaxVersion
         ]
 
-        var config = DynamicBackendConfig(
-            ssl_min_version: options.sslMinVersion.rawValue,
-            ssl_max_version: options.sslMaxVersion.rawValue
-        )
+        var config = DynamicBackendConfig()
+        config.ssl_min_version = options.sslMinVersion.rawValue
+        config.ssl_max_version = options.sslMaxVersion.rawValue
 
         try wasi(fastly_http_req__register_dynamic_backend(
             name,
