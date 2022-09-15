@@ -216,13 +216,13 @@ extension Request {
             if options.ssl {
                 mask = mask.union(.useSSL)
 
-//                // ssl min version
-//                mask = mask.union(.sslMinVersion)
-//                config.ssl_min_version = options.sslMinVersion.rawValue
+                // ssl min version
+                mask = mask.union(.sslMinVersion)
+                config.ssl_min_version = options.sslMinVersion.rawValue
 
-//                // ssl max version
-//                mask = mask.union(.sslMaxVersion)
-//                config.ssl_max_version = options.sslMaxVersion.rawValue
+                // ssl max version
+                mask = mask.union(.sslMaxVersion)
+                config.ssl_max_version = options.sslMaxVersion.rawValue
 
 //                // sni hostname
 //                mask = mask.union(.sniHostname)
