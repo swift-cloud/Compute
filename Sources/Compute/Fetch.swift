@@ -73,7 +73,7 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
 
     // Register the backend
     if Environment.Compute.viceroy {
-        try? registerDynamicBackend(request.backend, for: httpRequest, ssl: urlComponents.scheme == "https")
+        try registerDynamicBackend(request.backend, for: httpRequest, ssl: urlComponents.scheme == "https")
     }
 
     // Issue async request
@@ -161,8 +161,14 @@ private func registerDynamicBackend(_ backend: String, for request: Request, ssl
     }
 
     // Attempt to register the backend
-    try request.registerDynamicBackend(name: backend, target: backend, options: .init(ssl: ssl))
+    do {
+        try request.registerDynamicBackend(name: backend, target: backend, options: .init(ssl: ssl))
+    } catch WasiStatus.genericError {
+        // ignore
+    } catch {
+        throw error
+    }
 
     // Mark the backend as registered
-    dynamicBackends.insert(backend)
+//    dynamicBackends.insert(backend)
 }
