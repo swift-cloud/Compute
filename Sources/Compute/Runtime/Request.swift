@@ -188,7 +188,7 @@ extension Request {
     }
 
     public func registerDynamicBackend(name: String, target: String, options: DynamicBackendOptions = .init()) throws {
-        var mask: BackendConfigOptions = .hostOverride
+        var mask: BackendConfigOptions = []
 
         var config = DynamicBackendConfig()
 
@@ -196,6 +196,7 @@ extension Request {
         try target.withCString { targetPointer in
 
             // host override
+//            mask.insert(.hostOverride)
             config.host_override = .init(targetPointer)
             config.host_override_len = target.utf8.count
             print("set host_override:", mask.rawValue)
