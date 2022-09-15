@@ -74,6 +74,10 @@ extension Environment {
         @EnvironmentVariable("FASTLY_TRACE_ID", defaultValue: "local")
         public static var traceId
 
+        public static var viceroy: Bool {
+            return serviceId == "local"
+        }
+
         private init() {}
     }
 }
