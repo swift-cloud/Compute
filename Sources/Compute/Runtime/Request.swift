@@ -195,11 +195,11 @@ extension Request {
         // create target pointer used later
         try target.withCString { targetPointer in
 
-            // host override
-            mask.insert(.hostOverride)
-            config.host_override = .init(targetPointer)
-            config.host_override_len = target.utf8.count
-            print("set host_override:", mask.rawValue, target, target.utf8.count)
+//            // host override
+//            mask.insert(.hostOverride)
+//            config.host_override = .init(targetPointer)
+//            config.host_override_len = target.utf8.count
+//            print("set host_override:", mask.rawValue, target, target.utf8.count)
 
 //            // connect timeout
 //            mask.insert(.connectTimeout)
@@ -226,17 +226,17 @@ extension Request {
 //                mask.insert(.sslMaxVersion)
 //                config.ssl_max_version = options.sslMaxVersion.rawValue
 
-                // cert hostname
-                mask.insert(.certHostname)
-                config.cert_hostname = .init(targetPointer)
-                config.cert_hostname_len = target.utf8.count
-                print("set cert_hostname:", mask.rawValue)
+//                // cert hostname
+//                mask.insert(.certHostname)
+//                config.cert_hostname = .init(targetPointer)
+//                config.cert_hostname_len = target.utf8.count
+//                print("set cert_hostname:", mask.rawValue)
 
-                // sni hostname
-                mask.insert(.sniHostname)
-                config.sni_hostname = .init(targetPointer)
-                config.sni_hostname_len = target.utf8.count
-                print("set sni_hostname:", mask.rawValue)
+//                // sni hostname
+//                mask.insert(.sniHostname)
+//                config.sni_hostname = .init(targetPointer)
+//                config.sni_hostname_len = target.utf8.count
+//                print("set sni_hostname:", mask.rawValue)
             }
 
             try wasi(fastly_http_req__register_dynamic_backend(
