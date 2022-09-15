@@ -188,8 +188,16 @@ extension Request {
     }
 
     public func registerDynamicBackend(name: String, target: String, options: DynamicBackendOptions = .init()) throws {
-        var mask: BackendConfigOptions = [.useSSL]
-        var config = DynamicBackendConfig()
+        var mask: BackendConfigOptions = [
+            .useSSL,
+            .sslMinVersion,
+            .sslMaxVersion
+        ]
+
+        var config = DynamicBackendConfig(
+            ssl_min_version: options.sslMinVersion.rawValue,
+            ssl_max_version: options.sslMaxVersion.rawValue
+        )
 
         try wasi(fastly_http_req__register_dynamic_backend(
             name,
