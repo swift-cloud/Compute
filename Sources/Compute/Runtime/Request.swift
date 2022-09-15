@@ -215,8 +215,8 @@ extension Request {
 
             // ssl
             if options.ssl {
-//                mask.insert(.useSSL)
-//                print("set ssl:", mask.rawValue)
+                mask.insert(.useSSL)
+                print("set ssl:", mask.rawValue)
 
 //                // ssl min version
 //                mask.insert(.sslMinVersion)
