@@ -193,7 +193,7 @@ extension Request {
 
         // create target pointer used later
         try target.withCString { targetPointer in
-            
+
             // host override
             mask = mask.union(.hostOverride)
             config.host_override = targetPointer
@@ -229,7 +229,20 @@ extension Request {
                 config.sni_hostname_len = target.utf8.count
             }
 
-            try wasi(fastly_http_req__register_dynamic_backend(name, name.utf8.count, target, target.utf8.count, mask.rawValue, &config))
+            print("mask:", mask.rawValue)
+
+            print("config:", config)
+
+            try withUnsafeMutablePointer(to: &config) { configPointer in
+                try wasi(fastly_http_req__register_dynamic_backend(
+                    name,
+                    name.utf8.count,
+                    targetPointer,
+                    target.utf8.count,
+                    mask.rawValue,
+                    configPointer
+                ))
+            }
         }
     }
 }
