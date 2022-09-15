@@ -215,6 +215,7 @@ extension Request {
             // ssl
             if options.ssl {
                 mask = mask.union(.useSSL)
+                print("set ssl:", mask.rawValue)
 
 //                // ssl min version
 //                mask = mask.union(.sslMinVersion)
@@ -228,11 +229,13 @@ extension Request {
                 mask = mask.union(.certHostname)
                 config.cert_hostname = .init(targetPointer)
                 config.cert_hostname_len = target.utf8.count
+                print("set cert_hostname:", mask.rawValue)
 
-//                // sni hostname
-//                mask = mask.union(.sniHostname)
-//                config.sni_hostname = .init(targetPointer)
-//                config.sni_hostname_len = target.utf8.count
+                // sni hostname
+                mask = mask.union(.sniHostname)
+                config.sni_hostname = .init(targetPointer)
+                config.sni_hostname_len = target.utf8.count
+                print("set sni_hostname:", mask.rawValue)
             }
 
             try wasi(fastly_http_req__register_dynamic_backend(
