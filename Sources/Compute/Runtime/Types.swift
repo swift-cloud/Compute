@@ -293,7 +293,7 @@ public enum FramingHeadersMode: UInt32, Sendable {
     case manuallyFromHeaders = 1
 }
 
-public enum TLSVersion: UInt32, Sendable {
+public enum TLSVersion: Int, Sendable {
     case v1 = 0
     case v1_1 = 1
     case v1_2 = 3

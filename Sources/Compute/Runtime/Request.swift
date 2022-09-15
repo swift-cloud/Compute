@@ -163,49 +163,74 @@ public struct Request: Sendable {
 extension Request {
 
     public struct DynamicBackendOptions {
-        public var hostOverride: String?
-        public var connectTimeoutMs: Double
-        public var firstByteTimeoutMs: Double
-        public var betweenBytesTimeoutMs: Double
+        public var connectTimeoutMs: Int
+        public var firstByteTimeoutMs: Int
+        public var betweenBytesTimeoutMs: Int
+        public var ssl: Bool
         public var sslMinVersion: TLSVersion
         public var sslMaxVersion: TLSVersion
-        public var caCert: String?
-        public var ciphers: String?
-        public var sniHostname: String?
 
         public init(
-            hostOverride: String? = nil,
-            connectTimeoutMs: Double = 1_000,
-            firstByteTimeoutMs: Double = 15_000,
-            betweenBytesTimeoutMs: Double = 10_000,
+            connectTimeoutMs: Int = 1_000,
+            firstByteTimeoutMs: Int = 15_000,
+            betweenBytesTimeoutMs: Int = 10_000,
+            ssl: Bool = true,
             sslMinVersion: TLSVersion = .v1_1,
-            sslMaxVersion: TLSVersion = .v1_3,
-            caCert: String? = nil,
-            ciphers: String? = nil,
-            sniHostname: String? = nil
+            sslMaxVersion: TLSVersion = .v1_3
         ) {
-            self.hostOverride = hostOverride
             self.connectTimeoutMs = connectTimeoutMs
             self.firstByteTimeoutMs = firstByteTimeoutMs
             self.betweenBytesTimeoutMs = betweenBytesTimeoutMs
+            self.ssl = ssl
             self.sslMinVersion = sslMinVersion
             self.sslMaxVersion = sslMaxVersion
-            self.caCert = caCert
-            self.ciphers = ciphers
-            self.sniHostname = sniHostname
         }
     }
 
     public func registerDynamicBackend(name: String, target: String, options: DynamicBackendOptions = .init()) throws {
         var mask: BackendConfigOptions = []
         var config = DynamicBackendConfig()
+
+        // create target pointer used later
+        let targetPointer = strdup(target)
+        defer { free(targetPointer) }
+
         // host override
-        let ptr = UnsafePointer<CChar>(target)
-        defer { ptr.deallocate() }
         mask = mask.union(.hostOverride)
-        config.host_override = ptr
+        config.host_override = .init(targetPointer)
         config.host_override_len = target.utf8.count
-        try wasi(fastly_http_req__register_dynamic_backend(name, name.utf8.count, target, target.utf8.count, 0, &config))
+
+        // connect timeout
+        mask = mask.union(.connectTimeout)
+        config.connect_timeout_ms = options.connectTimeoutMs
+
+        // first byte timeout
+        mask = mask.union(.firstByteTimeout)
+        config.first_byte_timeout_ms = options.firstByteTimeoutMs
+
+        // between bytes timeout
+        mask = mask.union(.betweenBytesTimeout)
+        config.between_bytes_timeout_ms = options.betweenBytesTimeoutMs
+
+        // ssl
+        if options.ssl {
+            mask = mask.union(.useSSL)
+
+            // ssl min version
+            mask = mask.union(.sslMinVersion)
+            config.ssl_min_version = options.sslMinVersion.rawValue
+
+            // ssl max version
+            mask = mask.union(.sslMaxVersion)
+            config.ssl_max_version = options.sslMaxVersion.rawValue
+
+            // sni hostname
+            mask = mask.union(.sniHostname)
+            config.sni_hostname = .init(targetPointer)
+            config.sni_hostname_len = target.utf8.count
+        }
+
+        try wasi(fastly_http_req__register_dynamic_backend(name, name.utf8.count, target, target.utf8.count, mask.rawValue, &config))
     }
 }
 

@@ -71,6 +71,9 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
         break
     }
 
+    // Register the backend
+    try httpRequest.registerDynamicBackend(name: request.backend, target: request.backend)
+
     // Issue async request
     let pendingRequest: PendingRequest
     if let streamingBody = streamingBody {
