@@ -120,6 +120,8 @@ struct DynamicBackendConfig {
     var between_bytes_timeout_ms: Int
     var ssl_min_version: Int
     var ssl_max_version: Int
+    var cert_hostname: UnsafePointer<CChar>!
+    var cert_hostname_len: Int
     var sni_hostname: UnsafePointer<CChar>!
     var sni_hostname_len: Int
 
@@ -131,6 +133,8 @@ struct DynamicBackendConfig {
         between_bytes_timeout_ms: Int = 0,
         ssl_min_version: Int = 0,
         ssl_max_version: Int = 0,
+        cert_hostname: UnsafePointer<CChar>! = nil,
+        cert_hostname_len: Int = 0,
         sni_hostname: UnsafePointer<CChar>! = nil,
         sni_hostname_len: Int = 0
     ) {
@@ -141,6 +145,8 @@ struct DynamicBackendConfig {
         self.between_bytes_timeout_ms = between_bytes_timeout_ms
         self.ssl_min_version = ssl_min_version
         self.ssl_max_version = ssl_max_version
+        self.cert_hostname = cert_hostname
+        self.cert_hostname_len = cert_hostname_len
         self.sni_hostname = sni_hostname
         self.sni_hostname_len = sni_hostname_len
     }

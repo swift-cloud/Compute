@@ -224,6 +224,11 @@ extension Request {
                 mask = mask.union(.sslMaxVersion)
                 config.ssl_max_version = options.sslMaxVersion.rawValue
 
+                // cert hostname
+                mask = mask.union(.certHostname)
+                config.cert_hostname = targetPointer
+                config.cert_hostname_len = target.utf8.count
+
                 // sni hostname
                 mask = mask.union(.sniHostname)
                 config.sni_hostname = targetPointer
