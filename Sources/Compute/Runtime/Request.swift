@@ -66,7 +66,7 @@ public struct Request: Sendable {
     }
 
     public mutating func setCachePolicy(_ policy: CachePolicy, surrogateKey: String? = nil) throws {
-        let tag: CacheOverrideTag
+        var tag: CacheOverrideTag
         let ttl: UInt32
         let swr: UInt32
         switch policy {
@@ -79,14 +79,14 @@ public struct Request: Sendable {
             ttl = 0
             swr = 0
         case .ttl(let seconds, let staleWhileRevalidate, let pciCompliant):
-            tag = .ttl | (staleWhileRevalidate > 0 ? .swr : 0) | (pciCompliant ? .pci : 0)
+            tag = .ttl.union(staleWhileRevalidate > 0 ? .swr : .none).union(pciCompliant ? .pci : .none)
             ttl = .init(seconds)
             swr = .init(staleWhileRevalidate)
         }
         if let surrogateKey = surrogateKey {
-            try wasi(fastly_http_req__cache_override_v2_set(handle, tag, ttl, swr, surrogateKey, surrogateKey.utf8.count))
+            try wasi(fastly_http_req__cache_override_v2_set(handle, tag.rawValue, ttl, swr, surrogateKey, surrogateKey.utf8.count))
         } else {
-            try wasi(fastly_http_req__cache_override_set(handle, tag, ttl, swr))
+            try wasi(fastly_http_req__cache_override_set(handle, tag.rawValue, ttl, swr))
         }
     }
 
@@ -157,6 +157,93 @@ public struct Request: Sendable {
 
     public func upgradeWebsocket(backend: String) throws {
         try wasi(fastly_http_req__upgrade_websocket(backend, backend.utf8.count))
+    }
+}
+
+extension Request {
+
+    public struct DynamicBackendOptions {
+        public var connectTimeoutMs: Int
+        public var firstByteTimeoutMs: Int
+        public var betweenBytesTimeoutMs: Int
+        public var ssl: Bool
+        public var sslMinVersion: TLSVersion
+        public var sslMaxVersion: TLSVersion
+
+        public init(
+            connectTimeoutMs: Int = 1_000,
+            firstByteTimeoutMs: Int = 15_000,
+            betweenBytesTimeoutMs: Int = 10_000,
+            ssl: Bool = true,
+            sslMinVersion: TLSVersion = .v1_1,
+            sslMaxVersion: TLSVersion = .v1_3
+        ) {
+            self.connectTimeoutMs = connectTimeoutMs
+            self.firstByteTimeoutMs = firstByteTimeoutMs
+            self.betweenBytesTimeoutMs = betweenBytesTimeoutMs
+            self.ssl = ssl
+            self.sslMinVersion = sslMinVersion
+            self.sslMaxVersion = sslMaxVersion
+        }
+    }
+
+    public func registerDynamicBackend(name: String, target: String, options: DynamicBackendOptions = .init()) throws {
+        var mask: BackendConfigOptions = []
+
+        var config = DynamicBackendConfig()
+
+        // create target pointer used later
+        try target.withCString { targetPointer in
+
+            // host override
+            mask.insert(.hostOverride)
+            config.host_override = targetPointer
+            config.host_override_len = target.utf8.count
+
+            // connect timeout
+            mask.insert(.connectTimeout)
+            config.connect_timeout_ms = options.connectTimeoutMs
+
+            // first byte timeout
+            mask.insert(.firstByteTimeout)
+            config.first_byte_timeout_ms = options.firstByteTimeoutMs
+
+            // between bytes timeout
+            mask.insert(.betweenBytesTimeout)
+            config.between_bytes_timeout_ms = options.betweenBytesTimeoutMs
+
+            // ssl
+            if options.ssl {
+                mask.insert(.useSSL)
+
+                // ssl min version
+                mask.insert(.sslMinVersion)
+                config.ssl_min_version = options.sslMinVersion.rawValue
+
+                // ssl max version
+                mask.insert(.sslMaxVersion)
+                config.ssl_max_version = options.sslMaxVersion.rawValue
+
+                // cert hostname
+                mask.insert(.certHostname)
+                config.cert_hostname = targetPointer
+                config.cert_hostname_len = target.utf8.count
+
+                // sni hostname
+                mask.insert(.sniHostname)
+                config.sni_hostname = targetPointer
+                config.sni_hostname_len = target.utf8.count
+            }
+
+            try wasi(fastly_http_req__register_dynamic_backend(
+                name,
+                name.utf8.count,
+                target,
+                target.utf8.count,
+                mask.rawValue,
+                &config
+            ))
+        }
     }
 }
 
