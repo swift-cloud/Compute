@@ -195,10 +195,10 @@ extension Request {
         // create target pointer used later
         try target.withCString { targetPointer in
 
-            // host override
-            mask = mask.union(.hostOverride)
-            config.host_override = targetPointer
-            config.host_override_len = target.utf8.count
+//            // host override
+//            mask = mask.union(.hostOverride)
+//            config.host_override = targetPointer
+//            config.host_override_len = target.utf8.count
 
 //            // connect timeout
 //            mask = mask.union(.connectTimeout)
@@ -214,7 +214,7 @@ extension Request {
 
             // ssl
             if options.ssl {
-//                mask = mask.union(.useSSL)
+                mask = mask.union(.useSSL)
 
 //                // ssl min version
 //                mask = mask.union(.sslMinVersion)

@@ -296,8 +296,8 @@ public enum FramingHeadersMode: UInt32, Sendable {
 public enum TLSVersion: Int, Sendable {
     case v1 = 0
     case v1_1 = 1
-    case v1_2 = 3
-    case v1_3 = 4
+    case v1_2 = 2
+    case v1_3 = 3
 }
 
 public enum BodyScanContinuation: Sendable {
