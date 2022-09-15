@@ -19,7 +19,7 @@
 
 typedef uint32_t WasiHandle;
 
-typedef struct {
+typedef struct DynamicBackendConfig {
     const char* host_override;
     size_t host_override_len;
     size_t connect_timeout_ms;

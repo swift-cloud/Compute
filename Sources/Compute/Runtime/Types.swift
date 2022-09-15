@@ -315,18 +315,18 @@ public struct BackendConfigOptions: OptionSet, Sendable {
 }
 
 extension BackendConfigOptions {
-    public static let reserved: BackendConfigOptions = []
-    public static let hostOverride = BackendConfigOptions(rawValue: 1 << 0)
-    public static let connectTimeout = BackendConfigOptions(rawValue: 1 << 1)
-    public static let firstByteTimeout = BackendConfigOptions(rawValue: 1 << 2)
-    public static let betweenBytesTimeout = BackendConfigOptions(rawValue: 1 << 3)
-    public static let useSSL = BackendConfigOptions(rawValue: 1 << 4)
-    public static let sslMinVersion = BackendConfigOptions(rawValue: 1 << 5)
-    public static let sslMaxVersion = BackendConfigOptions(rawValue: 1 << 6)
-    public static let certHostname = BackendConfigOptions(rawValue: 1 << 7)
-    public static let caCert = BackendConfigOptions(rawValue: 1 << 8)
-    public static let ciphers = BackendConfigOptions(rawValue: 1 << 9)
-    public static let sniHostname = BackendConfigOptions(rawValue: 1 << 10)
+    public static let reserved = BackendConfigOptions(rawValue: 1 << 0)
+    public static let hostOverride = BackendConfigOptions(rawValue: 1 << 1)
+    public static let connectTimeout = BackendConfigOptions(rawValue: 1 << 2)
+    public static let firstByteTimeout = BackendConfigOptions(rawValue: 1 << 3)
+    public static let betweenBytesTimeout = BackendConfigOptions(rawValue: 1 << 4)
+    public static let useSSL = BackendConfigOptions(rawValue: 1 << 5)
+    public static let sslMinVersion = BackendConfigOptions(rawValue: 1 << 6)
+    public static let sslMaxVersion = BackendConfigOptions(rawValue: 1 << 7)
+    public static let certHostname = BackendConfigOptions(rawValue: 1 << 8)
+    public static let caCert = BackendConfigOptions(rawValue: 1 << 9)
+    public static let ciphers = BackendConfigOptions(rawValue: 1 << 10)
+    public static let sniHostname = BackendConfigOptions(rawValue: 1 << 11)
 }
 
 public let maxHeaderLength = 69000
