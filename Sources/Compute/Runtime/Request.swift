@@ -192,8 +192,8 @@ extension Request {
         var config = DynamicBackendConfig()
 
         // create target pointer used later
-        let targetPointer = strdup(target)
-        defer { free(targetPointer) }
+        let targetPointer = UnsafePointer<CChar>(target)
+        defer { targetPointer.deallocate() }
 
         // host override
         mask = mask.union(.hostOverride)
