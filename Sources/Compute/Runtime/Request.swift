@@ -195,11 +195,11 @@ extension Request {
         // create target pointer used later
         try target.withCString { targetPointer in
 
-//            // host override
-//            mask.insert(.hostOverride)
-//            config.host_override = .init(targetPointer)
-//            config.host_override_len = target.utf8.count
-//            print("set host_override:", mask.rawValue, target, target.utf8.count)
+            // host override
+            mask.insert(.hostOverride)
+            config.host_override = .init(mutating: targetPointer)
+            config.host_override_len = .init(target.utf8.count)
+            print("set host_override:", mask.rawValue, target, target.utf8.count)
 
 //            // connect timeout
 //            mask.insert(.connectTimeout)

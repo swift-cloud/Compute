@@ -20,21 +20,21 @@
 typedef uint32_t WasiHandle;
 
 typedef struct DynamicBackendConfig {
-    const char* host_override;
-    size_t host_override_len;
-    size_t connect_timeout_ms;
-    size_t first_byte_timeout_ms;
-    size_t between_bytes_timeout_ms;
-    size_t ssl_min_version;
-    size_t ssl_max_version;
-    const char* cert_hostname;
-    size_t cert_hostname_len;
-    const char* ca_cert;
-    size_t ca_cert_len;
-    const char* ciphers;
-    size_t ciphers_len;
-    const char* sni_hostname;
-    size_t sni_hostname_len;
+    char *host_override;
+    uint32_t host_override_len;
+    uint32_t connect_timeout_ms;
+    uint32_t first_byte_timeout_ms;
+    uint32_t between_bytes_timeout_ms;
+    uint32_t ssl_min_version;
+    uint32_t ssl_max_version;
+    char *cert_hostname;
+    uint32_t cert_hostname_len;
+    char *ca_cert;
+    uint32_t ca_cert_len;
+    char *ciphers;
+    uint32_t ciphers_len;
+    char *sni_hostname;
+    uint32_t sni_hostname_len;
 } DynamicBackendConfig;
 
 /* FASTLY_ABI */
