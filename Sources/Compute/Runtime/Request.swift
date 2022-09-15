@@ -224,10 +224,10 @@ extension Request {
                 mask = mask.union(.sslMaxVersion)
                 config.ssl_max_version = options.sslMaxVersion.rawValue
 
-//                // sni hostname
-//                mask = mask.union(.sniHostname)
-//                config.sni_hostname = targetPointer
-//                config.sni_hostname_len = target.utf8.count
+                // sni hostname
+                mask = mask.union(.sniHostname)
+                config.sni_hostname = targetPointer
+                config.sni_hostname_len = target.utf8.count
             }
 
             try wasi(fastly_http_req__register_dynamic_backend(
