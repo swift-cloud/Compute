@@ -216,23 +216,23 @@ extension Request {
             if options.ssl {
                 mask = mask.union(.useSSL)
 
-                // ssl min version
-                mask = mask.union(.sslMinVersion)
-                config.ssl_min_version = options.sslMinVersion.rawValue
-
-                // ssl max version
-                mask = mask.union(.sslMaxVersion)
-                config.ssl_max_version = options.sslMaxVersion.rawValue
+//                // ssl min version
+//                mask = mask.union(.sslMinVersion)
+//                config.ssl_min_version = options.sslMinVersion.rawValue
+//
+//                // ssl max version
+//                mask = mask.union(.sslMaxVersion)
+//                config.ssl_max_version = options.sslMaxVersion.rawValue
 
                 // cert hostname
                 mask = mask.union(.certHostname)
                 config.cert_hostname = .init(targetPointer)
                 config.cert_hostname_len = target.utf8.count
 
-                // sni hostname
-                mask = mask.union(.sniHostname)
-                config.sni_hostname = .init(targetPointer)
-                config.sni_hostname_len = target.utf8.count
+//                // sni hostname
+//                mask = mask.union(.sniHostname)
+//                config.sni_hostname = .init(targetPointer)
+//                config.sni_hostname_len = target.utf8.count
             }
 
             try wasi(fastly_http_req__register_dynamic_backend(
