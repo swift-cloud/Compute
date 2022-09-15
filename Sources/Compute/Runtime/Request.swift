@@ -226,12 +226,12 @@ extension Request {
 
                 // cert hostname
                 mask = mask.union(.certHostname)
-                config.cert_hostname = targetPointer
+                config.cert_hostname = .init(targetPointer)
                 config.cert_hostname_len = target.utf8.count
 
                 // sni hostname
                 mask = mask.union(.sniHostname)
-                config.sni_hostname = targetPointer
+                config.sni_hostname = .init(targetPointer)
                 config.sni_hostname_len = target.utf8.count
             }
 
