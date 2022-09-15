@@ -170,5 +170,5 @@ private func registerDynamicBackend(_ backend: String, for request: Request, ssl
     }
 
     // Mark the backend as registered
-//    dynamicBackends.insert(backend)
+    dynamicBackends.insert(backend)
 }
