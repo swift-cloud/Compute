@@ -192,45 +192,45 @@ extension Request {
         var config = DynamicBackendConfig()
 
         // create target pointer used later
-        let targetPointer = UnsafePointer<CChar>(target)
-        defer { targetPointer.deallocate() }
+        try target.withCString { targetPointer in
+            
+            // host override
+            mask = mask.union(.hostOverride)
+            config.host_override = targetPointer
+            config.host_override_len = target.utf8.count
 
-        // host override
-        mask = mask.union(.hostOverride)
-        config.host_override = .init(targetPointer)
-        config.host_override_len = target.utf8.count
+            // connect timeout
+            mask = mask.union(.connectTimeout)
+            config.connect_timeout_ms = options.connectTimeoutMs
 
-        // connect timeout
-        mask = mask.union(.connectTimeout)
-        config.connect_timeout_ms = options.connectTimeoutMs
+            // first byte timeout
+            mask = mask.union(.firstByteTimeout)
+            config.first_byte_timeout_ms = options.firstByteTimeoutMs
 
-        // first byte timeout
-        mask = mask.union(.firstByteTimeout)
-        config.first_byte_timeout_ms = options.firstByteTimeoutMs
+            // between bytes timeout
+            mask = mask.union(.betweenBytesTimeout)
+            config.between_bytes_timeout_ms = options.betweenBytesTimeoutMs
 
-        // between bytes timeout
-        mask = mask.union(.betweenBytesTimeout)
-        config.between_bytes_timeout_ms = options.betweenBytesTimeoutMs
+            // ssl
+            if options.ssl {
+                mask = mask.union(.useSSL)
 
-        // ssl
-        if options.ssl {
-            mask = mask.union(.useSSL)
+                // ssl min version
+                mask = mask.union(.sslMinVersion)
+                config.ssl_min_version = options.sslMinVersion.rawValue
 
-            // ssl min version
-            mask = mask.union(.sslMinVersion)
-            config.ssl_min_version = options.sslMinVersion.rawValue
+                // ssl max version
+                mask = mask.union(.sslMaxVersion)
+                config.ssl_max_version = options.sslMaxVersion.rawValue
 
-            // ssl max version
-            mask = mask.union(.sslMaxVersion)
-            config.ssl_max_version = options.sslMaxVersion.rawValue
+                // sni hostname
+                mask = mask.union(.sniHostname)
+                config.sni_hostname = targetPointer
+                config.sni_hostname_len = target.utf8.count
+            }
 
-            // sni hostname
-            mask = mask.union(.sniHostname)
-            config.sni_hostname = .init(targetPointer)
-            config.sni_hostname_len = target.utf8.count
+            try wasi(fastly_http_req__register_dynamic_backend(name, name.utf8.count, target, target.utf8.count, mask.rawValue, &config))
         }
-
-        try wasi(fastly_http_req__register_dynamic_backend(name, name.utf8.count, target, target.utf8.count, mask.rawValue, &config))
     }
 }
 
