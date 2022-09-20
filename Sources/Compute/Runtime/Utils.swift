@@ -13,7 +13,7 @@ internal typealias WasiBufferReader = (_ buffer: UnsafeMutablePointer<UInt8>?, _
 internal func wasi(_ handler: @autoclosure () -> Int32) throws {
     let result = handler()
     guard let status = WasiStatus(rawValue: result) else {
-        throw WasiStatus.genericError
+        throw WasiStatus.unexpected
     }
     guard status == .ok else {
         throw status

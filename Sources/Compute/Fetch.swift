@@ -163,7 +163,7 @@ private func registerDynamicBackend(_ backend: String, for request: Request, ssl
     // Attempt to register the backend
     do {
         try request.registerDynamicBackend(name: backend, target: backend, options: .init(ssl: ssl))
-    } catch WasiStatus.genericError {
+    } catch WasiStatus.unexpected {
         // ignore
     } catch {
         throw error

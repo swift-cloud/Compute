@@ -6,6 +6,7 @@
 //
 
 import ComputeRuntime
+import Foundation
 
 public typealias WasiHandle = UInt32
 
@@ -13,49 +14,50 @@ public let InvalidWasiHandle = UInt32.max - 1
 
 public enum WasiStatus: Int32, Error, CaseIterable, Sendable {
     case ok = 0
-    case genericError
+    case unexpected
     case invalidArgument
     case badDescriptor
     case bufferTooSmall
     case unsupported
     case wrongAlignment
-    case httpParserError
-    case httpUserError
+    case httpParser
+    case httpUser
     case httpIncomplete
     case none
     case httpHeadTooLarge
     case httpInvalidStatus
 }
 
-extension WasiStatus: CustomStringConvertible {
-    public var description: String {
+extension WasiStatus: LocalizedError {
+
+    public var errorDescription: String? {
         switch self {
         case .ok:
             return "OK"
-        case .genericError:
-            return "Generic error"
+        case .unexpected:
+            return "Unexpected error"
         case .invalidArgument:
-            return "Invalid argument"
+            return "Invalid argument error"
         case .badDescriptor:
-            return "Bad descriptor"
+            return "Bad descriptor error"
         case .bufferTooSmall:
-            return "Buffer too small"
+            return "Buffer too small error"
         case .unsupported:
-            return "Unsupported"
+            return "Unsupported hostcall error"
         case .wrongAlignment:
-            return "Wrong alignment"
-        case .httpParserError:
-            return "HTTP parser error"
-        case .httpUserError:
-            return "HTTP user error"
+            return "Wrong alignment error"
+        case .httpParser:
+            return "Http parser error"
+        case .httpUser:
+            return "Http user error"
         case .httpIncomplete:
-            return "HTTP incomplete"
+            return "Http incomplete error"
         case .none:
-            return "None"
+            return "Resource not found error"
         case .httpHeadTooLarge:
-            return "HTTP head too large"
+            return "Http head too large error"
         case .httpInvalidStatus:
-            return "HTTP invalid status"
+            return "Http invalid status error"
         }
     }
 }
