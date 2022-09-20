@@ -27,6 +27,39 @@ public enum WasiStatus: Int32, Error, CaseIterable, Sendable {
     case httpInvalidStatus
 }
 
+extension WasiStatus: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .ok:
+            return "OK"
+        case .genericError:
+            return "Generic error"
+        case .invalidArgument:
+            return "Invalid argument"
+        case .badDescriptor:
+            return "Bad descriptor"
+        case .bufferTooSmall:
+            return "Buffer too small"
+        case .unsupported:
+            return "Unsupported"
+        case .wrongAlignment:
+            return "Wrong alignment"
+        case .httpParserError:
+            return "HTTP parser error"
+        case .httpUserError:
+            return "HTTP user error"
+        case .httpIncomplete:
+            return "HTTP incomplete"
+        case .none:
+            return "None"
+        case .httpHeadTooLarge:
+            return "HTTP head too large"
+        case .httpInvalidStatus:
+            return "HTTP invalid status"
+        }
+    }
+}
+
 public enum HTTPVersion: Int32, Sendable {
     case http0_9 = 0
     case http1_0
