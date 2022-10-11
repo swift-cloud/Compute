@@ -156,6 +156,10 @@ extension OutgoingResponse {
         try await send(data)
     }
 
+    public func send(_ body: ReadableBody) async throws {
+        try await append(body).end()
+    }
+
     public func send(_ data: Data) async throws {
         let bytes: [UInt8] = .init(data)
         try await send(bytes)
