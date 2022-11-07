@@ -44,5 +44,8 @@ private func sendComputeStatusResponse(_ res: OutgoingResponse) async throws {
         .header("x-compute-service-id", Environment.Compute.serviceId)
         .header("x-compute-service-version", Environment.Compute.serviceVersion)
         .header("x-compute-trace-id", Environment.Compute.traceId)
+        .header("x-compute-hostname", Environment.Compute.hostname)
+        .header("x-compute-region", Environment.Compute.region)
+        .header("x-compute-pop", Environment.Compute.pop)
         .send()
 }
