@@ -16,6 +16,12 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
         throw FetchRequestError.invalidURL
     }
 
+    // Set default scheme
+    urlComponents.scheme = urlComponents.scheme ?? "http"
+
+    // Set default host
+    urlComponents.host = urlComponents.host ?? "localhost"
+
     // Set default query params
     urlComponents.queryItems = urlComponents.queryItems ?? []
 
@@ -102,7 +108,7 @@ public func fetch(_ url: URL, _ options: FetchRequest.Options = .options()) asyn
 }
 
 public func fetch(_ urlPath: String, _ options: FetchRequest.Options = .options()) async throws -> FetchResponse {
-    guard let url = URL(string: urlPath.starts(with: "/") ? "http://localhost:7676\(urlPath)" : urlPath) else {
+    guard let url = URL(string: urlPath) else {
         throw FetchRequestError.invalidURL
     }
     let request = FetchRequest(url, options)
