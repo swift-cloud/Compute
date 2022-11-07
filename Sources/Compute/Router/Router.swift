@@ -37,6 +37,13 @@ public final class Router {
 
 extension Router {
 
+    public func listen() async throws {
+        try await onIncomingRequest(self.run)
+    }
+}
+
+extension Router {
+
     @discardableResult
     public func get(_ path: String, _ handler: @escaping Handler) -> Self {
         add(method: .head, path: path, handler: handler)
