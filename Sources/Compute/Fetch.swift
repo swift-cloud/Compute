@@ -102,7 +102,7 @@ public func fetch(_ url: URL, _ options: FetchRequest.Options = .options()) asyn
 }
 
 public func fetch(_ urlPath: String, _ options: FetchRequest.Options = .options()) async throws -> FetchResponse {
-    guard let url = URL(string: urlPath) else {
+    guard let url = URL(string: urlPath.starts(with: "/") ? "http://localhost:7676\(urlPath)" : urlPath) else {
         throw FetchRequestError.invalidURL
     }
     let request = FetchRequest(url, options)
