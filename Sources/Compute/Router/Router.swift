@@ -37,8 +37,10 @@ public final class Router {
 
 extension Router {
 
-    public func listen() async throws {
+    @discardableResult
+    public func listen() async throws -> Self {
         try await onIncomingRequest(self.run)
+        return self
     }
 }
 
@@ -91,6 +93,7 @@ extension Router {
 
 extension Router {
 
+    @discardableResult
     public func use(_ handler: @escaping Handler) -> Self {
         middleware.append(handler)
         return self
