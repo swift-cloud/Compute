@@ -130,6 +130,8 @@ func fastly_http_req__redirect_to_grip_proxy(_ backend: UnsafePointer<CChar>!, _
 
 func fastly_http_req__register_dynamic_backend(_ name: UnsafePointer<CChar>!, _ name_len: Int, _ target: UnsafePointer<CChar>!, _ target_len: Int, _ backend_config_mask: UInt32, _ backend_configuration: UnsafeMutablePointer<DynamicBackendConfig>!) -> Int32 { fatalError() }
 
+func fastly_http_req__downstream_tls_ja3_md5(_ value: UnsafeMutablePointer<UInt8>!, _ nwritten: UnsafeMutablePointer<Int>!) -> Int32 { fatalError() }
+
 /* FASTLY_HTTP_RESP */
 
 func fastly_http_resp__new(_ handle: UnsafeMutablePointer<WasiHandle>!) -> Int32 { fatalError() }

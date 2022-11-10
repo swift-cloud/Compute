@@ -12,3 +12,7 @@ docc:
 
 github-pages:
 	echo "compute-runtime.swift.cloud" > docs/CNAME
+
+demo:
+	swift build -c debug --triple wasm32-unknown-wasi
+	fastly compute serve --skip-build --file ./.build/debug/*.wasm

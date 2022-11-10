@@ -197,6 +197,9 @@ int fastly_http_req__redirect_to_websocket_proxy(const char *backend, size_t bac
 WASM_IMPORT("fastly_http_req", "redirect_to_grip_proxy")
 int fastly_http_req__redirect_to_grip_proxy(const char *backend, size_t backend_len);
 
+WASM_IMPORT("fastly_http_req", "downstream_tls_ja3_md5")
+int fastly_http_req__downstream_tls_ja3_md5(uint8_t *value, size_t *nwritten);
+
 WASM_IMPORT("fastly_http_req", "register_dynamic_backend")
 int fastly_http_req__register_dynamic_backend(const char *name,
                                               size_t name_len,

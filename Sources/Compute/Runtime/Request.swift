@@ -288,3 +288,12 @@ extension Request {
         return bytes.split { $0 == 0 }.compactMap { String(bytes: $0, encoding: .utf8) }
     }
 }
+
+extension Request {
+
+    public func tlsJa3Md5() throws -> String? {
+        return try wasiString(maxBufferLength: 16) { buffer, _, written in
+            fastly_http_req__downstream_tls_ja3_md5(buffer, &written)
+        }
+    }
+}

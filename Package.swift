@@ -15,6 +15,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "Compute", dependencies: ["ComputeRuntime"]),
-        .target(name: "ComputeRuntime")
+        .target(name: "ComputeRuntime"),
+        .executableTarget(name: "Demo", dependencies: ["Compute"])
     ]
 )

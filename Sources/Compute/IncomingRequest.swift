@@ -90,3 +90,10 @@ extension IncomingRequest {
         }
     }
 }
+
+extension IncomingRequest {
+
+    public func clientFingerprint() -> String? {
+        return try? request.tlsJa3Md5()
+    }
+}
