@@ -155,8 +155,12 @@ public struct Request: Sendable {
         try wasi(fastly_http_req__framing_headers_mode_set(handle, newValue.rawValue))
     }
 
-    public func upgradeWebsocket(backend: String) throws {
-        try wasi(fastly_http_req__upgrade_websocket(backend, backend.utf8.count))
+    public func redirectToWebsocketProxy(backend: String) throws {
+        try wasi(fastly_http_req__redirect_to_websocket_proxy(backend, backend.utf8.count))
+    }
+
+    public func redirectToGripProxy(backend: String) throws {
+        try wasi(fastly_http_req__redirect_to_grip_proxy(backend, backend.utf8.count))
     }
 }
 

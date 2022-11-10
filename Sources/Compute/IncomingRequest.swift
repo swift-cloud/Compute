@@ -66,6 +66,14 @@ public struct IncomingRequest: Sendable {
             return .localhost
         }
     }
+}
+
+extension IncomingRequest {
+
+    public enum UpgradeWebsocketBehavior {
+        case proxy
+        case fanout
+    }
 
     public func isUpgradeWebsocketRequest() -> Bool {
         let connection = headers[.connection, default: ""].lowercased()
@@ -73,7 +81,12 @@ public struct IncomingRequest: Sendable {
         return connection.contains("upgrade") && upgrade.contains("websocket")
     }
 
-    public func upgradeWebsocket(backend: String) throws {
-        try request.upgradeWebsocket(backend: backend)
+    public func upgradeWebsocket(backend: String, behavior: UpgradeWebsocketBehavior) throws {
+        switch behavior {
+        case .proxy:
+            try request.redirectToWebsocketProxy(backend: backend)
+        case .fanout:
+            try request.redirectToGripProxy(backend: backend)
+        }
     }
 }

@@ -191,8 +191,11 @@ int fastly_http_req__pending_req_select(WasiHandle req_handles[], size_t req_han
 WASM_IMPORT("fastly_http_req", "framing_headers_mode_set")
 int fastly_http_req__framing_headers_mode_set(WasiHandle req_handle, uint32_t mode);
 
-WASM_IMPORT("fastly_http_req", "upgrade_websocket")
-int fastly_http_req__upgrade_websocket(const char *backend, size_t backend_len);
+WASM_IMPORT("fastly_http_req", "redirect_to_websocket_proxy")
+int fastly_http_req__redirect_to_websocket_proxy(const char *backend, size_t backend_len);
+
+WASM_IMPORT("fastly_http_req", "redirect_to_grip_proxy")
+int fastly_http_req__redirect_to_grip_proxy(const char *backend, size_t backend_len);
 
 WASM_IMPORT("fastly_http_req", "register_dynamic_backend")
 int fastly_http_req__register_dynamic_backend(const char *name,
