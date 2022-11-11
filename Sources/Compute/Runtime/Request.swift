@@ -298,7 +298,7 @@ extension Request {
                 console.log("length:", length)
             }
             console.log(bytes)
-            return String(cString: bytes)
+            return String(bytes: bytes, encoding: .utf8)
         } catch {
             console.error("tls:", error)
             return nil
