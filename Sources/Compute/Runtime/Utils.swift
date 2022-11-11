@@ -67,6 +67,13 @@ extension Array {
     }
 }
 
+extension DataProtocol {
+
+    internal var hex: String {
+        return self.map { String(format: "%02x", $0) }.joined(separator: "")
+    }
+}
+
 extension CharacterSet {
 
     static let javascriptURLAllowed: CharacterSet =

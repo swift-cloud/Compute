@@ -59,9 +59,7 @@ public struct IncomingRequest: Sendable {
         case 4:
             return .v4(octets.map(String.init).joined(separator: "."))
         case 16:
-            return .v6(octets.chunked(into: 2)
-                .map { $0.map { .init(format: "%02X", $0) }.joined(separator: "") }
-                .joined(separator: ":"))
+            return .v6(octets.chunked(into: 2).map(\.hex).joined(separator: ":"))
         default:
             return .localhost
         }
@@ -94,6 +92,6 @@ extension IncomingRequest {
 extension IncomingRequest {
 
     public func clientFingerprint() -> String? {
-        return try? Request.downstreamTLSJA3MD5()
+        return try? Request.downstreamTLSJA3MD5().hex
     }
 }
