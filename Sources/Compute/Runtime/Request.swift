@@ -291,8 +291,8 @@ extension Request {
 
 extension Request {
 
-    public func tlsJa3Md5() throws -> String? {
-        return try wasiString(maxBufferLength: 16) { buffer, _, written in
+    public static func downstreamTLSJA3MD5() throws -> String? {
+        return try wasiString(maxBufferLength: 128) { buffer, _, written in
             fastly_http_req__downstream_tls_ja3_md5(buffer, &written)
         }
     }
