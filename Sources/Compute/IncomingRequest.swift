@@ -54,7 +54,7 @@ public struct IncomingRequest: Sendable {
     }
 
     public func clientIpAddress() -> IPAddress {
-        let octets = (try? request.downstreamClientIpAddress()) ?? []
+        let octets = (try? Request.downstreamClientIpAddress()) ?? []
         switch octets.count {
         case 4:
             return .v4(octets.map(String.init).joined(separator: "."))

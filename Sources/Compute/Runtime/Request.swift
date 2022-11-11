@@ -57,14 +57,6 @@ public struct Request: Sendable {
         try wasi(fastly_http_req__auto_decompress_response_set(handle, encodings.rawValue))
     }
 
-    public func downstreamClientIpAddress() throws -> [UInt8] {
-        return try Array<UInt8>(unsafeUninitializedCapacity: 16) {
-            var length = 0
-            try wasi(fastly_http_req__downstream_client_ip_addr($0.baseAddress, &length))
-            $1 = length
-        }
-    }
-
     public mutating func setCachePolicy(_ policy: CachePolicy, surrogateKey: String? = nil) throws {
         var tag: CacheOverrideTag
         let ttl: UInt32
@@ -291,17 +283,21 @@ extension Request {
 
 extension Request {
 
-    public static func downstreamTLSJA3MD5() throws -> String? {
-        do {
-            let bytes: [UInt8] = try Array(unsafeUninitializedCapacity: 128) { buffer, length in
-                try wasi(fastly_http_req__downstream_tls_ja3_md5(buffer.baseAddress, &length))
-                console.log("length:", length)
-            }
-            console.log(bytes)
-            return String(bytes: bytes, encoding: .utf8)
-        } catch {
-            console.error("tls:", error)
-            return nil
+    public static func downstreamClientIpAddress() throws -> [UInt8] {
+        return try Array<UInt8>(unsafeUninitializedCapacity: 16) {
+            var length = 0
+            try wasi(fastly_http_req__downstream_client_ip_addr($0.baseAddress, &length))
+            $1 = length
         }
+    }
+}
+
+extension Request {
+
+    public static func downstreamTLSJA3MD5() throws -> String? {
+        let bytes = try Array<UInt8>(unsafeUninitializedCapacity: 16) { buffer, length in
+            try wasi(fastly_http_req__downstream_tls_ja3_md5(buffer.baseAddress, &length))
+        }
+        return bytes.map { .init(format: "%02x", $0) }.joined(separator: "")
     }
 }
