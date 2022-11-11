@@ -292,8 +292,16 @@ extension Request {
 extension Request {
 
     public static func downstreamTLSJA3MD5() throws -> String? {
-        return try wasiString(maxBufferLength: 128) { buffer, _, written in
-            fastly_http_req__downstream_tls_ja3_md5(buffer, &written)
+        do {
+            let bytes: [UInt8] = try Array(unsafeUninitializedCapacity: 128) { buffer, length in
+                try wasi(fastly_http_req__downstream_tls_ja3_md5(buffer.baseAddress, &length))
+                console.log("length:", length)
+            }
+            console.log(bytes)
+            return String(cString: bytes)
+        } catch {
+            console.error("tls:", error)
+            return nil
         }
     }
 }
