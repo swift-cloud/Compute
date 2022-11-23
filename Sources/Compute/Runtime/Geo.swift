@@ -47,7 +47,7 @@ public struct Geo: Sendable {
     }
     
     public static func lookup(ip bytes: [UInt8]) throws -> IpLookup {
-        return try wasiDecode(IpLookup.self, maxBufferLength: maxIpLookupLength) {
+        return try wasiDecode(maxBufferLength: maxIpLookupLength) {
             fastly_geo__lookup(bytes, bytes.count, $0, $1, &$2)
         }
     }

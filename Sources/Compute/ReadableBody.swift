@@ -46,9 +46,9 @@ extension ReadableBody {
 
 extension ReadableBody {
 
-    public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) throws -> T where T: Decodable {
+    public func decode<T>(decoder: JSONDecoder = .init()) throws -> T where T: Decodable {
         let data = try data()
-        return try decoder.decode(type, from: data)
+        return try decoder.decode(T.self, from: data)
     }
 
     public func json() throws -> Sendable {
