@@ -22,7 +22,7 @@ public actor WritableBody: Sendable {
         self.writable = writable
     }
 
-    internal init(_ bodyHandle: BodyHandle, writable: Bool = true) {
+    internal init(_ bodyHandle: WasiHandle, writable: Bool = true) {
         self.body = .init(bodyHandle)
         self.writable = writable
     }

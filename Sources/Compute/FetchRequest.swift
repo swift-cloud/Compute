@@ -21,6 +21,8 @@ public struct FetchRequest: Sendable {
 
     public var cachePolicy: CachePolicy
 
+    public var cacheKey: String?
+
     public var surrogateKey: String?
 
     public var headers: [String: String]
@@ -36,6 +38,7 @@ public struct FetchRequest: Sendable {
         self.backend = options.backend ?? url.host ?? "localhost"
         self.method = options.method
         self.cachePolicy = options.cachePolicy
+        self.cacheKey = options.cacheKey
         self.surrogateKey = options.surrogateKey
         self.headers = options.headers
         self.searchParams = options.searchParams
@@ -60,6 +63,8 @@ extension FetchRequest {
 
         public var cachePolicy: CachePolicy = .origin
 
+        public var cacheKey: String? = nil
+
         public var acceptEncoding: ContentEncodings? = nil
 
         public var surrogateKey: String? = nil
@@ -73,6 +78,7 @@ extension FetchRequest {
             searchParams: [String: String] = [:],
             timeout: TimeInterval = .init(Int.max),
             cachePolicy: CachePolicy = .origin,
+            cacheKey: String? = nil,
             acceptEncoding: ContentEncodings? = nil,
             surrogateKey: String? = nil,
             backend: String? = nil
@@ -84,6 +90,7 @@ extension FetchRequest {
                 searchParams: searchParams,
                 timeout: timeout,
                 cachePolicy: cachePolicy,
+                cacheKey: cacheKey,
                 acceptEncoding: acceptEncoding,
                 surrogateKey: surrogateKey,
                 backend: backend

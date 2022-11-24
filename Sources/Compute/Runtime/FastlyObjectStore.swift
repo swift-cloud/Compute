@@ -7,14 +7,14 @@
 
 import ComputeRuntime
 
-internal struct Store: Sendable {
+internal struct FastlyObjectStore: Sendable {
 
-    let handle: StoreHandle
+    let handle: WasiHandle
 
     let name: String
 
     init(name: String) throws {
-        var handle: StoreHandle = 0
+        var handle: WasiHandle = 0
         try wasi(fastly_object_store__open(name, name.utf8.count, &handle))
         self.handle = handle
         self.name = name
@@ -22,7 +22,7 @@ internal struct Store: Sendable {
 
     func lookup(_ key: String) throws -> Body? {
         do {
-            var bodyHandle: BodyHandle = InvalidWasiHandle
+            var bodyHandle: WasiHandle = InvalidWasiHandle
             try wasi(fastly_object_store__lookup(handle, key, key.utf8.count, &bodyHandle))
             return bodyHandle == InvalidWasiHandle ? nil : Body(bodyHandle)
         } catch WasiStatus.none {

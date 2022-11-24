@@ -5,6 +5,7 @@
 //  Created by Andrew Barba on 1/15/22.
 //
 
+import CryptoSwift
 import Foundation
 
 public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
@@ -50,6 +51,12 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     if let contentType = request.body?.defaultContentType {
         let name = HTTPHeader.contentType.rawValue
         try httpRequest.insertHeader(name, request.headers[name] ?? contentType)
+    }
+
+    // Check for a custom cache key
+    if let cacheKey = request.cacheKey {
+        let hash = cacheKey.bytes.sha256().toHexString()
+        try httpRequest.insertHeader(HTTPHeader.fastlyCacheKey.rawValue, hash)
     }
 
     // Set headers

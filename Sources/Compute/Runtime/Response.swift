@@ -9,14 +9,14 @@ import ComputeRuntime
 
 public struct Response: Sendable {
 
-    internal let handle: ResponseHandle
+    internal let handle: WasiHandle
 
-    internal init(_ handle: ResponseHandle) {
+    internal init(_ handle: WasiHandle) {
         self.handle = handle
     }
 
     public init() throws {
-        var handle: ResponseHandle = 0
+        var handle: WasiHandle = 0
         try wasi(fastly_http_resp__new(&handle))
         self.handle = handle
     }

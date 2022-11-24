@@ -161,6 +161,7 @@ public enum HTTPHeader: String, HTTPHeaderRepresentable, Sendable {
     case date = "date"
     case etag = "etag"
     case expires = "expires"
+    case fastlyCacheKey = "fastly-xqd-cache-key"
     case forwarded = "forwarded"
     case from = "from"
     case host = "host"
@@ -304,20 +305,6 @@ public enum IPAddress: Sendable {
     }
 }
 
-public typealias BodyHandle = WasiHandle
-
-public typealias RequestHandle = WasiHandle
-
-public typealias ResponseHandle = WasiHandle
-
-public typealias PendingRequestHandle = WasiHandle
-
-public typealias EndpointHandle = WasiHandle
-
-public typealias DictionaryHandle = WasiHandle
-
-public typealias StoreHandle = WasiHandle
-
 public typealias MultiValueCursor = Int32
 
 public typealias MultiValueCursorResult = Int64
@@ -414,5 +401,3 @@ public let maxIpLookupLength = 2048
 public let maxDictionaryEntryLength = 8000
 
 public let highWaterMark = 4096
-
-public let localStoreName = "__fastly-local-store"

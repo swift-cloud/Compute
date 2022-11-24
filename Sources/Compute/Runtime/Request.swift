@@ -9,14 +9,14 @@ import ComputeRuntime
 
 public struct Request: Sendable {
 
-    internal let handle: RequestHandle
+    internal let handle: WasiHandle
 
-    internal init(_ handle: RequestHandle) {
+    internal init(_ handle: WasiHandle) {
         self.handle = handle
     }
 
     public init() throws {
-        var handle: RequestHandle = 0
+        var handle: WasiHandle = 0
         try wasi(fastly_http_req__new(&handle))
         self.handle = handle
     }
@@ -121,20 +121,20 @@ public struct Request: Sendable {
     }
 
     public mutating func send(_ body: Body, backend: String) throws -> (response: Response, body: Body) {
-        var responseHandle: ResponseHandle = 0
-        var bodyHandle: BodyHandle = 0
+        var responseHandle: WasiHandle = 0
+        var bodyHandle: WasiHandle = 0
         try wasi(fastly_http_req__send(handle, body.handle, backend, backend.utf8.count, &responseHandle, &bodyHandle))
         return (.init(responseHandle), .init(bodyHandle))
     }
 
     public mutating func sendAsync(_ body: Body, backend: String) throws -> PendingRequest {
-        var pendingRequestHandle: PendingRequestHandle = 0
+        var pendingRequestHandle: WasiHandle = 0
         try wasi(fastly_http_req__send_async(handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
         return .init(pendingRequestHandle, request: self)
     }
 
     public mutating func sendAsyncStreaming(_ body: Body, backend: String) throws -> PendingRequest {
-        var pendingRequestHandle: PendingRequestHandle = 0
+        var pendingRequestHandle: WasiHandle = 0
         try wasi(fastly_http_req__send_async_streaming(handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
         return .init(pendingRequestHandle, request: self)
     }
@@ -246,8 +246,8 @@ extension Request {
 extension Request {
 
     public static func getDownstream() throws -> (request: Request, body: Body) {
-        var requestHandle: RequestHandle = 0
-        var bodyHandle: BodyHandle = 0
+        var requestHandle: WasiHandle = 0
+        var bodyHandle: WasiHandle = 0
         try wasi(fastly_http_req__body_downstream_get(&requestHandle, &bodyHandle))
         let request = Request(requestHandle)
         let body = Body(bodyHandle)

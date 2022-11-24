@@ -11,14 +11,14 @@ public struct Body: Sendable {
 
     public private(set) var used: Bool = false
 
-    internal let handle: BodyHandle
+    internal let handle: WasiHandle
 
-    internal init(_ handle: BodyHandle) {
+    internal init(_ handle: WasiHandle) {
         self.handle = handle
     }
 
     internal init() throws {
-        var handle: BodyHandle = 0
+        var handle: WasiHandle = 0
         try wasi(fastly_http_body__new(&handle))
         self.handle = handle
     }

@@ -21,7 +21,7 @@ public actor ReadableBody: Sendable {
         self.body = body
     }
 
-    internal init(_ bodyHandle: BodyHandle) {
+    internal init(_ bodyHandle: WasiHandle) {
         self.body = .init(bodyHandle)
     }
 

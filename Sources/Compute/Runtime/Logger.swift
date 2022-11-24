@@ -10,10 +10,10 @@ import Foundation
 
 public struct Logger: Sendable {
     
-    internal let handle: EndpointHandle
+    internal let handle: WasiHandle
     
     public init(name: String) throws {
-        var handle: EndpointHandle = 0
+        var handle: WasiHandle = 0
         try wasi(fastly_log__endpoint_get(name, name.utf8.count, &handle))
         self.handle = handle
     }
