@@ -27,20 +27,31 @@ public struct Logger: Sendable {
     }
 
     @discardableResult
-    public func write<T>(_ value: T, encoder: JSONEncoder = .init()) throws -> Int where T: Encodable {
+    public func write<T>(
+        _ value: T,
+        encoder: JSONEncoder = .init(),
+        formatting: JSONEncoder.OutputFormatting = [.sortedKeys]
+    ) throws -> Int where T: Encodable {
+        encoder.outputFormatting = formatting
         let data = try encoder.encode(value)
         return try write(data)
     }
 
     @discardableResult
-    public func write(_ jsonObject: [String: Any]) throws -> Int {
-        let data = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
+    public func write(
+        _ jsonObject: [String: Any],
+        options: JSONSerialization.WritingOptions = [.sortedKeys]
+    ) throws -> Int {
+        let data = try JSONSerialization.data(withJSONObject: jsonObject, options: options)
         return try write(data)
     }
 
     @discardableResult
-    public func write(_ jsonArray: [Any]) throws -> Int {
-        let data = try JSONSerialization.data(withJSONObject: jsonArray, options: [])
+    public func write(
+        _ jsonArray: [Any],
+        options: JSONSerialization.WritingOptions = [.sortedKeys]
+    ) throws -> Int {
+        let data = try JSONSerialization.data(withJSONObject: jsonArray, options: options)
         return try write(data)
     }
 

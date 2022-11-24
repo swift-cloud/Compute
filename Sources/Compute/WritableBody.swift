@@ -47,18 +47,29 @@ extension WritableBody {
 
 extension WritableBody {
 
-    public func write<T>(_ value: T, encoder: JSONEncoder = .init()) throws where T: Encodable {
+    public func write<T>(
+        _ value: T,
+        encoder: JSONEncoder = .init(),
+        formatting: JSONEncoder.OutputFormatting = [.sortedKeys]
+    ) throws where T: Encodable {
+        encoder.outputFormatting = formatting
         let data = try encoder.encode(value)
         try write(data)
     }
 
-    public func write(_ jsonObject: [String: Sendable]) throws {
-        let data = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
+    public func write(
+        _ jsonObject: [String: Sendable],
+        options: JSONSerialization.WritingOptions = [.sortedKeys]
+    ) throws {
+        let data = try JSONSerialization.data(withJSONObject: jsonObject, options: options)
         try write(data)
     }
 
-    public func write(_ jsonArray: [Sendable]) throws {
-        let data = try JSONSerialization.data(withJSONObject: jsonArray, options: [])
+    public func write(
+        _ jsonArray: [Sendable],
+        options: JSONSerialization.WritingOptions = [.sortedKeys]
+    ) throws {
+        let data = try JSONSerialization.data(withJSONObject: jsonArray, options: options)
         try write(data)
     }
 
