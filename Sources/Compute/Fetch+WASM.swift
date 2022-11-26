@@ -57,11 +57,8 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
 
     // Check for a custom cache key
     if let cacheKey = request.cacheKey {
-        print("hashing cache key...")
         let hash = cacheKey.bytes.sha256().toHexString()
-        print("hash \(hash)")
         try httpRequest.insertHeader(HTTPHeader.fastlyCacheKey.rawValue, hash)
-        print("set cache header")
     }
 
     // Set headers
@@ -95,7 +92,6 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     }
 
     // Issue async request
-    print("Attempting request....")
     let pendingRequest: PendingRequest
     if let streamingBody = streamingBody {
         pendingRequest = try await httpRequest.sendAsyncStreaming(writableBody.body, backend: request.backend)
@@ -103,8 +99,6 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     } else {
         pendingRequest = try await httpRequest.sendAsync(writableBody.body, backend: request.backend)
     }
-
-    print("sent.")
 
     while true {
         // Poll request to see if its done
