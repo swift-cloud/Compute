@@ -95,6 +95,7 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     }
 
     // Issue async request
+    print("Attempting request....")
     let pendingRequest: PendingRequest
     if let streamingBody = streamingBody {
         pendingRequest = try await httpRequest.sendAsyncStreaming(writableBody.body, backend: request.backend)
@@ -103,9 +104,12 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
         pendingRequest = try await httpRequest.sendAsync(writableBody.body, backend: request.backend)
     }
 
+    print("sent.")
+
     while true {
         // Poll request to see if its done
         if let (response, body) = try pendingRequest.poll() {
+            print("response")
             return try .init(request: request, response: response, body: body)
         }
 
