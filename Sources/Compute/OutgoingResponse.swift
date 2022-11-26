@@ -279,6 +279,7 @@ extension OutgoingResponse {
 
 // MARK: - Proxy
 
+#if arch(wasm32)
 extension OutgoingResponse {
 
     public func proxy(_ response: FetchResponse, streaming: Bool = true) async throws {
@@ -294,6 +295,7 @@ extension OutgoingResponse {
         }
     }
 }
+#endif
 
 private let invalidProxyHeaders: Set<String> = [
     HTTPHeader.altSvc.rawValue,

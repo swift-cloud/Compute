@@ -5,6 +5,8 @@
 //  Created by Andrew Barba on 1/15/22.
 //
 
+#if arch(wasm32)
+
 import CryptoSwift
 import Foundation
 
@@ -185,3 +187,5 @@ private func registerDynamicBackend(_ backend: String, for request: Request, ssl
     // Mark the backend as registered
     dynamicBackends.insert(backend)
 }
+
+#endif

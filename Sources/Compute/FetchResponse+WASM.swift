@@ -5,6 +5,8 @@
 //  Created by Andrew Barba on 1/14/22.
 //
 
+#if arch(wasm32)
+
 import Foundation
 
 public struct FetchResponse: Sendable {
@@ -76,3 +78,5 @@ extension FetchResponse {
         return try await body.bytes()
     }
 }
+
+#endif
