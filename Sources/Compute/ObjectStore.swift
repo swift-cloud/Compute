@@ -9,7 +9,7 @@ import Foundation
 
 public struct ObjectStore: Sendable {
 
-    internal let store: FastlyObjectStore
+    internal let store: Fastly.ObjectStore
 
     public init(name: String) throws {
         store = try .init(name: name)

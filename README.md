@@ -2,7 +2,7 @@
 
 Swift runtime for Fastly Compute@Edge
 
-[![Compatibility Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAndrewBarba%2Fswift-compute-runtime%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/AndrewBarba/swift-compute-runtime) [![Platform Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAndrewBarba%2Fswift-compute-runtime%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/AndrewBarba/swift-compute-runtime)
+[![Compatibility Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAndrewBarba%2FCompute%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/AndrewBarba/swift-compute-runtime) [![Platform Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAndrewBarba%2FCompute%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/AndrewBarba/swift-compute-runtime)
 
 ## Getting Started
 
@@ -15,7 +15,7 @@ swift package init --type executable
 Install the Compute runtime:
 
 ```swift
-.package(url: "https://github.com/swift-cloud/Compute", from: "1.9.0")
+.package(url: "https://github.com/swift-cloud/Compute", from: "2.0.0")
 ```
 
 Add it as a target dependency:
@@ -139,7 +139,7 @@ let res = try await fetch("https://httpbin.org/json", .options(
 ))
 ```
 
-### PROXY
+### Proxy Request
 
 A really powerful feature of the Compute package is the ability to proxy to another origin. Fasty's edge platform is a globally distributed CDN that provides unprecendented performance compared to a single region origin. Using Compute you can put a full featured CDN in front of your origin to do things like force HTTPS, enable HTTP/3, provide robust origin failover, and a lot more.
 

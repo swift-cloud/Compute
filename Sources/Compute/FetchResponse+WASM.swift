@@ -13,11 +13,11 @@ public struct FetchResponse: Sendable {
 
     internal let request: FetchRequest
 
-    internal let response: Response
+    internal let response: Fastly.Response
 
     public let body: ReadableBody
 
-    public let headers: Headers<Response>
+    public let headers: Headers<Fastly.Response>
 
     public let status: Int
 
@@ -35,7 +35,7 @@ public struct FetchResponse: Sendable {
         }
     }
 
-    internal init(request: FetchRequest, response: Response, body: Body) throws {
+    internal init(request: FetchRequest, response: Fastly.Response, body: Fastly.Body) throws {
         self.request = request
         self.response = response
         self.body = ReadableBody(body)

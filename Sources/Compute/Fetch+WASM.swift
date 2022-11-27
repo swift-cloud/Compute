@@ -12,7 +12,7 @@ import Foundation
 
 public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     // Create underlying http request
-    var httpRequest = try Request()
+    var httpRequest = try Fastly.Request()
 
     // Build url components from request url
     guard var urlComponents = URLComponents(string: request.url.absoluteString) else {
@@ -67,7 +67,7 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     }
 
     // Build request body
-    let writableBody = WritableBody(try Body())
+    let writableBody = WritableBody(try .init())
     var streamingBody: ReadableBody? = nil
 
     // Write bytes to body
@@ -92,7 +92,7 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     }
 
     // Issue async request
-    let pendingRequest: PendingRequest
+    let pendingRequest: Fastly.PendingRequest
     if let streamingBody = streamingBody {
         pendingRequest = try await httpRequest.sendAsyncStreaming(writableBody.body, backend: request.backend)
         try await streamingBody.pipeTo(writableBody)
@@ -170,7 +170,7 @@ public func fetch (
 
 private var dynamicBackends: Set<String> = []
 
-private func registerDynamicBackend(_ backend: String, for request: Request, ssl: Bool) throws {
+private func registerDynamicBackend(_ backend: String, for request: Fastly.Request, ssl: Bool) throws {
     // Make sure we didn't already register the backend
     guard dynamicBackends.contains(backend) == false else {
         return
