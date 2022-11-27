@@ -8,16 +8,6 @@
 import CryptoSwift
 import Foundation
 
-public enum JWTError: Error {
-    case invalidToken
-    case invalidBase64URL
-    case invalidJSON
-    case invalidSignature
-    case invalidIssuer
-    case invalidSubject
-    case expired
-}
-
 public struct JWT {
 
     public let header: [String: Any]
@@ -220,6 +210,38 @@ extension JWT {
                 return dict
             }
             return nil
+        }
+    }
+}
+
+public enum JWTError: Error {
+    case invalidToken
+    case invalidBase64URL
+    case invalidJSON
+    case invalidSignature
+    case invalidIssuer
+    case invalidSubject
+    case expired
+}
+
+extension JWTError: LocalizedError {
+
+    public var errorDescription: String? {
+        switch self {
+        case .invalidToken:
+            return "Invalid token"
+        case .invalidBase64URL:
+            return "Invalid base64 URL"
+        case .invalidJSON:
+            return "Invalid JSON"
+        case .invalidSignature:
+            return "Signatures do not match"
+        case .invalidIssuer:
+            return "Issuers do not match"
+        case .invalidSubject:
+            return "Subjects do not match"
+        case .expired:
+            return "JWT is expired"
         }
     }
 }
