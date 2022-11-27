@@ -12,8 +12,4 @@ jobs:
 
       - run: swift --version
 
-      - name: Build Linux
-        run: swift build -c debug
-
-      - name: Build Wasi
-        run: swift build -c debug --triple wasm32-unknown-wasi
+      - run: swift build -c debug --triple wasm32-unknown-wasi
