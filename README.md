@@ -46,19 +46,12 @@ Here's what a Swift app looks like on Compute@Edge
 ```swift
 import Compute
 
-@main
-struct HelloCompute {
-    static func main() async throws {
-        try await onIncomingRequest(handleIncomingRequest)
-    }
-
-    static func handleIncomingRequest(req: IncomingRequest, res: OutgoingResponse) async throws {
-        let fetchResponse = try await fetch("https://httpbin.org/json", .options(
-            headers: ["user-agent": "swift-compute-runtime"]
-        ))
-        let text = try await fetchResponse.text()
-        try await res.status(200).send(text)
-    }
+try await onIncomingRequest { req, res in
+    let fetchResponse = try await fetch("https://httpbin.org/json", .options(
+        headers: ["user-agent": "swift-compute-runtime"]
+    ))
+    let text = try await fetchResponse.text()
+    try await res.status(200).send(text)
 }
 ```
 
