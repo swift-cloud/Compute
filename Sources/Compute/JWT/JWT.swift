@@ -97,7 +97,7 @@ extension JWT {
     @discardableResult
     public func verify(
         secret: String,
-        algorithm: HMAC.Variant = .sha2(.sha256),
+        algorithm: Algorithm = .hs256,
         issuer: String? = nil,
         subject: String? = nil
     ) throws -> Self {
@@ -105,7 +105,7 @@ extension JWT {
         let input = "\(_header).\(_payload)"
 
         // Compute signature based on secret
-        let computedSignature = try HMAC(key: secret.bytes, variant: algorithm)
+        let computedSignature = try HMAC(key: secret.bytes, variant: algorithm.variant)
             .authenticate(input.bytes)
             .toHexString()
 
@@ -130,6 +130,25 @@ extension JWT {
         }
 
         return self
+    }
+}
+
+extension JWT {
+    public enum Algorithm {
+        case hs256
+        case hs384
+        case hs512
+
+        internal var variant: HMAC.Variant {
+            switch self {
+            case .hs256:
+                return .sha2(.sha256)
+            case .hs384:
+                return .sha2(.sha384)
+            case .hs512:
+                return .sha2(.sha512)
+            }
+        }
     }
 }
 
