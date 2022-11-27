@@ -10,17 +10,19 @@ import Foundation
 
 public struct JWT {
 
+    public let token: String
+
     public let header: [String: Any]
 
     public let payload: [String: Any]
 
     public let signature: String
 
-    private let _header: String
+    internal let _header: String
 
-    private let _payload: String
+    internal let _payload: String
 
-    private let _signature: String
+    internal let _signature: String
 
     public func claim(name: String) -> Claim {
         return .init(value: payload[name])
@@ -41,6 +43,62 @@ public struct JWT {
         self.header = try decodeJWTPart(parts[0])
         self.payload = try decodeJWTPart(parts[1])
         self.signature = try base64UrlDecode(parts[2]).toHexString()
+        self.token = token
+    }
+
+    public init(
+        claims: [String: Any],
+        secret: String,
+        algorithm: Algorithm = .hs256,
+        issuedAt: Date = .init(),
+        expiresAt: Date? = nil,
+        issuer: String? = nil,
+        subject: String? = nil,
+        identifier: String? = nil
+    ) throws {
+        let header: [String: Any] = [
+            "alg": algorithm.rawValue,
+            "typ": "JWT"
+        ]
+
+        var properties: [String: Any] = [
+            "iat": floor(issuedAt.timeIntervalSince1970)
+        ]
+
+        if let expiresAt {
+            properties["exp"] = ceil(expiresAt.timeIntervalSince1970)
+        }
+
+        if let subject {
+            properties["sub"] = subject
+        }
+
+        if let issuer {
+            properties["iss"] = issuer
+        }
+
+        if let identifier {
+            properties["jti"] = identifier
+        }
+
+        let payload = claims.merging(properties, uniquingKeysWith: { $1 })
+
+        let _header = try encodeJWTPart(header)
+
+        let _payload = try encodeJWTPart(payload)
+
+        let signature = try HMAC(key: secret.bytes, variant: algorithm.variant)
+            .authenticate("\(_header).\(_payload)".bytes)
+
+        let _signature = try base64UrlEncode(.init(signature))
+
+        self._header = _header
+        self._payload = _payload
+        self._signature = _signature
+        self.header = header
+        self.payload = payload
+        self.signature = signature.toHexString()
+        self.token = "\(_header).\(_payload).\(_signature)"
     }
 }
 
@@ -124,10 +182,10 @@ extension JWT {
 }
 
 extension JWT {
-    public enum Algorithm {
-        case hs256
-        case hs384
-        case hs512
+    public enum Algorithm: String {
+        case hs256 = "HS256"
+        case hs384 = "HS384"
+        case hs512 = "HS512"
 
         internal var variant: HMAC.Variant {
             switch self {
@@ -254,6 +312,11 @@ private func decodeJWTPart(_ value: String) throws -> [String: Any] {
     return json
 }
 
+private func encodeJWTPart(_ value: [String: Any]) throws -> String {
+    let data = try JSONSerialization.data(withJSONObject: value, options: [.sortedKeys])
+    return try base64UrlEncode(data)
+}
+
 private func base64UrlDecode(_ value: String) throws -> Data {
     var base64 = value
         .replacingOccurrences(of: "-", with: "+")
@@ -269,4 +332,12 @@ private func base64UrlDecode(_ value: String) throws -> Data {
         throw JWTError.invalidBase64URL
     }
     return data
+}
+
+private func base64UrlEncode(_ value: Data) throws -> String {
+    return value
+        .base64EncodedString()
+        .trimmingCharacters(in: ["="])
+        .replacingOccurrences(of: "+", with: "-")
+        .replacingOccurrences(of: "/", with: "_")
 }
