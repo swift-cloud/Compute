@@ -15,7 +15,7 @@ swift package init --type executable
 Install the Compute runtime:
 
 ```swift
-.package(url: "https://github.com/swift-cloud/Compute", from: "1.11.0")
+.package(url: "https://github.com/swift-cloud/Compute", from: "2.0.0")
 ```
 
 Add it as a target dependency:
