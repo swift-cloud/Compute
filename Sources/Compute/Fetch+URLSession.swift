@@ -76,7 +76,7 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
         break
     }
 
-    let (data, urlResponse) = try await URLSession.shared.data(for: httpRequest)
+    let (data, urlResponse): (Data, URLResponse) = try await URLSession.shared.data(for: httpRequest)
 
     return try FetchResponse(data: data, response: urlResponse as! HTTPURLResponse)
 }
