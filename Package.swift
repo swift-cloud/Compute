@@ -22,6 +22,7 @@ let package = Package(
     targets: [
         .target(name: "Compute", dependencies: ["ComputeRuntime", "CryptoSwift"]),
         .target(name: "ComputeRuntime"),
-        .executableTarget(name: "Demo", dependencies: ["Compute"])
+        .executableTarget(name: "Demo", dependencies: ["Compute"]),
+        .testTarget(name: "ComputeTests", dependencies: ["Compute"])
     ]
 )
