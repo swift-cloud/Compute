@@ -68,22 +68,19 @@ The Compute package incldues an Express style router based on [Vapor's routing-k
 ```swift
 import Compute
 
-@main
-struct App {
-    static func main() async throws {
-        try await onIncomingRequest(router.run)
-    }
+let router = Router()
 
-    static let router = Router()
-        .get("/status") { req, res in
-            try await res.status(.ok).send("OK")
-        }
-        .get("/user/:name") { req, res in
-            let name = req.pathParams["name"] ?? ""
-            let text = "Hello, \(name)!"
-            try await res.status(.ok).send(text)
-        }
+router.get("/status") { req, res in
+    try await res.status(.ok).send("OK")
 }
+
+router.get("/user/:name") { req, res in
+    let name = req.pathParams["name"] ?? ""
+    let text = "Hello, \(name)!"
+    try await res.status(.ok).send(text)
+}
+
+try await router.listen()
 ```
 
 ### POST Route
@@ -95,18 +92,14 @@ struct User: Codable {
     let name: String
 }
 
-@main
-struct App {
-    static func main() async throws {
-        try await onIncomingRequest(router.run)
-    }
+let router = Router()
 
-    static let router = Router()
-        .post("/user") { req, res in
-            let user = try await req.body.decode(User.self)
-            try await res.status(.created).send(user)
-        }
+router.post("/user") { req, res in
+    let user = try await req.body.decode(User.self)
+    try await res.status(.created).send(user)
 }
+
+try await router.listen()
 ```
 
 ## Fetching Data
