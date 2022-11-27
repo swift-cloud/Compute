@@ -5,6 +5,8 @@
 //  Created by Andrew Barba on 1/15/22.
 //
 
+#if arch(wasm32)
+
 import CryptoSwift
 import Foundation
 
@@ -101,6 +103,7 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     while true {
         // Poll request to see if its done
         if let (response, body) = try pendingRequest.poll() {
+            print("response")
             return try .init(request: request, response: response, body: body)
         }
 
@@ -185,3 +188,5 @@ private func registerDynamicBackend(_ backend: String, for request: Fastly.Reque
     // Mark the backend as registered
     dynamicBackends.insert(backend)
 }
+
+#endif
