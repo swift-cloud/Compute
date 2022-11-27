@@ -9,6 +9,9 @@
 
 import CryptoSwift
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     // Build url components from request url
