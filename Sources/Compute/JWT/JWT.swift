@@ -24,6 +24,8 @@ public struct JWT {
 
     public let payload: [String: Any]
 
+    public let signature: String
+
     private let _header: String
 
     private let _payload: String
@@ -48,6 +50,7 @@ public struct JWT {
         self._signature = parts[2]
         self.header = try decodeJWTPart(parts[0])
         self.payload = try decodeJWTPart(parts[1])
+        self.signature = try base64UrlDecode(parts[2]).toHexString()
     }
 }
 
@@ -100,9 +103,6 @@ extension JWT {
     ) throws -> Self {
         // Build input
         let input = "\(_header).\(_payload)"
-
-        // Build hex signature
-        let signature = try base64UrlDecode(_signature).toHexString()
 
         // Compute signature based on secret
         let computedSignature = try HMAC(key: secret.bytes, variant: algorithm)
