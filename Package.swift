@@ -1,11 +1,16 @@
-// swift-tools-version:5.6
+// swift-tools-version:5.7
 
 import PackageDescription
 
 let package = Package(
     name: "Compute",
     platforms: [
-        .macOS("10.15")
+        .macOS(.v11),
+        .iOS(.v13),
+        .tvOS(.v13),
+        .watchOS(.v9),
+        .driverKit(.v22),
+        .macCatalyst(.v13)
     ],
     products: [
         .library(name: "Compute", targets: ["Compute"])

@@ -139,7 +139,7 @@ let res = try await fetch("https://httpbin.org/json", .options(
 ))
 ```
 
-### PROXY
+### Proxy Request
 
 A really powerful feature of the Compute package is the ability to proxy to another origin. Fasty's edge platform is a globally distributed CDN that provides unprecendented performance compared to a single region origin. Using Compute you can put a full featured CDN in front of your origin to do things like force HTTPS, enable HTTP/3, provide robust origin failover, and a lot more.
 

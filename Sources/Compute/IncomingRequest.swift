@@ -9,9 +9,9 @@ import Foundation
 
 public struct IncomingRequest: Sendable {
 
-    internal let request: Request
+    internal let request: Fastly.Request
 
-    public let headers: Headers<Request>
+    public let headers: Headers<Fastly.Request>
 
     public let searchParams: [String: String]
 
@@ -33,7 +33,7 @@ public struct IncomingRequest: Sendable {
     }
 
     internal init() throws {
-        let (request, body) = try Request.getDownstream()
+        let (request, body) = try Fastly.Request.getDownstream()
         let url = URL(string: try request.getUri() ?? "http://localhost")!
         self.request = request
         self.body = ReadableBody(body)
@@ -54,7 +54,7 @@ public struct IncomingRequest: Sendable {
     }
 
     public func clientIpAddress() -> IPAddress {
-        let octets = (try? Request.downstreamClientIpAddress()) ?? []
+        let octets = (try? Fastly.Request.downstreamClientIpAddress()) ?? []
         switch octets.count {
         case 4:
             return .v4(octets.map(String.init).joined(separator: "."))
@@ -92,6 +92,6 @@ extension IncomingRequest {
 extension IncomingRequest {
 
     public func clientFingerprint() -> String? {
-        return try? Request.downstreamTLSJA3MD5().hex
+        return try? Fastly.Request.downstreamTLSJA3MD5().hex
     }
 }

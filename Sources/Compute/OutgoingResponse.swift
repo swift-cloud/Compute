@@ -9,7 +9,7 @@ import Foundation
 
 public final class OutgoingResponse {
 
-    internal private(set) var response: Response
+    internal private(set) var response: Fastly.Response
 
     internal let body: WritableBody
 
@@ -21,7 +21,7 @@ public final class OutgoingResponse {
         didSendAndClose || didSendStream
     }
 
-    public private(set) var headers: Headers<Response>
+    public private(set) var headers: Headers<Fastly.Response>
 
     public var status: Int {
         get {
@@ -39,9 +39,9 @@ public final class OutgoingResponse {
     }
 
     internal init(writableBody: Bool) throws {
-        let response = try Response()
+        let response = try Fastly.Response()
         self.response = response
-        self.body = WritableBody(try Body(), writable: writableBody)
+        self.body = WritableBody(try .init(), writable: writableBody)
         self.headers = Headers(response)
     }
 

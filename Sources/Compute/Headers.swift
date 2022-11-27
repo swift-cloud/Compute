@@ -18,9 +18,9 @@ public protocol HeadersProvider: Sendable {
     mutating func removeHeader(_ name: String) throws
 }
 
-extension Request: HeadersProvider {}
+extension Fastly.Request: HeadersProvider {}
 
-extension Response: HeadersProvider {}
+extension Fastly.Response: HeadersProvider {}
 
 public struct Headers<T>: Sendable where T: HeadersProvider {
 

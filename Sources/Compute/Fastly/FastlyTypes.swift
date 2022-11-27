@@ -65,6 +65,9 @@ public enum WasiStatus: Int32, Error, CaseIterable, Sendable {
 
     // Invalid HTTP status.
     case httpInvalidStatus = 12
+
+    // Limit exceeded
+    case limitExceeded = 13
 }
 
 extension WasiStatus: LocalizedError {
@@ -97,6 +100,8 @@ extension WasiStatus: LocalizedError {
             return "Http head too large error"
         case .httpInvalidStatus:
             return "Http invalid status error"
+        case .limitExceeded:
+            return "Limit exceeded"
         }
     }
 }

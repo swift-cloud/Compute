@@ -7,7 +7,7 @@
 
 public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ res: OutgoingResponse) async throws -> Void) async throws {
     // Initialize ABI
-    try ABI.initialize()
+    try Fastly.ABI.initialize()
 
     // Get downstream request
     let req = try IncomingRequest()

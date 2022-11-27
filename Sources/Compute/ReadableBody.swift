@@ -13,11 +13,11 @@ public actor ReadableBody: Sendable {
         return body.used
     }
 
-    internal private(set) var body: Body
+    internal private(set) var body: Fastly.Body
 
     private var _bytes: [UInt8]? = nil
 
-    internal init(_ body: Body) {
+    internal init(_ body: Fastly.Body) {
         self.body = body
     }
 
@@ -54,7 +54,7 @@ extension ReadableBody {
     public func json() throws -> Sendable {
         let data = try data()
         let dict = try JSONSerialization.jsonObject(with: data, options: [])
-        return dict as! Sendable
+        return dict
     }
 
     public func jsonObject() throws -> [String: Sendable] {

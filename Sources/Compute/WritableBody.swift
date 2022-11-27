@@ -13,11 +13,11 @@ public actor WritableBody: Sendable {
         return body.used
     }
 
-    internal private(set) var body: Body
+    internal private(set) var body: Fastly.Body
 
     internal let writable: Bool
 
-    internal init(_ body: Body, writable: Bool = true) {
+    internal init(_ body: Fastly.Body, writable: Bool = true) {
         self.body = body
         self.writable = writable
     }
