@@ -32,7 +32,7 @@ public struct JWT {
         return claim(name: key)
     }
 
-    public init(_ token: String) throws {
+    public init(token: String) throws {
         let parts = token.components(separatedBy: ".")
         guard parts.count == 3 else {
             throw JWTError.invalidToken

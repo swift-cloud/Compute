@@ -16,23 +16,23 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njk1OTE2MTEsIm5hbWUiOiJKb2huIER
 final class JWTTests: XCTestCase {
 
     func testVerifySuccess() throws {
-        let jwt = try JWT(token)
+        let jwt = try JWT(token: token)
         try jwt.verify(secret: "your-256-bit-secret")
     }
 
     func testVerifyFailure() throws {
-        let jwt = try JWT(token)
+        let jwt = try JWT(token: token)
         try XCTAssertThrowsError(jwt.verify(secret: "bogus-secret"))
     }
 
     func testSubject() throws {
-        let jwt = try JWT(token)
+        let jwt = try JWT(token: token)
         XCTAssertNotNil(jwt.subject)
         XCTAssertEqual(jwt.subject, "1234567890")
     }
 
     func testClaim() throws {
-        let jwt = try JWT(token)
+        let jwt = try JWT(token: token)
         XCTAssertNotNil(jwt["name"].string)
         XCTAssertEqual(jwt["name"].string, "John Doe")
     }
