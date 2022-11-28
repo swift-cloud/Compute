@@ -9,7 +9,7 @@
 @_exported import TokamakCore
 @_exported import TokamakStaticHTML
 #else
-import SwiftUI
+@_exported import SwiftUI
 
 struct StaticHTMLRenderer {
     init(_ view: any View) {}
