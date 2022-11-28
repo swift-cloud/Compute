@@ -17,10 +17,12 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.6.0"),
+        .package(url: "https://github.com/TokamakUI/Tokamak", branch: "main"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0")
     ],
     targets: [
         .target(name: "Compute", dependencies: ["ComputeRuntime", "CryptoSwift"]),
+        .target(name: "ComputeUI", dependencies: ["Compute", .product(name: "TokamakStaticHTML", package: "Tokamak")]),
         .target(name: "ComputeRuntime"),
         .executableTarget(name: "Demo", dependencies: ["Compute"]),
         .testTarget(name: "ComputeTests", dependencies: ["Compute"])

@@ -1,23 +1,14 @@
 //
-//  Router+Tokamak.swift
+//  Router+View.swift
 //  
 //
 //  Created by Andrew Barba on 11/27/22.
 //
 
-#if canImport(TokamakStaticHTML)
+import Compute
 @_exported import TokamakCore
 @_exported import TokamakStaticHTML
-#else
-@_exported import SwiftUI
 
-struct StaticHTMLRenderer {
-    init(_ view: any View) {}
-    func render() -> String { fatalError("Please add TokamakStaticHTML (github.com/TokamakUI/Tokamak) to your Package.swift") }
-}
-#endif
-
-#if canImport(TokamakStaticHTML) || canImport(SwiftUI)
 extension Router {
 
     public typealias ViewHandler<T: View> = (IncomingRequest, OutgoingResponse) async throws -> T
@@ -76,4 +67,3 @@ extension EnvironmentValues {
         set { self[ResponseKey.self] = newValue }
     }
 }
-#endif
