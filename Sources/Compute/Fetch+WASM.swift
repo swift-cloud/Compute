@@ -87,7 +87,7 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     }
 
     // Register the backend
-    if Environment.Compute.viceroy, request.backend != "localhost" {
+    if Fastly.Environment.viceroy, request.backend != "localhost" {
         try registerDynamicBackend(request.backend, for: httpRequest, ssl: urlComponents.scheme == "https")
     }
 
