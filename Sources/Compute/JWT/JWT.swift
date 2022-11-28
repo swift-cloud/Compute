@@ -18,12 +18,6 @@ public struct JWT {
 
     public let signature: String
 
-    internal let _header: String
-
-    internal let _payload: String
-
-    internal let _signature: String
-
     public func claim(name: String) -> Claim {
         return .init(value: payload[name])
     }
@@ -37,9 +31,6 @@ public struct JWT {
         guard parts.count == 3 else {
             throw JWTError.invalidToken
         }
-        self._header = parts[0]
-        self._payload = parts[1]
-        self._signature = parts[2]
         self.header = try decodeJWTPart(parts[0])
         self.payload = try decodeJWTPart(parts[1])
         self.signature = try base64UrlDecode(parts[2]).toHexString()
@@ -87,14 +78,12 @@ public struct JWT {
 
         let _payload = try encodeJWTPart(payload)
 
-        let signature = try HMAC(key: secret.bytes, variant: algorithm.variant)
-            .authenticate("\(_header).\(_payload)".bytes)
+        let input = "\(_header).\(_payload)"
+
+        let signature = try HMAC(key: secret.bytes, variant: algorithm.variant).authenticate(input.bytes)
 
         let _signature = try base64UrlEncode(.init(signature))
 
-        self._header = _header
-        self._payload = _payload
-        self._signature = _signature
         self.header = header
         self.payload = payload
         self.signature = signature.toHexString()
@@ -150,7 +139,7 @@ extension JWT {
         subject: String? = nil
     ) throws -> Self {
         // Build input
-        let input = "\(_header).\(_payload)"
+        let input = token.components(separatedBy: ".").prefix(2).joined(separator: ".")
 
         // Compute signature based on secret
         let computedSignature = try HMAC(key: secret.bytes, variant: algorithm.variant)
@@ -164,7 +153,7 @@ extension JWT {
 
         // Ensure the jwt is not expired
         guard expired == false else {
-            throw JWTError.expired
+            throw JWTError.expiredToken
         }
 
         // Check for a matching issuer
@@ -279,7 +268,7 @@ public enum JWTError: Error {
     case invalidSignature
     case invalidIssuer
     case invalidSubject
-    case expired
+    case expiredToken
 }
 
 extension JWTError: LocalizedError {
@@ -298,8 +287,8 @@ extension JWTError: LocalizedError {
             return "Issuers do not match"
         case .invalidSubject:
             return "Subjects do not match"
-        case .expired:
-            return "JWT is expired"
+        case .expiredToken:
+            return "Expired token"
         }
     }
 }
