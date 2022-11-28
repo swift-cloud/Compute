@@ -10,66 +10,12 @@
       }
     },
     {
-      "identity" : "javascriptkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftwasm/JavaScriptKit.git",
-      "state" : {
-        "revision" : "dac9d7b0342c5027fc74c8d2f212f10624123a7b",
-        "version" : "0.17.0"
-      }
-    },
-    {
-      "identity" : "opencombine",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/OpenCombine/OpenCombine.git",
-      "state" : {
-        "revision" : "9cf67e363738dbab61b47fb5eaed78d3db31e5ee",
-        "version" : "0.13.0"
-      }
-    },
-    {
-      "identity" : "opencombinejs",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftwasm/OpenCombineJS.git",
-      "state" : {
-        "revision" : "e574e418ba468ff5c2d4c499eb56f108aeb4d2ba",
-        "version" : "0.2.0"
-      }
-    },
-    {
-      "identity" : "swift-argument-parser",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-argument-parser",
-      "state" : {
-        "revision" : "fddd1c00396eed152c45a46bea9f47b98e59301d",
-        "version" : "1.2.0"
-      }
-    },
-    {
-      "identity" : "swift-benchmark",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/google/swift-benchmark",
-      "state" : {
-        "revision" : "8163295f6fe82356b0bcf8e1ab991645de17d096",
-        "version" : "0.1.2"
-      }
-    },
-    {
       "identity" : "swift-docc-plugin",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-docc-plugin",
       "state" : {
         "revision" : "3303b164430d9a7055ba484c8ead67a52f7b74f6",
         "version" : "1.0.0"
-      }
-    },
-    {
-      "identity" : "tokamak",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/TokamakUI/Tokamak",
-      "state" : {
-        "branch" : "main",
-        "revision" : "f1cbfcf073e2675566b0e9aa337441357d40d88a"
       }
     }
   ],
