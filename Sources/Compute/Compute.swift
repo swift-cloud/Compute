@@ -41,11 +41,11 @@ private func isComputeStatusRequest(_ req: IncomingRequest) -> Bool {
 private func sendComputeStatusResponse(_ res: OutgoingResponse) async throws {
     try await res
         .status(204)
-        .header("x-compute-service-id", Environment.Compute.serviceId)
-        .header("x-compute-service-version", Environment.Compute.serviceVersion)
-        .header("x-compute-trace-id", Environment.Compute.traceId)
-        .header("x-compute-hostname", Environment.Compute.hostname)
-        .header("x-compute-region", Environment.Compute.region)
-        .header("x-compute-pop", Environment.Compute.pop)
+        .header("x-compute-service-id", Fastly.Environment.serviceId)
+        .header("x-compute-service-version", Fastly.Environment.serviceVersion)
+        .header("x-compute-trace-id", Fastly.Environment.traceId)
+        .header("x-compute-hostname", Fastly.Environment.hostname)
+        .header("x-compute-region", Fastly.Environment.region)
+        .header("x-compute-pop", Fastly.Environment.pop)
         .send()
 }
