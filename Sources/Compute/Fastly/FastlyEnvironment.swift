@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 1/12/22.
 //
 
-import Foundation
-
 extension Fastly {
     public struct Environment: Sendable {
 

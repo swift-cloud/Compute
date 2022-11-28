@@ -6,9 +6,6 @@
 //
 
 #if arch(wasm32)
-
-import Foundation
-
 public struct FetchResponse: Sendable {
 
     internal let request: FetchRequest
@@ -78,5 +75,4 @@ extension FetchResponse {
         return try await body.bytes()
     }
 }
-
 #endif

@@ -5,6 +5,11 @@
 //  Created by Andrew Barba on 1/11/22.
 //
 
+@_exported import Foundation
+#if canImport(FoundationNetworking)
+@_exported import FoundationNetworking
+#endif
+
 public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ res: OutgoingResponse) async throws -> Void) async throws {
     // Initialize ABI
     try Fastly.ABI.initialize()

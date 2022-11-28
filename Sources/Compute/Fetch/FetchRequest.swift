@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 1/14/22.
 //
 
-import Foundation
-
 public enum FetchRequestError: Error, Sendable {
     case invalidURL
 }

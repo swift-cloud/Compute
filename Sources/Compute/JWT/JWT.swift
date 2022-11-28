@@ -6,7 +6,6 @@
 //
 
 import CryptoSwift
-import Foundation
 
 public struct JWT {
 

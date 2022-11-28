@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 3/31/22.
 //
 
-import Foundation
-
 public struct ObjectStore: Sendable {
 
     internal let store: Fastly.ObjectStore

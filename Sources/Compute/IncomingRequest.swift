@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 1/13/22.
 //
 
-import Foundation
-
 public struct IncomingRequest: Sendable {
 
     internal let request: Fastly.Request

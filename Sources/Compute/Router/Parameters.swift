@@ -5,8 +5,6 @@
 //  Created by https://github.com/vapor/routing-kit
 //
 
-import Foundation
-
 /// Holds dynamic path components that were discovered while routing.
 ///
 /// After this struct has been filled with parameter values, you can fetch

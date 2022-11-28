@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 3/23/22.
 //
 
-import Foundation
-
 public let console = Console()
 
 public struct Console {

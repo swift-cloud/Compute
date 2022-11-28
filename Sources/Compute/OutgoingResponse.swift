@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 1/13/22.
 //
 
-import Foundation
-
 public final class OutgoingResponse {
 
     internal private(set) var response: Fastly.Response

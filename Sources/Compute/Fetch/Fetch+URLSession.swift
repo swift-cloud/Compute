@@ -6,12 +6,7 @@
 //
 
 #if !arch(wasm32)
-
 import CryptoSwift
-import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     // Build url components from request url
@@ -93,5 +88,4 @@ public func fetch(_ urlPath: String, _ options: FetchRequest.Options = .options(
     let request = FetchRequest(url, options)
     return try await fetch(request)
 }
-
 #endif

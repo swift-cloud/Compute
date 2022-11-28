@@ -6,13 +6,6 @@
 //
 
 #if !arch(wasm32)
-
-import Foundation
-import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
 public struct FetchResponse: Sendable {
 
     internal let data: Data
@@ -88,5 +81,4 @@ extension FetchResponse {
         return body.bytes
     }
 }
-
 #endif

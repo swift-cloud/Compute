@@ -6,7 +6,6 @@
 //
 
 import ComputeRuntime
-import Foundation
 
 extension Fastly {
     public struct Logger: Sendable {
