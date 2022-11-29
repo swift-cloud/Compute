@@ -88,4 +88,13 @@ public func fetch(_ urlPath: String, _ options: FetchRequest.Options = .options(
     let request = FetchRequest(url, options)
     return try await fetch(request)
 }
+
+public func fetch (
+    _ request: IncomingRequest,
+    origin: String,
+    streaming: Bool = true,
+    _ options: FetchRequest.Options = .options()
+) async throws -> FetchResponse {
+    fatalError("Only available in WASM runtime")
+}
 #endif
