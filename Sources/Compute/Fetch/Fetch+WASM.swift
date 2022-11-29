@@ -55,7 +55,7 @@ public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
 
     // Check for a custom cache key
     if let cacheKey = request.cacheKey {
-        let hash = cacheKey.bytes.sha256().toHexString()
+        let hash = cacheKey.bytes.sha256().toHexString().uppercased()
         try httpRequest.insertHeader(HTTPHeader.fastlyCacheKey.rawValue, hash)
     }
 
