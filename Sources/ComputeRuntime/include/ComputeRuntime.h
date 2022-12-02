@@ -74,6 +74,17 @@ int fastly_object_store__lookup(WasiHandle handle, const char* key, size_t key_l
 WASM_IMPORT("fastly_object_store", "insert")
 int fastly_object_store__insert(WasiHandle handle, const char* key, size_t key_len, uint32_t body_handle);
 
+/* FASTLY_SECRET_STORE */
+
+WASM_IMPORT("fastly_secret_store", "open")
+int fastly_secret_store__open(const char* name, size_t name_len, WasiHandle* handle);
+
+WASM_IMPORT("fastly_secret_store", "get")
+int fastly_secret_store__lookup(WasiHandle handle, const char* key, size_t key_len, uint32_t* secret_handle);
+
+WASM_IMPORT("fastly_secret_store", "plaintext")
+int fastly_secret_store__plaintext(WasiHandle secret_handle, uint8_t* value, size_t value_max_len, size_t* nwritten);
+
 /* FASTLY_HTTP_BODY */
 
 WASM_IMPORT("fastly_http_body", "new")
