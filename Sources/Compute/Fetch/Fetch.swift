@@ -8,7 +8,7 @@
 import Foundation
 
 #if arch(wasm32)
-private typealias Fetcher = WASMFetcher
+private typealias Fetcher = WasiFetcher
 #else
 private typealias Fetcher = URLSessionFetcher
 #endif

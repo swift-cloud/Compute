@@ -7,7 +7,7 @@
 
 import CryptoSwift
 
-internal struct WASMFetcher {
+internal struct WasiFetcher {
 
     static func fetch(_ request: FetchRequest) async throws -> FetchResponse {
         // Create underlying http request
@@ -103,7 +103,7 @@ internal struct WASMFetcher {
             // Poll request to see if its done
             if let (response, body) = try pendingRequest.poll() {
                 return try FetchResponse(
-                    body: ReadableWASMBody(body),
+                    body: ReadableWasiBody(body),
                     headers: Headers(response),
                     status: response.getStatus(),
                     url: url

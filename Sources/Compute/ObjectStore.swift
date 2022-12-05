@@ -36,7 +36,7 @@ extension ObjectStore {
         guard let body = try store.lookup(key) else {
             return nil
         }
-        return .init(body: ReadableWASMBody(body))
+        return .init(body: ReadableWasiBody(body))
     }
 
     public func has(_ key: String) async throws -> Bool {

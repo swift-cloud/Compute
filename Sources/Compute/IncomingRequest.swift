@@ -34,7 +34,7 @@ public struct IncomingRequest: Sendable {
         let (request, body) = try Fastly.Request.getDownstream()
         let url = URL(string: try request.getUri() ?? "http://localhost")!
         self.request = request
-        self.body = ReadableWASMBody(body)
+        self.body = ReadableWasiBody(body)
         self.headers = Headers(request)
         self.url = url
         self.method = try request.getMethod() ?? .get

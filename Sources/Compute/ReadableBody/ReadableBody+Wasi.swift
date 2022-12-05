@@ -5,7 +5,7 @@
 //  Created by Andrew Barba on 1/16/22.
 //
 
-internal actor ReadableWASMBody: ReadableBody {
+internal actor ReadableWasiBody: ReadableBody {
 
     var used: Bool {
         return body.used
@@ -28,7 +28,7 @@ internal actor ReadableWASMBody: ReadableBody {
     }
 }
 
-extension ReadableWASMBody {
+extension ReadableWasiBody {
 
     func pipeTo(_ dest: isolated WritableBody, preventClose: Bool) async throws {
         var destBody = dest.body
@@ -42,7 +42,7 @@ extension ReadableWASMBody {
     }
 }
 
-extension ReadableWASMBody {
+extension ReadableWasiBody {
 
     func decode<T>(decoder: JSONDecoder = .init()) async throws -> T where T: Decodable {
         let data = try await data()
