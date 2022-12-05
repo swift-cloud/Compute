@@ -7,14 +7,12 @@
 
 import Foundation
 
-#if arch(wasm32)
-private typealias Fetcher = WasiFetcher
-#else
-private typealias Fetcher = URLSessionFetcher
-#endif
-
 public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
-    return try await Fetcher.fetch(request)
+    #if arch(wasm32)
+    return try await WasiFetcher.fetch(request)
+    #else
+    return try await URLSessionFetcher.fetch(request)
+    #endif
 }
 
 public func fetch(_ url: URL, _ options: FetchRequest.Options = .options()) async throws -> FetchResponse {
