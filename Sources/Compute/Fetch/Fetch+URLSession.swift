@@ -5,7 +5,7 @@
 //  Created by Andrew Barba on 1/15/22.
 //
 
-#if canImport(Foundation.URLSession)
+#if !arch(wasm32)
 import CryptoSwift
 
 internal struct URLSessionFetcher {

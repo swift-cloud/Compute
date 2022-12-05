@@ -8,10 +8,10 @@
 import Foundation
 
 public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
-    #if arch(wasm32)
-    return try await WasiFetcher.fetch(request)
-    #else
+    #if !arch(wasm32)
     return try await URLSessionFetcher.fetch(request)
+    #else
+    return try await WasiFetcher.fetch(request)
     #endif
 }
 
