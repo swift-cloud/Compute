@@ -2,42 +2,30 @@
 //  FetchResponse.swift
 //  
 //
-//  Created by Andrew Barba on 1/14/22.
+//  Created by Andrew Barba on 12/5/22.
 //
 
-#if arch(wasm32)
 public struct FetchResponse: Sendable {
-
-    internal let request: FetchRequest
-
-    internal let response: Fastly.Response
 
     public let body: ReadableBody
 
-    public let headers: Headers<Fastly.Response>
+    public let headers: Headers
 
     public let status: Int
+
+    public let url: URL
+}
+
+extension FetchResponse {
 
     public var ok: Bool {
         return status >= 200 && status <= 299
     }
 
-    public var url: URL {
-        return request.url
-    }
-
-    public var bodyUsed: Bool {
+    var bodyUsed: Bool {
         get async {
             await body.used
         }
-    }
-
-    internal init(request: FetchRequest, response: Fastly.Response, body: Fastly.Body) throws {
-        self.request = request
-        self.response = response
-        self.body = ReadableBody(body)
-        self.headers = Headers(response)
-        self.status = try .init(response.getStatus())
     }
 }
 
@@ -75,4 +63,3 @@ extension FetchResponse {
         return try await body.bytes()
     }
 }
-#endif

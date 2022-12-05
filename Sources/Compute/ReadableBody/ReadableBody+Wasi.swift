@@ -1,17 +1,17 @@
 //
-//  ReadableBody.swift
-//  
+//  ReadableBody+WASM.swift
+//
 //
 //  Created by Andrew Barba on 1/16/22.
 //
 
-public actor ReadableBody: Sendable {
+internal actor ReadableWasiBody: ReadableBody {
 
-    public var used: Bool {
+    var used: Bool {
         return body.used
     }
 
-    internal private(set) var body: Fastly.Body
+    private(set) var body: Fastly.Body
 
     private var _bytes: [UInt8]? = nil
 
@@ -23,14 +23,14 @@ public actor ReadableBody: Sendable {
         self.body = .init(bodyHandle)
     }
 
-    public func close() throws {
+    func close() throws {
         try body.close()
     }
 }
 
-extension ReadableBody {
+extension ReadableWasiBody {
 
-    public func pipeTo(_ dest: isolated WritableBody, preventClose: Bool = false) throws {
+    func pipeTo(_ dest: isolated WritableBody, preventClose: Bool) async throws {
         var destBody = dest.body
         try body.read {
             try destBody.write($0)
@@ -42,29 +42,29 @@ extension ReadableBody {
     }
 }
 
-extension ReadableBody {
+extension ReadableWasiBody {
 
-    public func decode<T>(decoder: JSONDecoder = .init()) throws -> T where T: Decodable {
-        let data = try data()
+    func decode<T>(decoder: JSONDecoder = .init()) async throws -> T where T: Decodable {
+        let data = try await data()
         return try decoder.decode(T.self, from: data)
     }
 
-    public func json() throws -> Sendable {
-        let data = try data()
+    func json() async throws -> Sendable {
+        let data = try await data()
         let dict = try JSONSerialization.jsonObject(with: data, options: [])
         return dict
     }
 
-    public func jsonObject() throws -> [String: Sendable] {
-        return try json() as! [String: Sendable]
+    func jsonObject() async throws -> [String: Sendable] {
+        return try await json() as! [String: Sendable]
     }
 
-    public func jsonArray() throws -> [Sendable] {
-        return try json() as! [Sendable]
+    func jsonArray() async throws -> [Sendable] {
+        return try await json() as! [Sendable]
     }
 
-    public func formValues() throws -> [String: String] {
-        let query = try text()
+    func formValues() async throws -> [String: String] {
+        let query = try await text()
         let components = URLComponents(string: "?\(query)")
         let queryItems = components?.queryItems ?? []
         return queryItems.reduce(into: [:]) { values, item in
@@ -72,17 +72,17 @@ extension ReadableBody {
         }
     }
 
-    public func text() throws -> String {
-        let data = try data()
+    func text() async throws -> String {
+        let data = try await data()
         return String(data: data, encoding: .utf8) ?? ""
     }
 
-    public func data() throws -> Data {
-        let bytes = try bytes()
+    func data() async throws -> Data {
+        let bytes = try await bytes()
         return Data(bytes)
     }
 
-    public func bytes() throws -> [UInt8] {
+    func bytes() async throws -> [UInt8] {
         // Check if we've already ready the bytes from this stream
         if let _bytes = _bytes {
             return _bytes

@@ -9,7 +9,7 @@ public struct IncomingRequest: Sendable {
 
     internal let request: Fastly.Request
 
-    public let headers: Headers<Fastly.Request>
+    public let headers: Headers
 
     public let searchParams: [String: String]
 
@@ -34,7 +34,7 @@ public struct IncomingRequest: Sendable {
         let (request, body) = try Fastly.Request.getDownstream()
         let url = URL(string: try request.getUri() ?? "http://localhost")!
         self.request = request
-        self.body = ReadableBody(body)
+        self.body = ReadableWasiBody(body)
         self.headers = Headers(request)
         self.url = url
         self.method = try request.getMethod() ?? .get
