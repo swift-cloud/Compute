@@ -35,6 +35,10 @@ extension FetchResponse {
         return try await body.decode(decoder: decoder)
     }
 
+    public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T where T: Decodable & Sendable {
+        return try await body.decode(type, decoder: decoder)
+    }
+
     public func json() async throws -> Any {
         return try await body.json()
     }

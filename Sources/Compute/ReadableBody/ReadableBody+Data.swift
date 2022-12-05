@@ -33,8 +33,8 @@ extension ReadableDataBody {
 
 extension ReadableDataBody {
 
-    func decode<T>(decoder: JSONDecoder = .init()) async throws -> T where T: Decodable & Sendable {
-        return try decoder.decode(T.self, from: data)
+    func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T where T: Decodable & Sendable {
+        return try decoder.decode(type, from: data)
     }
 
     func json() async throws -> Sendable {
