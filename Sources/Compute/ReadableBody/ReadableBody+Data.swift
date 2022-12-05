@@ -11,10 +11,13 @@ internal actor ReadableDataBody: ReadableBody {
         return true
     }
 
-    private(set) var body: Data
+    var data: Data
 
-    init(_ body: Data) {
-        self.body = body
+    var body: Fastly.Body
+
+    init(_ data: Data) {
+        self.data = data
+        self.body = .init(InvalidWasiHandle)
     }
 
     func close() throws {}
@@ -23,26 +26,26 @@ internal actor ReadableDataBody: ReadableBody {
 extension ReadableDataBody {
 
     func pipeTo(_ dest: isolated WritableBody, preventClose: Bool) async throws {
-        try dest.write(body)
+        try dest.write(data)
     }
 }
 
 extension ReadableDataBody {
 
     func decode<T>(decoder: JSONDecoder = .init()) async throws -> T where T: Decodable & Sendable {
-        return try decoder.decode(T.self, from: body)
+        return try decoder.decode(T.self, from: data)
     }
 
     func json() async throws -> Sendable {
-        return try JSONSerialization.jsonObject(with: body)
+        return try JSONSerialization.jsonObject(with: data)
     }
 
     func jsonObject() async throws -> [String : Sendable] {
-        return try JSONSerialization.jsonObject(with: body) as! [String: Any]
+        return try JSONSerialization.jsonObject(with: data) as! [String: Any]
     }
 
     func jsonArray() async throws -> [Sendable] {
-        return try JSONSerialization.jsonObject(with: body) as! [Any]
+        return try JSONSerialization.jsonObject(with: data) as! [Any]
     }
 
     func formValues() async throws -> [String: String] {
@@ -55,14 +58,14 @@ extension ReadableDataBody {
     }
 
     func text() async throws -> String {
-        return String(data: body, encoding: .utf8)!
+        return String(data: data, encoding: .utf8)!
     }
 
     func data() async throws -> Data {
-        return body
+        return data
     }
 
     func bytes() async throws -> [UInt8] {
-        return body.bytes
+        return data.bytes
     }
 }

@@ -9,6 +9,8 @@ public protocol ReadableBody: Actor, Sendable {
 
     var used: Bool { get }
 
+    var body: Fastly.Body { get }
+
     func close() async throws
 
     func pipeTo(_ dest: isolated WritableBody, preventClose: Bool) async throws
@@ -34,12 +36,5 @@ extension ReadableBody {
 
     public func pipeTo(_ dest: isolated WritableBody) async throws {
         try await pipeTo(dest, preventClose: false)
-    }
-}
-
-extension ReadableBody {
-
-    internal var body: Fastly.Body {
-        fatalError()
     }
 }
