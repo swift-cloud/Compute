@@ -5,6 +5,7 @@
 //  Created by Andrew Barba on 1/15/22.
 //
 
+#if canImport(Foundation.URLSession)
 import CryptoSwift
 
 internal struct URLSessionFetcher {
@@ -84,3 +85,4 @@ internal struct URLSessionFetcher {
         )
     }
 }
+#endif
