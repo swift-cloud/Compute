@@ -9,7 +9,7 @@ import CryptoSwift
 
 internal struct URLSessionFetcher {
 
-    static func fetch(_ request: FetchRequest) async throws -> any FetchResponse {
+    static func fetch(_ request: FetchRequest) async throws -> some FetchResponse {
         // Build url components from request url
         guard var urlComponents = URLComponents(string: request.url.absoluteString) else {
             throw FetchRequestError.invalidURL

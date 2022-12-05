@@ -9,7 +9,7 @@ import CryptoSwift
 
 internal struct WASMFetcher {
 
-    static func fetch(_ request: FetchRequest) async throws -> any FetchResponse {
+    static func fetch(_ request: FetchRequest) async throws -> some FetchResponse {
         // Create underlying http request
         var httpRequest = try Fastly.Request()
 
