@@ -22,11 +22,34 @@ extension Fastly.Request: HeadersProvider {}
 
 extension Fastly.Response: HeadersProvider {}
 
-public struct Headers<T>: Sendable where T: HeadersProvider {
+extension [String: String]: HeadersProvider {
 
-    internal private(set) var instance: T
+    public func getHeaderNames() throws -> [String] {
+        self.enumerated().map { $1.key }
+    }
 
-    internal init(_ instance: T) {
+    public func getHeader(_ name: String) throws -> String? {
+        self[name]
+    }
+
+    public mutating func insertHeader(_ name: String, _ value: String) throws {
+        self[name] = value
+    }
+
+    public mutating func appendHeader(_ name: String, _ value: String) throws {
+        self[name] = value
+    }
+
+    public mutating func removeHeader(_ name: String) throws {
+        self[name] = nil
+    }
+}
+
+public struct Headers: Sendable {
+
+    internal private(set) var instance: HeadersProvider
+
+    internal init(_ instance: HeadersProvider) {
         self.instance = instance
     }
 

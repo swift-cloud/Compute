@@ -32,14 +32,14 @@ public actor WritableBody: Sendable {
 
 extension WritableBody {
 
-    public func append(_ source: isolated ReadableBody) throws {
+    public func append(_ source: isolated ReadableBody) async throws {
         guard writable else { return }
         try body.append(source.body)
     }
 
-    public func pipeFrom(_ source: isolated ReadableBody, preventClose: Bool = false) throws {
+    public func pipeFrom(_ source: isolated ReadableBody, preventClose: Bool = false) async throws {
         guard writable else { return }
-        try source.pipeTo(self, preventClose: preventClose)
+        try await source.pipeTo(self, preventClose: preventClose)
     }
 }
 
