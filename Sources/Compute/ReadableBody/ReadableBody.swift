@@ -7,7 +7,7 @@
 
 public protocol ReadableBody: Actor, Sendable {
 
-    var used: Bool { get }
+    var used: Bool { get async }
 
     var body: Fastly.Body { get }
 
