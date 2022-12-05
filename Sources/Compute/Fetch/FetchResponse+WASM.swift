@@ -5,74 +5,26 @@
 //  Created by Andrew Barba on 1/14/22.
 //
 
-#if arch(wasm32)
-public struct FetchResponse: Sendable {
+internal struct FetchWASMResponse: FetchResponse {
 
-    internal let request: FetchRequest
+    let body: ReadableBody
 
-    internal let response: Fastly.Response
+    let headers: Headers<Fastly.Response>
 
-    public let body: ReadableBody
+    let status: Int
 
-    public let headers: Headers<Fastly.Response>
+    let url: URL
 
-    public let status: Int
-
-    public var ok: Bool {
-        return status >= 200 && status <= 299
-    }
-
-    public var url: URL {
-        return request.url
-    }
-
-    public var bodyUsed: Bool {
+    var bodyUsed: Bool {
         get async {
             await body.used
         }
     }
 
-    internal init(request: FetchRequest, response: Fastly.Response, body: Fastly.Body) throws {
-        self.request = request
-        self.response = response
-        self.body = ReadableBody(body)
+    init(request: FetchRequest, response: Fastly.Response, body: Fastly.Body) throws {
+        self.url = request.url
+        self.body = ReadableWASMBody(body)
         self.headers = Headers(response)
         self.status = try .init(response.getStatus())
     }
 }
-
-extension FetchResponse {
-
-    public func decode<T>(decoder: JSONDecoder = .init()) async throws -> T where T: Decodable & Sendable {
-        return try await body.decode(decoder: decoder)
-    }
-
-    public func json() async throws -> Any {
-        return try await body.json()
-    }
-
-    public func jsonObject() async throws -> [String: Any] {
-        return try await body.jsonObject()
-    }
-
-    public func jsonArray() async throws -> [Any] {
-        return try await body.jsonArray()
-    }
-
-    public func formValues() async throws -> [String: String] {
-        return try await body.formValues()
-    }
-
-    public func text() async throws -> String {
-        return try await body.text()
-    }
-
-    public func data() async throws -> Data {
-        return try await body.data()
-    }
-
-    public func bytes() async throws -> [UInt8] {
-        return try await body.bytes()
-    }
-}
-#endif

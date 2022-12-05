@@ -279,8 +279,7 @@ extension OutgoingResponse {
 
 extension OutgoingResponse {
 
-    public func proxy(_ response: FetchResponse, streaming: Bool = true) async throws {
-        #if arch(wasm32)
+    public func proxy(_ response: some FetchResponse, streaming: Bool = true) async throws {
         status = response.status
         for (key, value) in response.headers.entries() {
             guard invalidProxyHeaders.contains(key) == false else { continue }
@@ -291,7 +290,6 @@ extension OutgoingResponse {
         } else {
             try await send(response.bytes())
         }
-        #endif
     }
 }
 
