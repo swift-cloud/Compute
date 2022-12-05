@@ -5,6 +5,7 @@
 //  Created by Andrew Barba on 12/5/22.
 //
 
+#if !arch(wasm32)
 internal actor ReadableDataBody: ReadableBody {
 
     var used: Bool {
@@ -69,3 +70,4 @@ extension ReadableDataBody {
         return data.bytes
     }
 }
+#endif
