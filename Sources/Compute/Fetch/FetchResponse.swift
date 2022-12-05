@@ -5,25 +5,27 @@
 //  Created by Andrew Barba on 12/5/22.
 //
 
-public protocol FetchResponse: Sendable {
+public struct FetchResponse: Sendable {
 
-    associatedtype HeadersImplementation: HeadersProvider
+    public let body: ReadableBody
 
-    var body: ReadableBody { get }
+    public let headers: Headers
 
-    var headers: Headers<HeadersImplementation> { get }
+    public let status: Int
 
-    var status: Int { get }
-
-    var url: URL { get }
-
-    var bodyUsed: Bool { get async }
+    public let url: URL
 }
 
 extension FetchResponse {
 
     public var ok: Bool {
         return status >= 200 && status <= 299
+    }
+
+    var bodyUsed: Bool {
+        get async {
+            await body.used
+        }
     }
 }
 

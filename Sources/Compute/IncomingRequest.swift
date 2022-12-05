@@ -9,7 +9,7 @@ public struct IncomingRequest: Sendable {
 
     internal let request: Fastly.Request
 
-    public let headers: Headers<Fastly.Request>
+    public let headers: Headers
 
     public let searchParams: [String: String]
 

@@ -9,7 +9,7 @@ import CryptoSwift
 
 internal struct URLSessionFetcher {
 
-    static func fetch(_ request: FetchRequest) async throws -> some FetchResponse {
+    static func fetch(_ request: FetchRequest) async throws -> FetchResponse {
         // Build url components from request url
         guard var urlComponents = URLComponents(string: request.url.absoluteString) else {
             throw FetchRequestError.invalidURL
@@ -72,8 +72,15 @@ internal struct URLSessionFetcher {
             break
         }
 
-        let (data, urlResponse) = try await URLSession.shared.data(for: httpRequest)
+        let (data, response) = try await URLSession.shared.data(for: httpRequest)
 
-        return FetchURLSessionResponse(data: data, response: urlResponse as! HTTPURLResponse)
+        let urlResponse = response as! HTTPURLResponse
+
+        return FetchResponse(
+            body: ReadableDataBody(data),
+            headers: Headers(urlResponse.allHeaderFields as! [String: String]),
+            status: urlResponse.statusCode,
+            url: url
+        )
     }
 }

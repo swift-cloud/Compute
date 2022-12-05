@@ -9,7 +9,7 @@ import CryptoSwift
 
 internal struct WASMFetcher {
 
-    static func fetch(_ request: FetchRequest) async throws -> some FetchResponse {
+    static func fetch(_ request: FetchRequest) async throws -> FetchResponse {
         // Create underlying http request
         var httpRequest = try Fastly.Request()
 
@@ -102,7 +102,12 @@ internal struct WASMFetcher {
         while true {
             // Poll request to see if its done
             if let (response, body) = try pendingRequest.poll() {
-                return try FetchWASMResponse(request: request, response: response, body: body)
+                return try FetchResponse(
+                    body: ReadableWASMBody(body),
+                    headers: Headers(response),
+                    status: response.getStatus(),
+                    url: url
+                )
             }
 
             // Sleep for a bit before polling

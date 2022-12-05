@@ -19,7 +19,7 @@ public final class OutgoingResponse {
         didSendAndClose || didSendStream
     }
 
-    public private(set) var headers: Headers<Fastly.Response>
+    public private(set) var headers: Headers
 
     public var status: Int {
         get {
@@ -279,7 +279,7 @@ extension OutgoingResponse {
 
 extension OutgoingResponse {
 
-    public func proxy(_ response: some FetchResponse, streaming: Bool = true) async throws {
+    public func proxy(_ response: FetchResponse, streaming: Bool = true) async throws {
         status = response.status
         for (key, value) in response.headers.entries() {
             guard invalidProxyHeaders.contains(key) == false else { continue }

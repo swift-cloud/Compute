@@ -13,16 +13,16 @@ private typealias Fetcher = WASMFetcher
 private typealias Fetcher = URLSessionFetcher
 #endif
 
-public func fetch(_ request: FetchRequest) async throws -> some FetchResponse {
+public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     return try await Fetcher.fetch(request)
 }
 
-public func fetch(_ url: URL, _ options: FetchRequest.Options = .options()) async throws -> some FetchResponse {
+public func fetch(_ url: URL, _ options: FetchRequest.Options = .options()) async throws -> FetchResponse {
     let request = FetchRequest(url, options)
     return try await fetch(request)
 }
 
-public func fetch(_ urlPath: String, _ options: FetchRequest.Options = .options()) async throws -> some FetchResponse {
+public func fetch(_ urlPath: String, _ options: FetchRequest.Options = .options()) async throws -> FetchResponse {
     guard let url = URL(string: urlPath) else {
         throw FetchRequestError.invalidURL
     }
@@ -35,7 +35,7 @@ public func fetch (
     origin: String,
     streaming: Bool = true,
     _ options: FetchRequest.Options = .options()
-) async throws -> some FetchResponse {
+) async throws -> FetchResponse {
     guard
         let originComponents = URLComponents(string: origin),
         let host = originComponents.host,

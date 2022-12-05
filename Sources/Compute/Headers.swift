@@ -45,11 +45,11 @@ extension [String: String]: HeadersProvider {
     }
 }
 
-public struct Headers<T>: Sendable where T: HeadersProvider {
+public struct Headers: Sendable {
 
-    internal private(set) var instance: T
+    internal private(set) var instance: HeadersProvider
 
-    internal init(_ instance: T) {
+    internal init(_ instance: HeadersProvider) {
         self.instance = instance
     }
 
