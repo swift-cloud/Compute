@@ -19,4 +19,4 @@ github-pages:
 
 demo:
 	swift build -c debug --triple wasm32-unknown-wasi
-	fastly compute serve --skip-build --file ./.build/debug/*.wasm
+	fastly compute serve --skip-build --file ./.build/debug/ComputeDemo.wasm
