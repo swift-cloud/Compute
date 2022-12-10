@@ -4,7 +4,7 @@ clean:
 	rm -rf ./docs
 
 docc:
-	swift package
+	swift package \
 		--allow-writing-to-directory ./docs \
 		generate-documentation \
 		--product Compute \
