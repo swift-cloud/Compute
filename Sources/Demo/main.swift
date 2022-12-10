@@ -1,13 +1,5 @@
 import Compute
 
-let router = Router()
-
-router.get("/") { req, res in
-    let data = try await fetch("https://httpbin.org/json", .options(
-        cachePolicy: .ttl(60),
-        cacheKey: "meow"
-    ))
-    try await res.status(200).send(data.jsonObject())
+try await onIncomingRequest { req, res in
+    try await res.send(ProcessInfo.processInfo.environment)
 }
-
-try await router.listen()

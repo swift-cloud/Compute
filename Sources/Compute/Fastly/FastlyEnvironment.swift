@@ -9,10 +9,7 @@ extension Fastly {
     public struct Environment: Sendable {
 
         public static func get(_ key: String) -> String? {
-            guard let pointer = getenv(key) else {
-                return nil
-            }
-            return String(cString: pointer)
+            return ProcessInfo.processInfo.environment[key]
         }
 
         public static subscript(key: String) -> String? {

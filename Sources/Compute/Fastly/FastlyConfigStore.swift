@@ -21,18 +21,10 @@ extension Fastly {
             self.name = name
         }
 
-        public func get(_ key: String) -> String? {
-            return try? wasiString(maxBufferLength: maxDictionaryEntryLength) {
+        public func get(_ key: String) throws -> String? {
+            return try wasiString(maxBufferLength: maxDictionaryEntryLength) {
                 fastly_dictionary__get(handle, key, key.utf8.count, $0, $1, &$2)
             }
-        }
-
-        public subscript(key: String) -> String? {
-            return self.get(key)
-        }
-
-        public subscript(key: String, default value: String) -> String {
-            return self.get(key) ?? value
         }
     }
 }
