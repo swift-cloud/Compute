@@ -21,13 +21,13 @@ internal actor ReadableDataBody: ReadableBody {
         self.body = .init(InvalidWasiHandle)
     }
 
-    func close() throws {}
+    func close() async throws {}
 }
 
 extension ReadableDataBody {
 
     func pipeTo(_ dest: isolated WritableBody, preventClose: Bool) async throws {
-        try dest.write(data)
+        try await dest.write(data)
     }
 }
 
