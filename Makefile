@@ -4,8 +4,10 @@ clean:
 	rm -rf ./docs
 
 docc:
-	swift package --allow-writing-to-directory ./docs \
-		generate-documentation --product Compute \
+	swift package
+		--allow-writing-to-directory ./docs \
+		generate-documentation \
+		--product Compute \
 		--disable-indexing \
 		--transform-for-static-hosting \
 		--output-path ./docs
