@@ -8,9 +8,9 @@
 #if !arch(wasm32)
 import CryptoSwift
 
-internal struct URLSessionFetcher {
+internal struct URLSessionFetcher: Sendable {
 
-    enum URLSessionFetchError: Error {
+    enum URLSessionFetchError: Error, Sendable {
         case invalidResponse
     }
 

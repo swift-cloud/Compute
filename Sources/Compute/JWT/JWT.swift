@@ -7,13 +7,13 @@
 
 import CryptoSwift
 
-public struct JWT {
+public struct JWT: Sendable {
 
     public let token: String
 
-    public let header: [String: Any]
+    public let header: [String: Sendable]
 
-    public let payload: [String: Any]
+    public let payload: [String: Sendable]
 
     public let signature: String
 

@@ -7,7 +7,7 @@
 
 import CryptoSwift
 
-internal struct WasiFetcher {
+internal struct WasiFetcher: Sendable {
 
     static func fetch(_ request: FetchRequest) async throws -> FetchResponse {
         // Create underlying http request
