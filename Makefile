@@ -4,6 +4,7 @@ clean:
 	rm -rf ./docs
 
 docc:
+	rm .swift-version
 	swift package \
 		--allow-writing-to-directory ./docs \
 		generate-documentation \
@@ -11,6 +12,7 @@ docc:
 		--disable-indexing \
 		--transform-for-static-hosting \
 		--output-path ./docs
+	swiftenv local wasm-5.7.1
 
 github-pages:
 	echo "compute-runtime.swift.cloud" > docs/CNAME
