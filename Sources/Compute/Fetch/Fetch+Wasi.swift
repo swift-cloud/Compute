@@ -99,7 +99,13 @@ internal struct WasiFetcher: Sendable {
             pendingRequest = try await httpRequest.sendAsync(writableBody.body, backend: request.backend)
         }
 
+        // Store the time we started sending request
+        let startTime = Date().timeIntervalSince1970
+
         while true {
+            // Sleep for a bit before polling
+            try await Task.sleep(nanoseconds: 1_000_000)
+
             // Poll request to see if its done
             if let (response, body) = try pendingRequest.poll() {
                 return try FetchResponse(
@@ -110,8 +116,10 @@ internal struct WasiFetcher: Sendable {
                 )
             }
 
-            // Sleep for a bit before polling
-            try await Task.sleep(nanoseconds: 1_000_000)
+            // Check for a timeout
+            if let timeoutInterval = request.timeoutInterval, Date().timeIntervalSince1970 - startTime > timeoutInterval {
+                throw FetchRequestError.timeout
+            }
         }
     }
 

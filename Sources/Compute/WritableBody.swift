@@ -27,11 +27,7 @@ public actor WritableBody: Sendable {
 
     public func close() async throws {
         try body.close()
-        try await nextTick()
-    }
-
-    private func nextTick() async throws {
-        try await Task.sleep(nanoseconds: 0)
+        try await Task.nextTick()
     }
 }
 
@@ -40,7 +36,7 @@ extension WritableBody {
     public func append(_ source: isolated ReadableBody) async throws {
         guard writable else { return }
         try body.append(source.body)
-        try await nextTick()
+        try await Task.nextTick()
     }
 
     public func pipeFrom(_ source: isolated ReadableBody, preventClose: Bool = false) async throws {
@@ -90,6 +86,6 @@ extension WritableBody {
     public func write(_ bytes: [UInt8]) async throws {
         guard writable else { return }
         try body.write(bytes)
-        try await nextTick()
+        try await Task.nextTick()
     }
 }

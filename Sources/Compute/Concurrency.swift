@@ -12,3 +12,10 @@ extension URL: @unchecked Sendable {}
 #if !arch(wasm32)
 extension HTTPURLResponse: @unchecked Sendable {}
 #endif
+
+extension Task where Success == Never, Failure == Never {
+
+    internal static func nextTick() async throws {
+        try await sleep(nanoseconds: 0)
+    }
+}

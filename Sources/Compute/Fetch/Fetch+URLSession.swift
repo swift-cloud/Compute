@@ -45,6 +45,11 @@ internal struct URLSessionFetcher: Sendable {
         // Set request method
         httpRequest.httpMethod = request.method.rawValue
 
+        // Set the timeout interval
+        if let timeoutInterval = request.timeoutInterval {
+            httpRequest.timeoutInterval = timeoutInterval
+        }
+
         // Set content encodings
         if let encoding = request.acceptEncoding {
             httpRequest.setValue(encoding.stringValue, forHTTPHeaderField: HTTPHeader.acceptEncoding.rawValue)

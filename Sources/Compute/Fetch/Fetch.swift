@@ -62,7 +62,7 @@ public func fetch (
         body: streaming ? .stream(request.body) : .bytes(request.body.bytes()),
         headers: request.headers.dictionary(),
         searchParams: request.searchParams,
-        timeout: options.timeout,
+        timeoutInterval: options.timeoutInterval,
         cachePolicy: options.cachePolicy,
         surrogateKey: options.surrogateKey,
         backend: options.backend
