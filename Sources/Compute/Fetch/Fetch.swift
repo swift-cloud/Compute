@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 12/5/22.
 //
 
-import Foundation
-
 public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     #if !arch(wasm32)
     return try await URLSessionFetcher.fetch(request)
