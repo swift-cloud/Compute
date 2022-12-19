@@ -1,11 +1,11 @@
 {
   "pins" : [
     {
-      "identity" : "cryptoswift",
+      "identity" : "crypto",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
+      "location" : "https://github.com/swift-cloud/Crypto",
       "state" : {
-        "revision" : "19b3c3ceed117c5cc883517c4e658548315ba70b",
+        "revision" : "defff250bbd79d81fb8ee53926360fc522d75bad",
         "version" : "1.6.0"
       }
     },

@@ -5,7 +5,7 @@
 //  Created by Andrew Barba on 1/15/22.
 //
 
-import CryptoSwift
+import Crypto
 
 internal struct WasiFetcher: Sendable {
 

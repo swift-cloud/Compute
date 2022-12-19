@@ -5,7 +5,7 @@
 //  Created by Andrew Barba on 11/27/22.
 //
 
-import CryptoSwift
+import Crypto
 
 public struct JWT: Sendable {
 
