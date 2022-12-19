@@ -189,6 +189,7 @@ public enum HTTPHeader: String, HTTPHeaderRepresentable, Sendable {
     case via = "via"
     case xCache = "x-cache"
     case xCacheHits = "x-cache-hits"
+    case xCompressHint = "x-compress-hint"
 
     public var stringValue: String {
         rawValue
