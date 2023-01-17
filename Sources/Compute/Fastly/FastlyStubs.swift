@@ -14,7 +14,7 @@
 
 /* TYPES */
 
-struct DynamicBackendConfig {
+struct DynamicBackendConfig: Sendable {
     var host_override: UnsafePointer<CChar>! = nil
     var host_override_len: Int = 0
     var connect_timeout_ms: Int = 0

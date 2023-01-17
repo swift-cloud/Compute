@@ -7,6 +7,7 @@
 
 public enum FetchRequestError: Error, Sendable {
     case invalidURL
+    case timeout
 }
 
 public struct FetchRequest: Sendable {
@@ -31,6 +32,8 @@ public struct FetchRequest: Sendable {
 
     public var acceptEncoding: ContentEncodings? = nil
 
+    public var timeoutInterval: TimeInterval? = nil
+
     public init(_ url: URL, _ options: Options = .options()) {
         self.url = url
         self.backend = options.backend ?? url.host ?? "localhost"
@@ -42,6 +45,7 @@ public struct FetchRequest: Sendable {
         self.searchParams = options.searchParams
         self.body = options.body
         self.acceptEncoding = options.acceptEncoding
+        self.timeoutInterval = options.timeoutInterval
     }
 }
 
@@ -57,7 +61,7 @@ extension FetchRequest {
 
         public var searchParams: [String: String] = [:]
 
-        public var timeout: TimeInterval = .init(Int.max)
+        public var timeoutInterval: TimeInterval? = nil
 
         public var cachePolicy: CachePolicy = .origin
 
@@ -74,7 +78,7 @@ extension FetchRequest {
             body: Body? = nil,
             headers: [String: String] = [:],
             searchParams: [String: String] = [:],
-            timeout: TimeInterval = .init(Int.max),
+            timeoutInterval: TimeInterval? = nil,
             cachePolicy: CachePolicy = .origin,
             cacheKey: String? = nil,
             acceptEncoding: ContentEncodings? = nil,
@@ -86,7 +90,7 @@ extension FetchRequest {
                 body: body,
                 headers: headers,
                 searchParams: searchParams,
-                timeout: timeout,
+                timeoutInterval: timeoutInterval,
                 cachePolicy: cachePolicy,
                 cacheKey: cacheKey,
                 acceptEncoding: acceptEncoding,

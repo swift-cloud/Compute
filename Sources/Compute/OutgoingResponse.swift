@@ -321,6 +321,17 @@ extension OutgoingResponse {
     }
 }
 
+// MARK: - Compression
+
+extension OutgoingResponse {
+
+    @discardableResult
+    public func compress() -> Self {
+        headers[.xCompressHint] = "on"
+        return self
+    }
+}
+
 // MARK: - HTTP3
 
 extension OutgoingResponse {

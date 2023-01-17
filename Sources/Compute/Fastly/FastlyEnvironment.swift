@@ -8,43 +8,44 @@
 extension Fastly {
     public struct Environment: Sendable {
 
-        public static func get(_ key: String) -> String? {
-            guard let pointer = getenv(key) else {
-                return nil
-            }
-            return String(cString: pointer)
+        public static let current = Environment()
+
+        public func get(_ key: String) -> String? {
+            return ProcessInfo.processInfo.environment[key]
         }
 
-        public static subscript(key: String) -> String? {
+        public func get(_ key: String, default value: String) -> String {
+            return ProcessInfo.processInfo.environment[key, default: value]
+        }
+
+        public subscript(key: String) -> String? {
             return self.get(key)
         }
 
-        public static subscript(key: String, default value: String) -> String {
-            return self.get(key) ?? value
+        public subscript(key: String, default value: String) -> String {
+            return self.get(key, default: value)
         }
-
-        private init() {}
     }
 }
 
 extension Fastly.Environment {
-    public static var cacheGeneration = Self["FASTLY_CUSTOMER_ID", default: "local"]
+    public static var cacheGeneration = current["FASTLY_CACHE_GENERATION"] ?? "local"
 
-    public static var customerId = Self["FASTLY_CUSTOMER_ID", default: "local"]
+    public static var customerId = current["FASTLY_CUSTOMER_ID"] ?? "local"
 
-    public static var hostname = Self["FASTLY_HOSTNAME", default: "localhost"]
+    public static var hostname = current["FASTLY_HOSTNAME"] ?? "localhost"
 
-    public static var pop = Self["FASTLY_POP", default: "local"]
+    public static var pop = current["FASTLY_POP"] ?? "local"
 
-    public static var region = Self["FASTLY_REGION", default: "local"]
+    public static var region = current["FASTLY_REGION"] ?? "local"
 
-    public static var serviceId = Self["FASTLY_SERVICE_ID", default: "local"]
+    public static var serviceId = current["FASTLY_SERVICE_ID"] ?? "local"
 
-    public static var serviceVersion = Self["FASTLY_SERVICE_VERSION", default: "0"]
+    public static var serviceVersion = current["FASTLY_SERVICE_VERSION"] ?? "0"
 
-    public static var traceId = Self["FASTLY_TRACE_ID", default: "local"]
+    public static var traceId = current["FASTLY_TRACE_ID"] ?? "local"
 
     public static var viceroy: Bool {
-        return serviceId == "local"
+        return hostname == "localhost"
     }
 }

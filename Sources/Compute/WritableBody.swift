@@ -25,8 +25,9 @@ public actor WritableBody: Sendable {
         self.writable = writable
     }
 
-    public func close() throws {
+    public func close() async throws {
         try body.close()
+        try await Task.nextTick()
     }
 }
 
@@ -35,6 +36,7 @@ extension WritableBody {
     public func append(_ source: isolated ReadableBody) async throws {
         guard writable else { return }
         try body.append(source.body)
+        try await Task.nextTick()
     }
 
     public func pipeFrom(_ source: isolated ReadableBody, preventClose: Bool = false) async throws {
@@ -49,40 +51,41 @@ extension WritableBody {
         _ value: T,
         encoder: JSONEncoder = .init(),
         formatting: JSONEncoder.OutputFormatting = [.sortedKeys]
-    ) throws where T: Encodable {
+    ) async throws where T: Encodable {
         encoder.outputFormatting = formatting
         let data = try encoder.encode(value)
-        try write(data)
+        try await write(data)
     }
 
     public func write(
         _ jsonObject: [String: Sendable],
         options: JSONSerialization.WritingOptions = [.sortedKeys]
-    ) throws {
+    ) async throws {
         let data = try JSONSerialization.data(withJSONObject: jsonObject, options: options)
-        try write(data)
+        try await write(data)
     }
 
     public func write(
         _ jsonArray: [Sendable],
         options: JSONSerialization.WritingOptions = [.sortedKeys]
-    ) throws {
+    ) async throws {
         let data = try JSONSerialization.data(withJSONObject: jsonArray, options: options)
-        try write(data)
+        try await write(data)
     }
 
-    public func write(_ text: String) throws {
+    public func write(_ text: String) async throws {
         let data = text.data(using: .utf8) ?? .init()
-        try write(data)
+        try await write(data)
     }
 
-    public func write(_ data: Data) throws {
+    public func write(_ data: Data) async throws {
         let bytes: [UInt8] = .init(data)
-        try write(bytes)
+        try await write(bytes)
     }
 
-    public func write(_ bytes: [UInt8]) throws {
+    public func write(_ bytes: [UInt8]) async throws {
         guard writable else { return }
         try body.write(bytes)
+        try await Task.nextTick()
     }
 }

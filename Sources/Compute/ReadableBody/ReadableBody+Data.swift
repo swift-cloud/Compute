@@ -21,20 +21,20 @@ internal actor ReadableDataBody: ReadableBody {
         self.body = .init(InvalidWasiHandle)
     }
 
-    func close() throws {}
+    func close() async throws {}
 }
 
 extension ReadableDataBody {
 
     func pipeTo(_ dest: isolated WritableBody, preventClose: Bool) async throws {
-        try dest.write(data)
+        try await dest.write(data)
     }
 }
 
 extension ReadableDataBody {
 
-    func decode<T>(decoder: JSONDecoder = .init()) async throws -> T where T: Decodable & Sendable {
-        return try decoder.decode(T.self, from: data)
+    func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T where T: Decodable & Sendable {
+        return try decoder.decode(type, from: data)
     }
 
     func json() async throws -> Sendable {

@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 12/5/22.
 //
 
-import Foundation
-
 public func fetch(_ request: FetchRequest) async throws -> FetchResponse {
     #if !arch(wasm32)
     return try await URLSessionFetcher.fetch(request)
@@ -64,7 +62,7 @@ public func fetch (
         body: streaming ? .stream(request.body) : .bytes(request.body.bytes()),
         headers: request.headers.dictionary(),
         searchParams: request.searchParams,
-        timeout: options.timeout,
+        timeoutInterval: options.timeoutInterval,
         cachePolicy: options.cachePolicy,
         surrogateKey: options.surrogateKey,
         backend: options.backend

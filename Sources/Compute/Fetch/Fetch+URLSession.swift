@@ -6,9 +6,11 @@
 //
 
 #if !arch(wasm32)
-import CryptoSwift
+internal struct URLSessionFetcher: Sendable {
 
-internal struct URLSessionFetcher {
+    enum URLSessionFetchError: Error, Sendable {
+        case invalidResponse
+    }
 
     static func fetch(_ request: FetchRequest) async throws -> FetchResponse {
         // Build url components from request url
@@ -41,6 +43,11 @@ internal struct URLSessionFetcher {
         // Set request method
         httpRequest.httpMethod = request.method.rawValue
 
+        // Set the timeout interval
+        if let timeoutInterval = request.timeoutInterval {
+            httpRequest.timeoutInterval = timeoutInterval
+        }
+
         // Set content encodings
         if let encoding = request.acceptEncoding {
             httpRequest.setValue(encoding.stringValue, forHTTPHeaderField: HTTPHeader.acceptEncoding.rawValue)
@@ -67,20 +74,28 @@ internal struct URLSessionFetcher {
             httpRequest.httpBody = Data(text.utf8)
         case .json(let json):
             httpRequest.httpBody = json
-        case .stream:
-            break
+        case .stream(let body):
+            let data = try await body.data()
+            httpRequest.httpBodyStream = .init(data: data)
         case .none:
             break
         }
 
-        let (data, response) = try await URLSession.shared.data(for: httpRequest)
-
-        let urlResponse = response as! HTTPURLResponse
+        let (data, response): (Data, HTTPURLResponse) = try await withCheckedThrowingContinuation { continuation in
+            let task = URLSession.shared.dataTask(with: httpRequest) { data, response, error in
+                if let data, let response = response as? HTTPURLResponse {
+                    continuation.resume(returning: (data, response))
+                } else {
+                    continuation.resume(throwing: error ?? URLSessionFetchError.invalidResponse)
+                }
+            }
+            task.resume()
+        }
 
         return FetchResponse(
             body: ReadableDataBody(data),
-            headers: Headers(urlResponse.allHeaderFields as! [String: String]),
-            status: urlResponse.statusCode,
+            headers: Headers(response.allHeaderFields as! [String: String]),
+            status: response.statusCode,
             url: url
         )
     }
