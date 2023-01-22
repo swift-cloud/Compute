@@ -56,6 +56,14 @@ func fastly_object_store__lookup(_ handle: WasiHandle, _ key: UnsafePointer<CCha
 
 func fastly_object_store__insert(_ handle: WasiHandle, _ key: UnsafePointer<CChar>!, _ key_len: Int, _ body_handle: UInt32) -> Int32 { fatalError() }
 
+/* FASTLY_SECRET_STORE */
+
+func fastly_secret_store__open(_ name: UnsafePointer<CChar>!, _ name_len: Int, _ handle: UnsafeMutablePointer<WasiHandle>!) -> Int32 { fatalError() }
+
+func fastly_secret_store__lookup(_ handle: WasiHandle, _ key: UnsafePointer<CChar>!, _ key_len: Int, _ secret_handle: UnsafeMutablePointer<UInt32>!) -> Int32 { fatalError() }
+
+func fastly_secret_store__plaintext(_ secret_handle: WasiHandle, _ value: UnsafeMutablePointer<UInt8>!, _ value_max_len: Int, _ nwritten: UnsafeMutablePointer<Int>!) -> Int32 { fatalError() }
+
 /* FASTLY_HTTP_BODY */
 
 func fastly_http_body__new(_ handle: UnsafeMutablePointer<WasiHandle>!) -> Int32 { fatalError() }
