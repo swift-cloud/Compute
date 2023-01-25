@@ -37,12 +37,12 @@ public struct FetchRequest: Sendable {
     public init(_ url: URL, _ options: Options = .options()) {
         self.url = url
         self.backend = options.backend ?? url.host ?? "localhost"
-        self.method = options.method
-        self.cachePolicy = options.cachePolicy
+        self.method = options.method ?? .get
+        self.cachePolicy = options.cachePolicy ?? .origin
         self.cacheKey = options.cacheKey
         self.surrogateKey = options.surrogateKey
-        self.headers = options.headers
-        self.searchParams = options.searchParams
+        self.headers = options.headers ?? [:]
+        self.searchParams = options.searchParams ?? [:]
         self.body = options.body
         self.acceptEncoding = options.acceptEncoding
         self.timeoutInterval = options.timeoutInterval
@@ -53,17 +53,17 @@ extension FetchRequest {
 
     public struct Options {
 
-        public var method: HTTPMethod = .get
+        public var method: HTTPMethod? = nil
 
         public var body: Body? = nil
 
-        public var headers: [String: String] = [:]
+        public var headers: [String: String]? = nil
 
-        public var searchParams: [String: String] = [:]
+        public var searchParams: [String: String]? = nil
 
         public var timeoutInterval: TimeInterval? = nil
 
-        public var cachePolicy: CachePolicy = .origin
+        public var cachePolicy: CachePolicy? = nil
 
         public var cacheKey: String? = nil
 
@@ -74,12 +74,12 @@ extension FetchRequest {
         public var backend: String? = nil
 
         public static func options(
-            method: HTTPMethod = .get,
+            method: HTTPMethod? = nil,
             body: Body? = nil,
-            headers: [String: String] = [:],
-            searchParams: [String: String] = [:],
+            headers: [String: String]? = nil,
+            searchParams: [String: String]? = nil,
             timeoutInterval: TimeInterval? = nil,
-            cachePolicy: CachePolicy = .origin,
+            cachePolicy: CachePolicy? = nil,
             cacheKey: String? = nil,
             acceptEncoding: ContentEncodings? = nil,
             surrogateKey: String? = nil,

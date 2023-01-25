@@ -73,10 +73,10 @@ public func fetch (
     }
 
     return try await fetch(url, .options(
-        method: request.method,
+        method: options.method ?? request.method,
         body: body,
-        headers: request.headers.dictionary(),
-        searchParams: request.searchParams,
+        headers: options.headers ?? request.headers.dictionary(),
+        searchParams: options.searchParams ?? request.searchParams,
         timeoutInterval: options.timeoutInterval,
         cachePolicy: options.cachePolicy,
         surrogateKey: options.surrogateKey,
