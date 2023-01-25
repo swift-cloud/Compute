@@ -192,12 +192,7 @@ extension JWT {
     public struct Claim {
 
         /// Raw claim value.
-        let value: Any?
-
-        /// Original claim value.
-        public var rawValue: Any? {
-            return self.value
-        }
+        public let value: Any?
 
         /// Value of the claim as `String`.
         public var string: String? {
@@ -205,7 +200,7 @@ extension JWT {
         }
 
         /// Value of the claim as `Bool`.
-        public var boolean: Bool? {
+        public var bool: Bool? {
             return self.value as? Bool
         }
 
@@ -214,20 +209,20 @@ extension JWT {
             var double: Double?
             if let string = self.string {
                 double = Double(string)
-            } else if self.boolean == nil {
+            } else if self.bool == nil {
                 double = self.value as? Double
             }
             return double
         }
 
         /// Value of the claim as `Int`.
-        public var integer: Int? {
+        public var int: Int? {
             var integer: Int?
             if let string = self.string {
                 integer = Int(string)
             } else if let double = self.double {
                 integer = Int(double)
-            } else if self.boolean == nil {
+            } else if self.bool == nil {
                 integer = self.value as? Int
             }
             return integer
@@ -256,6 +251,11 @@ extension JWT {
                 return dict
             }
             return nil
+        }
+
+        /// Special subscript syntax for chaining
+        public subscript(_ key: String) -> Claim {
+            return .init(value: self.dictionary?[key])
         }
     }
 }
