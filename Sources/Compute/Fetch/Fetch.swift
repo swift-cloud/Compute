@@ -57,9 +57,24 @@ public func fetch (
         throw FetchRequestError.invalidURL
     }
 
+    // Check if request body has been used
+    let bodyUsed = await request.body.used
+
+    // Final request body
+    let body: FetchRequest.Body
+
+    // Decide body based on options and streaming
+    if let _body = options.body {
+        body = _body
+    } else if streaming, bodyUsed == false {
+        body = .stream(request.body)
+    } else {
+        body = try await .bytes(request.body.bytes())
+    }
+
     return try await fetch(url, .options(
         method: request.method,
-        body: streaming ? .stream(request.body) : .bytes(request.body.bytes()),
+        body: body,
         headers: request.headers.dictionary(),
         searchParams: request.searchParams,
         timeoutInterval: options.timeoutInterval,
