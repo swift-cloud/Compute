@@ -111,6 +111,21 @@ public enum HTTPVersion: Int32, Codable, Sendable {
     case http1_1
     case h2
     case h3
+
+    public var name: String {
+        switch self {
+        case .http0_9:
+            return "http/0.9"
+        case .http1_0:
+            return "http/1.0"
+        case.http1_1:
+            return "http/1.1"
+        case .h2:
+            return "http/2"
+        case .h3:
+            return "http/3"
+        }
+    }
 }
 
 public enum HTTPMethod: String, Codable, Sendable, CaseIterable {
