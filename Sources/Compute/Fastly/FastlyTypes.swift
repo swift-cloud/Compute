@@ -11,7 +11,7 @@ public typealias WasiHandle = UInt32
 
 public let InvalidWasiHandle = UInt32.max - 1
 
-public enum WasiStatus: Int32, Error, CaseIterable, Sendable {
+public enum WasiStatus: Int32, Error, CaseIterable, Codable, Sendable {
     // Success value.
     // This indicates that a hostcall finished successfully.
     case ok = 0
@@ -105,7 +105,7 @@ extension WasiStatus: LocalizedError {
     }
 }
 
-public enum HTTPVersion: Int32, Sendable {
+public enum HTTPVersion: Int32, Codable, Sendable {
     case http0_9 = 0
     case http1_0
     case http1_1
@@ -113,7 +113,7 @@ public enum HTTPVersion: Int32, Sendable {
     case h3
 }
 
-public enum HTTPMethod: String, Sendable, CaseIterable {
+public enum HTTPMethod: String, Codable, Sendable, CaseIterable {
     case get = "GET"
     case post = "POST"
     case put = "PUT"
@@ -136,7 +136,7 @@ extension String: HTTPHeaderRepresentable {
     }
 }
 
-public enum HTTPHeader: String, HTTPHeaderRepresentable, Sendable {
+public enum HTTPHeader: String, HTTPHeaderRepresentable, Codable, Sendable {
     case accept = "accept"
     case acceptCharset = "accept-charset"
     case acceptEncoding = "accept-encoding"
@@ -196,7 +196,7 @@ public enum HTTPHeader: String, HTTPHeaderRepresentable, Sendable {
     }
 }
 
-public enum HTTPStatus: Int, Sendable {
+public enum HTTPStatus: Int, Codable, Sendable {
 
     // Informational
     case `continue` = 100
