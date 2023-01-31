@@ -12,97 +12,65 @@ public typealias WasiHandle = UInt32
 public let InvalidWasiHandle = UInt32.max - 1
 
 public enum WasiStatus: Int32, Error, CaseIterable, Codable, Sendable {
-    // Success value.
-    // This indicates that a hostcall finished successfully.
+    /// Success value.
+    /// This indicates that a hostcall finished successfully.
     case ok = 0
 
-    // Generic error value.
-    // This means that some unexpected error occurred during a hostcall.
+    /// Generic error value.
+    /// This means that some unexpected error occurred during a hostcall.
     case unexpected = 1
 
-    // Invalid argument.
+    /// Invalid argument.
     case invalidArgument = 2
 
-    // Invalid handle.
-    // Thrown when a handle is not valid. E.G. No dictionary exists with the given name.
-    case badDescriptor = 3
+    /// Invalid handle.
+    /// Thrown when a handle is not valid. E.G. No dictionary exists with the given name.
+    case invalidHandle = 3
 
-    // Buffer length error.
-    // Thrown when a buffer is too long.
+    /// Buffer length error.
+    /// Thrown when a buffer is too long.
     case bufferLength = 4
 
-    // Unsupported operation error.
-    // This error is thrown when some operation cannot be performed, because it is not supported.
+    /// Unsupported operation error.
+    /// This error is thrown when some operation cannot be performed, because it is not supported.
     case unsupported = 5
 
-    // Alignment error.
-    // This is thrown when a pointer does not point to a properly aligned slice of memory.
+    /// Alignment error.
+    /// This is thrown when a pointer does not point to a properly aligned slice of memory.
     case badAlignment = 6
 
-    // Invalid HTTP error.
-    // This can be thrown when a method, URI, header, or status is not valid. This can also
-    // be thrown if a message head is too large.
+    /// Invalid HTTP error.
+    /// This can be thrown when a method, URI, header, or status is not valid. This can also
+    /// be thrown if a message head is too large.
     case httpInvalid = 7
 
-    // HTTP user error.
-    // This is thrown in cases where user code caused an HTTP error. For example, attempt to send
-    // a 1xx response code, or a request with a non-absolute URI. This can also be caused by
-    // an unexpected header: both `content-length` and `transfer-encoding`, for example.
+    /// HTTP user error.
+    /// This is thrown in cases where user code caused an HTTP error. For example, attempt to send
+    /// a 1xx response code, or a request with a non-absolute URI. This can also be caused by
+    /// an unexpected header: both `content-length` and `transfer-encoding`, for example.
     case httpUser = 8
 
-    // HTTP incomplete message error.
-    // This can be thrown when a stream ended unexpectedly.
+    /// HTTP incomplete message error.
+    /// This can be thrown when a stream ended unexpectedly.
     case httpIncomplete = 9
 
-    // A `None` error.
-    // This status code is used to indicate when an optional value did not exist, as opposed to
-    // an empty value.
+    /// A `None` error.
+    /// This status code is used to indicate when an optional value did not exist, as opposed to
+    /// an empty value.
+    /// Note, this value should no longer be used, as we have explicit optional types now.
     case none = 10
 
-    // Message head too large.
+    /// Message head too large.
     case httpHeadTooLarge = 11
 
-    // Invalid HTTP status.
+    /// Invalid HTTP status.
     case httpInvalidStatus = 12
 
-    // Limit exceeded
+    /// Limit exceeded
+    ///
+    /// This is returned when an attempt to allocate a resource has exceeded the maximum number of
+    /// resources permitted. For example, creating too many response handles.
     case limitExceeded = 13
-}
-
-extension WasiStatus: LocalizedError {
-
-    public var errorDescription: String? {
-        switch self {
-        case .ok:
-            return "OK"
-        case .unexpected:
-            return "Unexpected error"
-        case .invalidArgument:
-            return "Invalid argument error"
-        case .badDescriptor:
-            return "Bad descriptor error"
-        case .bufferLength:
-            return "Buffer length error"
-        case .unsupported:
-            return "Unsupported hostcall error"
-        case .badAlignment:
-            return "Bad alignment error"
-        case .httpInvalid:
-            return "Http invalid error"
-        case .httpUser:
-            return "Http user error"
-        case .httpIncomplete:
-            return "Http incomplete error"
-        case .none:
-            return "Resource not found error"
-        case .httpHeadTooLarge:
-            return "Http head too large error"
-        case .httpInvalidStatus:
-            return "Http invalid status error"
-        case .limitExceeded:
-            return "Limit exceeded"
-        }
-    }
 }
 
 public enum HTTPVersion: Int32, Codable, Sendable {

@@ -79,7 +79,7 @@ public struct JWT: Sendable {
 
         let input = "\(_header).\(_payload)"
 
-        let signature = try HMAC(key: secret.bytes, variant: algorithm.variant).authenticate(input.bytes)
+        let signature = try hmacSignature(input, key: secret, using: algorithm)
 
         let _signature = try base64UrlEncode(.init(signature))
 
@@ -141,9 +141,7 @@ extension JWT {
         let input = token.components(separatedBy: ".").prefix(2).joined(separator: ".")
 
         // Compute signature based on secret
-        let computedSignature = try HMAC(key: secret.bytes, variant: algorithm.variant)
-            .authenticate(input.bytes)
-            .toHexString()
+        let computedSignature = try hmacSignature(input, key: secret, using: algorithm).toHexString()
 
         // Ensure the signatures match
         guard signature == computedSignature else {
@@ -303,6 +301,10 @@ private func decodeJWTPart(_ value: String) throws -> [String: Any] {
 private func encodeJWTPart(_ value: [String: Any]) throws -> String {
     let data = try JSONSerialization.data(withJSONObject: value, options: [.sortedKeys])
     return try base64UrlEncode(data)
+}
+
+private func hmacSignature(_ input: String, key: String, using algorithm: JWT.Algorithm) throws -> [UInt8] {
+    return try HMAC(key: key.bytes, variant: algorithm.variant).authenticate(input.bytes)
 }
 
 private func base64UrlDecode(_ value: String) throws -> Data {
