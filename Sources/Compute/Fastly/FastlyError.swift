@@ -95,8 +95,8 @@ extension WasiStatus: LocalizedError {
             "status code."
 
         case .limitExceeded: return
-            "Limit exceeded error. This error will be thrown when an attempt" +
-            "to allocate a resource has exceeded the maximum number of resources" +
+            "Limit exceeded error. This error will be thrown when an attempt " +
+            "to allocate a resource has exceeded the maximum number of resources " +
             "permitted. For example, creating too many response handles."
         }
     }
