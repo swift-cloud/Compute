@@ -9,19 +9,28 @@ import CoreFoundation
 
 internal typealias WasiBufferReader = (_ buffer: UnsafeMutablePointer<UInt8>?, _ maxLength: Int, _ length: inout Int) -> Int32
 
-internal func wasi(_ handler: @autoclosure () -> Int32) throws {
+internal func wasi(
+    _ handler: @autoclosure () -> Int32,
+    functionName: String = #function,
+    fileName: String = #file
+) throws {
     let result = handler()
     guard let status = WasiStatus(rawValue: result) else {
-        throw WasiStatus.unexpected
+        throw Fastly.Error(status: .unexpected, functionName: functionName, fileName: fileName)
     }
     guard status == .ok else {
-        throw status
+        throw Fastly.Error(status: status, functionName: functionName, fileName: fileName)
     }
 }
 
-internal func wasiString(maxBufferLength: Int, _ handler: WasiBufferReader) throws -> String? {
+internal func wasiString(
+    maxBufferLength: Int,
+    handler: WasiBufferReader,
+    functionName: String = #function,
+    fileName: String = #file
+) throws -> String? {
     do {
-        let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler)
+        let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler: handler, functionName: functionName, fileName: fileName)
         return String(bytes: bytes, encoding: .utf8)
     } catch WasiStatus.none, WasiStatus.invalidArgument {
         return nil
@@ -33,16 +42,23 @@ internal func wasiString(maxBufferLength: Int, _ handler: WasiBufferReader) thro
 internal func wasiDecode<T>(
     maxBufferLength: Int,
     decoder: JSONDecoder = Utils.jsonDecoder,
-    handler: WasiBufferReader
+    handler: WasiBufferReader,
+    functionName: String = #function,
+    fileName: String = #file
 ) throws -> T where T: Decodable {
-    let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler)
+    let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler: handler, functionName: functionName, fileName: fileName)
     return try decoder.decode(T.self, from: Data(bytes))
 }
 
-internal func wasiBytes(maxBufferLength: Int, _ handler: WasiBufferReader) throws -> [UInt8] {
+internal func wasiBytes(
+    maxBufferLength: Int,
+    handler: WasiBufferReader,
+    functionName: String = #function,
+    fileName: String = #file
+) throws -> [UInt8] {
     return try Array<UInt8>(unsafeUninitializedCapacity: maxBufferLength) {
         var length = 0
-        try wasi(handler($0.baseAddress, maxBufferLength, &length))
+        try wasi(handler($0.baseAddress, maxBufferLength, &length), functionName: functionName, fileName: fileName)
         $1 = length
     }
 }
