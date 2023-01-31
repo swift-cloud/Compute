@@ -11,6 +11,10 @@ extension Fastly {
         public let functionName: String
         public let fileName: String
 
+        internal var structName: String {
+            fileName.components(separatedBy: "/").last!.components(separatedBy: ".").first!
+        }
+
         internal init(status: WasiStatus, functionName: String = #function, fileName: String = #file) {
             self.status = status
             self.functionName = functionName
@@ -22,7 +26,7 @@ extension Fastly {
 extension Fastly.Error: LocalizedError {
 
     public var errorDescription: String? {
-        return "\(fileName).\(functionName): \(status._errorDescription) - Fastly error code \(status) (\(status.rawValue))"
+        return "\(structName).\(functionName): \(status._errorDescription) - Fastly error code \(status) (\(status.rawValue))"
     }
 }
 
