@@ -22,7 +22,7 @@ extension Fastly {
 extension Fastly.Error: LocalizedError {
 
     public var errorDescription: String? {
-        return "\(functionName): \(status._errorDescription) - Fastly error code \(status) (\(status.rawValue))"
+        return "\(fileName).\(functionName): \(status._errorDescription) - Fastly error code \(status) (\(status.rawValue))"
     }
 }
 
