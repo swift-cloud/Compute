@@ -142,6 +142,17 @@ extension OutgoingResponse {
         try await send(data)
     }
 
+    public func send(_ messages: FanoutMessage...) async throws {
+        try await send(messages)
+    }
+
+    public func send(_ messages: [FanoutMessage]) async throws {
+        headers[.contentType] = "application/websocket-events"
+        headers[.secWebSocketExtensions] = "grip; message-prefix=\"\""
+        let data = messages.map { $0.encoded() }.joined(separator: "").data(using: .utf8) ?? .init()
+        try await send(data)
+    }
+
     public func send(html text: String) async throws {
         try defaultContentType("text/html")
         let data = text.data(using: .utf8) ?? .init()

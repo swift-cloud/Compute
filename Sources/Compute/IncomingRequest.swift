@@ -77,6 +77,10 @@ extension IncomingRequest {
         return connection.contains("upgrade") && upgrade.contains("websocket")
     }
 
+    public func isFanoutRequest() -> Bool {
+        return headers[.gripSig] != nil
+    }
+
     public func upgradeWebsocket(backend: String, behavior: UpgradeWebsocketBehavior) throws {
         switch behavior {
         case .proxy:
