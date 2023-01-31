@@ -30,8 +30,7 @@ public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ re
         try await handler(req, res)
     } catch {
         // Catch handler error by returning a 500
-        console.error("onIncomingRequest:", req.url.path)
-        console.error(error.localizedDescription)
+        console.error("onIncomingRequest: \(req.url.path)\n\(error.localizedDescription)")
         try await res.status(500).send("Internal Server error:\n\n\(error.localizedDescription)")
     }
 }
