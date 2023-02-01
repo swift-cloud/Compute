@@ -53,7 +53,7 @@ extension IncomingRequest {
             throw FanoutRequestError.invalidSignature
         }
 
-        guard jwt.signature.utf8.count == 86 else {
+        guard jwt.signature.count == 128 else {
             throw FanoutRequestError.invalidSignature
         }
     }
