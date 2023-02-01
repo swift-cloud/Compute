@@ -9,6 +9,7 @@ private let eol = "\r\n"
 
 public struct FanoutMessage: Sendable {
     public enum Event: String, Sendable, Codable {
+        case ack = "ACK"
         case open = "OPEN"
         case text = "TEXT"
         case ping = "PING"
@@ -32,6 +33,9 @@ public struct FanoutMessage: Sendable {
     }
 
     public func encoded() -> String {
+        if event == .ack {
+            return ""
+        }
         switch content.isEmpty {
         case true:
             return "\(event.rawValue)\(eol)"
@@ -44,8 +48,16 @@ public struct FanoutMessage: Sendable {
 
 extension FanoutMessage {
 
+    public static var ack: Self {
+        return .init(.ack)
+    }
+
     public static var open: Self {
         return .init(.open)
+    }
+
+    public static func text(_ content: String) -> Self {
+        return .init(.text, content: content)
     }
 
     public static func subscribe(to channel: String) -> Self {
