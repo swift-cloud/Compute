@@ -399,3 +399,11 @@ public let maxIpLookupLength = 2048
 public let maxDictionaryEntryLength = 8000
 
 public let highWaterMark = 4096
+
+public let fanoutPublicKey =
+    """
+    -----BEGIN PUBLIC KEY-----
+    MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAECKo5A1ebyFcnmVV8SE5On+8G81Jy
+    BjSvcrx4VLetWCjuDAmppTo3xM/zz763COTCgHfp/6lPdCyYjjqc+GM7sw==
+    -----END PUBLIC KEY-----
+    """
