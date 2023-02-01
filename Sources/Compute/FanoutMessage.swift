@@ -39,10 +39,6 @@ public struct FanoutMessage: Sendable {
     public init(_ body: String) throws {
         let parts = body.components(separatedBy: eol).compactMap { $0.isEmpty ? nil : $0 }
 
-        guard parts.count == 2 else {
-            throw FanoutMessageError.invalidFormat
-        }
-
         guard
             let eventText = parts[0].components(separatedBy: " ").first,
             let event = Event(rawValue: eventText)
@@ -51,7 +47,7 @@ public struct FanoutMessage: Sendable {
         }
 
         self.event = event
-        self.content = parts[1]
+        self.content = parts.dropFirst().first ?? ""
     }
 
     public func encoded() -> String {
