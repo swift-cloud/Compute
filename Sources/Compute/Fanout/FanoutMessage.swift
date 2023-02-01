@@ -66,6 +66,42 @@ public struct FanoutMessage: Sendable {
 
 extension FanoutMessage {
 
+    public func decode<T: Decodable>(decoder: JSONDecoder = .init()) throws -> T {
+        return try decoder.decode(T.self, from: data())
+    }
+
+    public func decode<T: Decodable>(_ type: T.Type, decoder: JSONDecoder = .init()) throws -> T {
+        return try decoder.decode(type, from: data())
+    }
+
+    public func json() throws -> Any {
+        return try JSONSerialization.jsonObject(with: data())
+    }
+
+    public func jsonObject() throws -> [String: Any] {
+        guard let json = try JSONSerialization.jsonObject(with: data()) as? [String: Any] else {
+            throw FanoutMessageError.invalidFormat
+        }
+        return json
+    }
+
+    public func jsonArray() throws -> [Any] {
+        guard let json = try JSONSerialization.jsonObject(with: data()) as? [Any] else {
+            throw FanoutMessageError.invalidFormat
+        }
+        return json
+    }
+
+    public func data() throws -> Data {
+        guard let data = content.data(using: .utf8) else {
+            throw FanoutMessageError.invalidFormat
+        }
+        return data
+    }
+}
+
+extension FanoutMessage {
+
     public static var ack: Self {
         return .init(.ack)
     }
