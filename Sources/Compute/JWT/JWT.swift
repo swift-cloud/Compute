@@ -135,21 +135,17 @@ extension JWT {
         secret: String,
         algorithm: Algorithm = .hs256,
         issuer: String? = nil,
-        subject: String? = nil
+        subject: String? = nil,
+        expiration: Bool = true
     ) throws -> Self {
         // Build input
         let input = token.components(separatedBy: ".").prefix(2).joined(separator: ".")
 
-        // Compute signature based on secret
-        let computedSignature = try hmacSignature(input, key: secret, using: algorithm).toHexString()
-
         // Ensure the signatures match
-        guard signature == computedSignature else {
-            throw JWTError.invalidSignature
-        }
+        try verifySignature(input, signature: signature, key: secret, using: algorithm)
 
         // Ensure the jwt is not expired
-        guard expired == false else {
+        if expiration, self.expired == true {
             throw JWTError.expiredToken
         }
 
@@ -305,6 +301,20 @@ private func encodeJWTPart(_ value: [String: Any]) throws -> String {
 
 private func hmacSignature(_ input: String, key: String, using algorithm: JWT.Algorithm) throws -> [UInt8] {
     return try HMAC(key: key.bytes, variant: algorithm.variant).authenticate(input.bytes)
+}
+
+private func verifySignature(_ input: String, signature: String, key: String, using algorithm: JWT.Algorithm) throws {
+    try verifyHMACSignature(input, signature: signature, key: key, using: algorithm)
+}
+
+private func verifyHMACSignature(_ input: String, signature: String, key: String, using algorithm: JWT.Algorithm) throws {
+    // Compute signature based on secret
+    let computedSignature = try hmacSignature(input, key: key, using: algorithm).toHexString()
+
+    // Ensure the signatures match
+    guard signature == computedSignature else {
+        throw JWTError.invalidSignature
+    }
 }
 
 private func base64UrlDecode(_ value: String) throws -> Data {
