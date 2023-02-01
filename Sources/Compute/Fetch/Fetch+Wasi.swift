@@ -24,12 +24,11 @@ internal struct WasiFetcher: Sendable {
         // Set default host
         urlComponents.host = urlComponents.host ?? "localhost"
 
-        // Set default query params
-        urlComponents.queryItems = urlComponents.queryItems ?? []
-
         // Build search params
         for (key, value) in request.searchParams {
-            urlComponents.queryItems?.append(.init(name: key, value: value))
+            var queryItems = urlComponents.queryItems ?? []
+            queryItems.append(.init(name: key, value: value))
+            urlComponents.queryItems = queryItems
         }
 
         // Parse final url
