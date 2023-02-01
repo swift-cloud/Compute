@@ -56,6 +56,10 @@ extension IncomingRequest {
         guard jwt.signature.count == 128 else {
             throw FanoutRequestError.invalidSignature
         }
+
+        guard let expDate = jwt.expiresAt, Date() < expDate else {
+            throw FanoutRequestError.invalidSignature
+        }
     }
 
     public func upgradeWebsocket(backend: String, behavior: UpgradeWebsocketBehavior) throws {
