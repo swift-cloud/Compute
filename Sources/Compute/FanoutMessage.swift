@@ -7,6 +7,10 @@
 
 private let eol = "\r\n"
 
+public enum FanoutMessageError: Error, Sendable {
+    case invalidFormat
+}
+
 public struct FanoutMessage: Sendable {
     public enum Event: String, Sendable, Codable {
         case ack = "ACK"
@@ -30,6 +34,24 @@ public struct FanoutMessage: Sendable {
     public init<T: Encodable>(_ event: Event, value: T, encoder: JSONEncoder = .init()) throws {
         self.event = event
         self.content = try String(data: encoder.encode(value), encoding: .utf8)!
+    }
+
+    public init(_ body: String) throws {
+        let parts = body.components(separatedBy: eol).compactMap { $0.isEmpty ? nil : $0 }
+
+        guard parts.count == 2 else {
+            throw FanoutMessageError.invalidFormat
+        }
+
+        guard
+            let eventText = parts[0].components(separatedBy: " ").first,
+            let event = Event(rawValue: eventText)
+        else {
+            throw FanoutMessageError.invalidFormat
+        }
+
+        self.event = event
+        self.content = parts[1]
     }
 
     public func encoded() -> String {

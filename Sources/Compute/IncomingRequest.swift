@@ -89,6 +89,11 @@ extension IncomingRequest {
             try request.redirectToGripProxy(backend: backend)
         }
     }
+
+    public func fanoutMessage() async throws -> FanoutMessage {
+        let text = try await body.text()
+        return try FanoutMessage(text)
+    }
 }
 
 extension IncomingRequest {
