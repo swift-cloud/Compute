@@ -9,7 +9,7 @@ import Foundation
 
 extension OutgoingResponse {
 
-    public func meta(_ key: String, value: String?) -> Self {
+    public func meta(_ key: String, _ value: String?) -> Self {
         return header("Set-Meta-\(key)".lowercased(), value)
     }
 
