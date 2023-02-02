@@ -28,6 +28,10 @@ extension IncomingRequest {
         return headers[.gripSig] != nil
     }
 
+    public func meta(_ key: String) -> String? {
+        return headers["Meta-\(key)".lowercased()]
+    }
+
     public func verifyFanoutRequest() throws {
         fatalError("We do not support verifying ECDSA signatures at this time. Please use unsafe_verifyFanoutRequest for basic, non cryptographic verification of the signature.")
     }
