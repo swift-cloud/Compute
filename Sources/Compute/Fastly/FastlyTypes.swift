@@ -140,6 +140,7 @@ public enum HTTPHeader: String, HTTPHeaderRepresentable, Codable, Sendable {
     case authorization = "authorization"
     case cacheControl = "cache-control"
     case connection = "connection"
+    case connectionId = "connection-id"
     case contentDisposition = "content-disposition"
     case contentEncoding = "content-encoding"
     case contentLanguage = "content-language"

@@ -28,6 +28,10 @@ extension IncomingRequest {
         return headers[.gripSig] != nil
     }
 
+    public var connectionId: String? {
+        return headers[.connectionId]
+    }
+
     public func meta(_ key: String) -> String? {
         return headers["Meta-\(key)".lowercased()]
     }
