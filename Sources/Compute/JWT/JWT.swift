@@ -317,6 +317,10 @@ private func verifyHMACSignature(_ input: String, signature: String, key: String
     }
 }
 
+private func verifyECDSASignature(_ input: String, signature: String, key: String, using algorithm: JWT.Algorithm) throws {
+    fatalError("TODO: implement ECDSA signature verification")
+}
+
 private func base64UrlDecode(_ value: String) throws -> Data {
     var base64 = value
         .replacingOccurrences(of: "-", with: "+")

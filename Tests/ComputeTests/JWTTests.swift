@@ -13,11 +13,21 @@ private let token =
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njk1OTE2MTEsIm5hbWUiOiJKb2huIERvZSIsInN1YiI6IjEyMzQ1Njc4OTAifQ.FUVIl48Ji1mWZa42K1OTG0x_2T0FYOXNACsmeNI2-Kc
 """
 
+private let fanoutToken =
+"""
+eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJleHAiOjE2NzUzNjU0MjgsImlzcyI6ImZhc3RseSJ9.QL2Pm1JnXV_vAYK7ijeD4U1CBjOTLihNMDZ-qfvjkKOTUiK1jyxGEwjZfeApijRaOtQT8fVkdPnKjF-tBiUzkA
+"""
+
 final class JWTTests: XCTestCase {
 
     func testVerifySuccess() throws {
         let jwt = try JWT(token: token)
         try jwt.verify(secret: "your-256-bit-secret")
+    }
+
+    func __testVerifyFanoutSuccess() throws {
+        let jwt = try JWT(token: fanoutToken)
+        try jwt.verify(secret: fanoutPublicKey)
     }
 
     func testVerifyFailure() throws {
