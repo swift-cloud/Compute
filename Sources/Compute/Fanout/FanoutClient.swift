@@ -25,6 +25,7 @@ public struct FanoutClient: Sendable {
         self.hostname = hostname
     }
 
+    @discardableResult
     public func publish(_ message: PublishMessage) async throws -> FetchResponse {
         return try await fetch(publishEndpoint, .options(
             method: .post,
@@ -33,6 +34,7 @@ public struct FanoutClient: Sendable {
         ))
     }
 
+    @discardableResult
     public func publish(_ content: String, to channel: String) async throws -> FetchResponse {
         let message = PublishMessage(items: [
             .init(channel: channel, formats: .init(wsMessage: .init(content: content)))
@@ -40,23 +42,27 @@ public struct FanoutClient: Sendable {
         return try await publish(message)
     }
 
+    @discardableResult
     public func publish<T: Encodable>(_ value: T, encoder: JSONEncoder = .init(), to channel: String) async throws -> FetchResponse {
         let content = try encoder.encode(value)
         return try await publish(content, to: channel)
     }
 
+    @discardableResult
     public func publish(_ json: Any, to channel: String) async throws -> FetchResponse {
         let data = try JSONSerialization.data(withJSONObject: json)
         let content = String(data: data, encoding: .utf8)
         return try await publish(content, to: channel)
     }
 
+    @discardableResult
     public func publish(_ jsonObject: [String: Any], to channel: String) async throws -> FetchResponse {
         let data = try JSONSerialization.data(withJSONObject: jsonObject)
         let content = String(data: data, encoding: .utf8)
         return try await publish(content, to: channel)
     }
 
+    @discardableResult
     public func publish(_ jsonArray: [Any], to channel: String) async throws -> FetchResponse {
         let data = try JSONSerialization.data(withJSONObject: jsonArray)
         let content = String(data: data, encoding: .utf8)
