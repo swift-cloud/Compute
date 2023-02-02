@@ -13,7 +13,7 @@ public enum FanoutRequestError: Error, Sendable {
 
 extension IncomingRequest {
 
-    public enum UpgradeWebsocketBehavior {
+    public enum UpgradeWebsocketDestination {
         case proxy
         case fanout
     }
@@ -70,12 +70,12 @@ extension IncomingRequest {
         }
     }
 
-    public func upgradeWebsocket(backend: String, behavior: UpgradeWebsocketBehavior) throws {
-        switch behavior {
+    public func upgradeWebsocket(to destination: UpgradeWebsocketDestination, hostname: String = "localhost") throws {
+        switch destination {
         case .proxy:
-            try request.redirectToWebsocketProxy(backend: backend)
+            try request.redirectToWebsocketProxy(backend: hostname)
         case .fanout:
-            try request.redirectToGripProxy(backend: backend)
+            try request.redirectToGripProxy(backend: hostname)
         }
     }
 
