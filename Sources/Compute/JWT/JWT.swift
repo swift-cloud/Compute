@@ -187,14 +187,17 @@ extension JWT {
         case hs256 = "HS256"
         case hs384 = "HS384"
         case hs512 = "HS512"
+        case es256 = "ES256"
+        case es384 = "ES384"
+        case es512 = "ES512"
 
         internal var variant: HMAC.Variant {
             switch self {
-            case .hs256:
+            case .hs256, .es256:
                 return .sha2(.sha256)
-            case .hs384:
+            case .hs384, .es384:
                 return .sha2(.sha384)
-            case .hs512:
+            case .hs512, .es512:
                 return .sha2(.sha512)
             }
         }
@@ -219,7 +222,12 @@ private func hmacSignature(_ input: String, key: String, using algorithm: JWT.Al
 }
 
 private func verifySignature(_ input: String, signature: [UInt8], key: String, using algorithm: JWT.Algorithm) throws {
-    try verifyHMACSignature(input, signature: signature, key: key, using: algorithm)
+    switch algorithm {
+    case .hs256, .hs384, .hs512:
+        try verifyHMACSignature(input, signature: signature, key: key, using: algorithm)
+    case .es256, .es384, .es512:
+        try verifyECDSASignature(input, signature: signature, key: key, using: algorithm)
+    }
 }
 
 private func verifyHMACSignature(_ input: String, signature: [UInt8], key: String, using algorithm: JWT.Algorithm) throws {
@@ -232,8 +240,8 @@ private func verifyHMACSignature(_ input: String, signature: [UInt8], key: Strin
     }
 }
 
-private func verifyECDSASignature(_ input: String, signature: String, key: String, using algorithm: JWT.Algorithm) throws {
-    fatalError("TODO: implement ECDSA signature verification")
+private func verifyECDSASignature(_ input: String, signature: [UInt8], key: String, using algorithm: JWT.Algorithm) throws {
+    throw JWTError.unsupportedAlgorithm
 }
 
 private func base64UrlDecode(_ value: String) throws -> [UInt8] {
