@@ -9,20 +9,25 @@ import XCTest
 @testable import Compute
 
 private let token =
-"""
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njk1OTE2MTEsIm5hbWUiOiJKb2huIERvZSIsInN1YiI6IjEyMzQ1Njc4OTAifQ.FUVIl48Ji1mWZa42K1OTG0x_2T0FYOXNACsmeNI2-Kc
-"""
+    """
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njk1OTE2MTEsIm5hbWUiOiJKb2huIERvZSIsInN1YiI6IjEyMzQ1Njc4OTAifQ.FUVIl48Ji1mWZa42K1OTG0x_2T0FYOXNACsmeNI2-Kc
+    """
 
 final class JWTTests: XCTestCase {
 
     func testVerifySuccess() throws {
         let jwt = try JWT(token: token)
-        try jwt.verify(secret: "your-256-bit-secret")
+        try jwt.verify(key: "your-256-bit-secret", expiration: false)
     }
 
     func testVerifyFailure() throws {
         let jwt = try JWT(token: token)
-        try XCTAssertThrowsError(jwt.verify(secret: "bogus-secret"))
+        try XCTAssertThrowsError(jwt.verify(key: "bogus-secret"))
+    }
+
+    func testAlgorithm() throws {
+        let jwt = try JWT(token: token)
+        XCTAssertEqual(jwt.algorithm, JWT.Algorithm.hs256)
     }
 
     func testSubject() throws {

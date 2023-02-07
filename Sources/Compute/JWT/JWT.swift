@@ -11,11 +11,13 @@ public struct JWT: Sendable {
 
     public let token: String
 
+    public let algorithm: Algorithm
+
     public let header: [String: Sendable]
 
     public let payload: [String: Sendable]
 
-    public let signature: String
+    public let signature: [UInt8]
 
     public func claim(name: String) -> Claim {
         return .init(value: payload[name])
@@ -26,13 +28,30 @@ public struct JWT: Sendable {
     }
 
     public init(token: String) throws {
+        // Verify token parts
         let parts = token.components(separatedBy: ".")
         guard parts.count == 3 else {
             throw JWTError.invalidToken
         }
-        self.header = try decodeJWTPart(parts[0])
-        self.payload = try decodeJWTPart(parts[1])
-        self.signature = try base64UrlDecode(parts[2]).toHexString()
+
+        // Parse header
+        let header = try decodeJWTPart(parts[0])
+
+        // Parse algorithm
+        guard let alg = header["alg"] as? String, let algorithm = Algorithm(rawValue: alg) else {
+            throw JWTError.unsupportedAlgorithm
+        }
+
+        // Parse payload
+        let payload = try decodeJWTPart(parts[1])
+
+        // Parse signature
+        let signature = try base64UrlDecode(parts[2])
+
+        self.header = header
+        self.payload = payload
+        self.signature = signature
+        self.algorithm = algorithm
         self.token = token
     }
 
@@ -85,7 +104,8 @@ public struct JWT: Sendable {
 
         self.header = header
         self.payload = payload
-        self.signature = signature.toHexString()
+        self.signature = signature
+        self.algorithm = algorithm
         self.token = "\(_header).\(_payload).\(_signature)"
     }
 }
@@ -132,24 +152,24 @@ extension JWT {
 
     @discardableResult
     public func verify(
-        secret: String,
-        algorithm: Algorithm = .hs256,
+        key: String,
         issuer: String? = nil,
-        subject: String? = nil
+        subject: String? = nil,
+        expiration: Bool = true
     ) throws -> Self {
         // Build input
         let input = token.components(separatedBy: ".").prefix(2).joined(separator: ".")
 
         // Compute signature based on secret
-        let computedSignature = try hmacSignature(input, key: secret, using: algorithm).toHexString()
+        let computedSignature = try hmacSignature(input, key: key, using: algorithm)
 
         // Ensure the signatures match
-        guard signature == computedSignature else {
+        guard signature.toHexString() == computedSignature.toHexString() else {
             throw JWTError.invalidSignature
         }
 
         // Ensure the jwt is not expired
-        guard expired == false else {
+        if expiration, expired == false {
             throw JWTError.expiredToken
         }
 
@@ -168,7 +188,7 @@ extension JWT {
 }
 
 extension JWT {
-    public enum Algorithm: String {
+    public enum Algorithm: String, Sendable {
         case hs256 = "HS256"
         case hs384 = "HS384"
         case hs512 = "HS512"
@@ -186,113 +206,9 @@ extension JWT {
     }
 }
 
-extension JWT {
-    public struct Claim {
-
-        /// Raw claim value.
-        public let value: Any?
-
-        /// Value of the claim as `String`.
-        public var string: String? {
-            return self.value as? String
-        }
-
-        /// Value of the claim as `Bool`.
-        public var bool: Bool? {
-            return self.value as? Bool
-        }
-
-        /// Value of the claim as `Double`.
-        public var double: Double? {
-            var double: Double?
-            if let string = self.string {
-                double = Double(string)
-            } else if self.bool == nil {
-                double = self.value as? Double
-            }
-            return double
-        }
-
-        /// Value of the claim as `Int`.
-        public var int: Int? {
-            var integer: Int?
-            if let string = self.string {
-                integer = Int(string)
-            } else if let double = self.double {
-                integer = Int(double)
-            } else if self.bool == nil {
-                integer = self.value as? Int
-            }
-            return integer
-        }
-
-        /// Value of the claim as `Date`.
-        public var date: Date? {
-            guard let timestamp: TimeInterval = self.double else { return nil }
-            return Date(timeIntervalSince1970: timestamp)
-        }
-
-        /// Value of the claim as `[String]`.
-        public var array: [String]? {
-            if let array = self.value as? [String] {
-                return array
-            }
-            if let value = self.string {
-                return [value]
-            }
-            return nil
-        }
-
-        /// Value of the claim as `[String: Any]`.
-        public var dictionary: [String: Any]? {
-            if let dict = self.value as? [String: Any] {
-                return dict
-            }
-            return nil
-        }
-
-        /// Special subscript syntax for chaining
-        public subscript(_ key: String) -> Claim {
-            return .init(value: self.dictionary?[key])
-        }
-    }
-}
-
-public enum JWTError: Error {
-    case invalidToken
-    case invalidBase64URL
-    case invalidJSON
-    case invalidSignature
-    case invalidIssuer
-    case invalidSubject
-    case expiredToken
-}
-
-extension JWTError: LocalizedError {
-
-    public var errorDescription: String? {
-        switch self {
-        case .invalidToken:
-            return "Invalid token"
-        case .invalidBase64URL:
-            return "Invalid base64 URL"
-        case .invalidJSON:
-            return "Invalid JSON"
-        case .invalidSignature:
-            return "Signatures do not match"
-        case .invalidIssuer:
-            return "Issuers do not match"
-        case .invalidSubject:
-            return "Subjects do not match"
-        case .expiredToken:
-            return "Expired token"
-        }
-    }
-}
-
 private func decodeJWTPart(_ value: String) throws -> [String: Any] {
     let bodyData = try base64UrlDecode(value)
-    guard let json = try JSONSerialization.jsonObject(with: bodyData, options: []) as? [String: Any] else {
+    guard let json = try JSONSerialization.jsonObject(with: .init(bodyData), options: []) as? [String: Any] else {
         throw JWTError.invalidJSON
     }
     return json
@@ -307,7 +223,7 @@ private func hmacSignature(_ input: String, key: String, using algorithm: JWT.Al
     return try HMAC(key: key.bytes, variant: algorithm.variant).authenticate(input.bytes)
 }
 
-private func base64UrlDecode(_ value: String) throws -> Data {
+private func base64UrlDecode(_ value: String) throws -> [UInt8] {
     var base64 = value
         .replacingOccurrences(of: "-", with: "+")
         .replacingOccurrences(of: "_", with: "/")
@@ -321,7 +237,7 @@ private func base64UrlDecode(_ value: String) throws -> Data {
     guard let data = Data(base64Encoded: base64, options: .ignoreUnknownCharacters) else {
         throw JWTError.invalidBase64URL
     }
-    return data
+    return data.bytes
 }
 
 private func base64UrlEncode(_ value: Data) throws -> String {
