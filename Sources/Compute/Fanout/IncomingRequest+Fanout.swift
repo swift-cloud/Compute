@@ -37,6 +37,12 @@ extension IncomingRequest {
     }
 
     public func verifyFanoutRequest() throws {
+        // TODO: Enable once we support ECDSA signature verification
+        // guard let token = headers[.gripSig] else {
+        //     throw FanoutRequestError.invalidSignature
+        // }
+        // let jwt = try JWT(token: token)
+        // try jwt.verify(key: fanoutPublicKey, issuer: "fastly")
         fatalError("We do not support verifying ECDSA signatures at this time. Please use unsafe_verifyFanoutRequest for basic, non cryptographic verification of the signature.")
     }
 
@@ -61,7 +67,7 @@ extension IncomingRequest {
             throw FanoutRequestError.invalidSignature
         }
 
-        guard jwt.signature.count == 128 else {
+        guard jwt.signature.count == 64 else {
             throw FanoutRequestError.invalidSignature
         }
 
