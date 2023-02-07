@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swift-cloud/Crypto",
       "state" : {
-        "revision" : "defff250bbd79d81fb8ee53926360fc522d75bad",
-        "version" : "1.6.0"
+        "branch" : "ab/ecdsa",
+        "revision" : "c50948c8359bc119f46927677eeac5cb41218c45"
       }
     }
   ],

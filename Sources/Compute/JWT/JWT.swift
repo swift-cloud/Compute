@@ -191,14 +191,14 @@ extension JWT {
         case es384 = "ES384"
         case es512 = "ES512"
 
-        internal var variant: HMAC.Variant {
+        internal var variant: SHA2.Variant {
             switch self {
             case .hs256, .es256:
-                return .sha2(.sha256)
+                return .sha256
             case .hs384, .es384:
-                return .sha2(.sha384)
+                return .sha384
             case .hs512, .es512:
-                return .sha2(.sha512)
+                return .sha512
             }
         }
     }
@@ -220,7 +220,7 @@ private func encodeJWTPart(_ value: [String: Any]) throws -> String {
 private func hmacSignature(_ input: String, secret: String, using algorithm: JWT.Algorithm) throws -> [UInt8] {
     switch algorithm {
     case .hs256, .hs384, .hs512:
-        return try HMAC(key: secret.bytes, variant: algorithm.variant).authenticate(input.bytes)
+        return try HMAC(key: secret.bytes, variant: .sha2(algorithm.variant)).authenticate(input.bytes)
     case .es256, .es384, .es512:
         throw JWTError.unsupportedAlgorithm
     }
@@ -246,7 +246,15 @@ private func verifyHMACSignature(_ input: String, signature: [UInt8], key: Strin
 }
 
 private func verifyECDSASignature(_ input: String, signature: [UInt8], key: String, using algorithm: JWT.Algorithm) throws {
-    throw JWTError.unsupportedAlgorithm
+    let verified = try ECDSA.verify(
+        message: input,
+        signature: .fromDer(.init(signature)),
+        publicKey: .fromPem(key),
+        variant: algorithm.variant
+    )
+    guard verified else {
+        throw JWTError.invalidSignature
+    }
 }
 
 private func base64UrlDecode(_ value: String) throws -> [UInt8] {

@@ -25,9 +25,9 @@ final class JWTTests: XCTestCase {
         try jwt.verify(key: "your-256-bit-secret", expiration: false)
     }
 
-    func __testVerifyFanoutSuccess() throws {
+    func testVerifyFanoutSuccess() throws {
         let jwt = try JWT(token: fanoutToken)
-        try jwt.verify(key: fanoutPublicKey)
+        try jwt.verify(key: fanoutPublicKey, expiration: false)
     }
 
     func testVerifyFailure() throws {
