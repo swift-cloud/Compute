@@ -98,7 +98,7 @@ public struct JWT: Sendable {
 
         let input = "\(_header).\(_payload)"
 
-        let signature = try hmacSignature(input, key: secret, using: algorithm)
+        let signature = try hmacSignature(input, secret: secret, using: algorithm)
 
         let _signature = try base64UrlEncode(.init(signature))
 
@@ -217,8 +217,13 @@ private func encodeJWTPart(_ value: [String: Any]) throws -> String {
     return try base64UrlEncode(data)
 }
 
-private func hmacSignature(_ input: String, key: String, using algorithm: JWT.Algorithm) throws -> [UInt8] {
-    return try HMAC(key: key.bytes, variant: algorithm.variant).authenticate(input.bytes)
+private func hmacSignature(_ input: String, secret: String, using algorithm: JWT.Algorithm) throws -> [UInt8] {
+    switch algorithm {
+    case .hs256, .hs384, .hs512:
+        return try HMAC(key: secret.bytes, variant: algorithm.variant).authenticate(input.bytes)
+    case .es256, .es384, .es512:
+        throw JWTError.unsupportedAlgorithm
+    }
 }
 
 private func verifySignature(_ input: String, signature: [UInt8], key: String, using algorithm: JWT.Algorithm) throws {
@@ -232,7 +237,7 @@ private func verifySignature(_ input: String, signature: [UInt8], key: String, u
 
 private func verifyHMACSignature(_ input: String, signature: [UInt8], key: String, using algorithm: JWT.Algorithm) throws {
     // Compute signature based on secret
-    let computedSignature = try hmacSignature(input, key: key, using: algorithm)
+    let computedSignature = try hmacSignature(input, secret: key, using: algorithm)
 
     // Ensure the signatures match
     guard signature.toHexString() == computedSignature.toHexString() else {
