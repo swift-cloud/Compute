@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 11/27/22.
 //
 
-import Crypto
-
 public struct JWT: Sendable {
 
     public let token: String
@@ -98,7 +96,7 @@ public struct JWT: Sendable {
 
         let input = "\(_header).\(_payload)"
 
-        let signature = try hmacSignature(input, key: secret, using: algorithm)
+        let signature = try hmacSignature(input, secret: secret, using: algorithm)
 
         let _signature = try base64UrlEncode(signature)
 
@@ -206,74 +204,39 @@ private func encodeJWTPart(_ value: [String: Any]) throws -> String {
     return try base64UrlEncode(data)
 }
 
-private func hmacSignature(_ input: String, key: String, using algorithm: JWT.Algorithm) throws -> Data {
-    guard let inputData = input.data(using: .utf8) else {
-        throw JWTError.invalidData
-    }
-    guard let keyData = key.data(using: .utf8) else {
-        throw JWTError.invalidData
-    }
+private func hmacSignature(_ input: String, secret: String, using algorithm: JWT.Algorithm) throws -> Data {
     switch algorithm {
     case .hs256:
-        return .init(HMAC<SHA256>.authenticationCode(for: inputData, using: .init(data: keyData)))
+        return Crypto.Auth.code(for: input, secret: secret, using: .sha256)
     case .hs384:
-        return .init(HMAC<SHA384>.authenticationCode(for: inputData, using: .init(data: keyData)))
+        return Crypto.Auth.code(for: input, secret: secret, using: .sha384)
     case .hs512:
-        return .init(HMAC<SHA512>.authenticationCode(for: inputData, using: .init(data: keyData)))
+        return Crypto.Auth.code(for: input, secret: secret, using: .sha512)
     case .es256:
-        return try P256.Signing.PrivateKey(pemRepresentation: key).signature(for: Crypto.sha256(input)).rawRepresentation
+        return try Crypto.ECDSA.signature(for: input, secret: secret, using: .p256)
     case .es384:
-        return try P384.Signing.PrivateKey(pemRepresentation: key).signature(for: Crypto.sha384(input)).rawRepresentation
+        return try Crypto.ECDSA.signature(for: input, secret: secret, using: .p384)
     case .es512:
-        return try P521.Signing.PrivateKey(pemRepresentation: key).signature(for: Crypto.sha512(input)).rawRepresentation
+        return try Crypto.ECDSA.signature(for: input, secret: secret, using: .p521)
     }
 }
 
 private func verifySignature(_ input: String, signature: Data, key: String, using algorithm: JWT.Algorithm) throws {
+    let verified: Bool
     switch algorithm {
     case .es256:
-        try verifyES256Signature(input, signature: signature, key: key)
+        verified = try Crypto.ECDSA.verify(input, signature: signature, key: key, using: .p256)
     case .es384:
-        try verifyES384Signature(input, signature: signature, key: key)
+        verified = try Crypto.ECDSA.verify(input, signature: signature, key: key, using: .p384)
     case .es512:
-        try verifyES512Signature(input, signature: signature, key: key)
-    default:
-        try verifyHMACSignature(input, signature: signature, key: key, using: algorithm)
+        verified = try Crypto.ECDSA.verify(input, signature: signature, key: key, using: .p521)
+    case .hs256:
+        verified = Crypto.Auth.verify(input, signature: signature, secret: key, using: .sha256)
+    case .hs384:
+        verified = Crypto.Auth.verify(input, signature: signature, secret: key, using: .sha384)
+    case .hs512:
+        verified = Crypto.Auth.verify(input, signature: signature, secret: key, using: .sha512)
     }
-}
-
-private func verifyHMACSignature(_ input: String, signature: Data, key: String, using algorithm: JWT.Algorithm) throws {
-    // Compute signature based on secret
-    let computedSignature = try hmacSignature(input, key: key, using: algorithm)
-
-    // Ensure the signatures match
-    guard signature.toHexString() == computedSignature.toHexString() else {
-        throw JWTError.invalidSignature
-    }
-}
-
-private func verifyES256Signature(_ input: String, signature: Data, key: String) throws {
-    let publicKey = try P256.Signing.PublicKey(pemRepresentation: key)
-    let ecdsaSignature = try P256.Signing.ECDSASignature(rawRepresentation: signature)
-    let verified = publicKey.isValidSignature(ecdsaSignature, for: Crypto.sha256(input))
-    guard verified else {
-        throw JWTError.invalidSignature
-    }
-}
-
-private func verifyES384Signature(_ input: String, signature: Data, key: String) throws {
-    let publicKey = try P384.Signing.PublicKey(pemRepresentation: key)
-    let ecdsaSignature = try P384.Signing.ECDSASignature(rawRepresentation: signature)
-    let verified = publicKey.isValidSignature(ecdsaSignature, for: Crypto.sha384(input))
-    guard verified else {
-        throw JWTError.invalidSignature
-    }
-}
-
-private func verifyES512Signature(_ input: String, signature: Data, key: String) throws {
-    let publicKey = try P521.Signing.PublicKey(pemRepresentation: key)
-    let ecdsaSignature = try P521.Signing.ECDSASignature(rawRepresentation: signature)
-    let verified = publicKey.isValidSignature(ecdsaSignature, for: Crypto.sha512(input))
     guard verified else {
         throw JWTError.invalidSignature
     }
