@@ -66,29 +66,6 @@ public struct IncomingRequest: Sendable {
 
 extension IncomingRequest {
 
-    public enum UpgradeWebsocketBehavior {
-        case proxy
-        case fanout
-    }
-
-    public func isUpgradeWebsocketRequest() -> Bool {
-        let connection = headers[.connection, default: ""].lowercased()
-        let upgrade = headers[.upgrade, default: ""].lowercased()
-        return connection.contains("upgrade") && upgrade.contains("websocket")
-    }
-
-    public func upgradeWebsocket(backend: String, behavior: UpgradeWebsocketBehavior) throws {
-        switch behavior {
-        case .proxy:
-            try request.redirectToWebsocketProxy(backend: backend)
-        case .fanout:
-            try request.redirectToGripProxy(backend: backend)
-        }
-    }
-}
-
-extension IncomingRequest {
-
     public func clientFingerprint() -> String? {
         return try? Fastly.Request.downstreamTLSJA3MD5().hex
     }

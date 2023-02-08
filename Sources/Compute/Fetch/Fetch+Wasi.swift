@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 1/15/22.
 //
 
-import Crypto
-
 internal struct WasiFetcher: Sendable {
 
     static func fetch(_ request: FetchRequest) async throws -> FetchResponse {
@@ -55,7 +53,7 @@ internal struct WasiFetcher: Sendable {
 
         // Check for a custom cache key
         if let cacheKey = request.cacheKey {
-            let hash = cacheKey.bytes.sha256().toHexString().uppercased()
+            let hash = Crypto.sha256(cacheKey).toHexString().uppercased()
             try httpRequest.insertHeader(HTTPHeader.fastlyCacheKey.rawValue, hash)
         }
 

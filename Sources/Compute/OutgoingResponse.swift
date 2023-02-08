@@ -19,7 +19,7 @@ public final class OutgoingResponse {
         didSendAndClose || didSendStream
     }
 
-    public private(set) var headers: Headers
+    public internal(set) var headers: Headers
 
     public var status: Int {
         get {

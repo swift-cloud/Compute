@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 11/27/22.
 //
 
-import Crypto
-
 public struct JWT: Sendable {
 
     public let token: String
@@ -17,7 +15,7 @@ public struct JWT: Sendable {
 
     public let payload: [String: Sendable]
 
-    public let signature: [UInt8]
+    public let signature: Data
 
     public func claim(name: String) -> Claim {
         return .init(value: payload[name])
@@ -98,9 +96,9 @@ public struct JWT: Sendable {
 
         let input = "\(_header).\(_payload)"
 
-        let signature = try hmacSignature(input, key: secret, using: algorithm)
+        let signature = try hmacSignature(input, secret: secret, using: algorithm)
 
-        let _signature = try base64UrlEncode(.init(signature))
+        let _signature = try base64UrlEncode(signature)
 
         self.header = header
         self.payload = payload
@@ -160,16 +158,11 @@ extension JWT {
         // Build input
         let input = token.components(separatedBy: ".").prefix(2).joined(separator: ".")
 
-        // Compute signature based on secret
-        let computedSignature = try hmacSignature(input, key: key, using: algorithm)
-
         // Ensure the signatures match
-        guard signature.toHexString() == computedSignature.toHexString() else {
-            throw JWTError.invalidSignature
-        }
+        try verifySignature(input, signature: signature, key: key, using: algorithm)
 
         // Ensure the jwt is not expired
-        if expiration, expired == false {
+        if expiration, self.expired == true {
             throw JWTError.expiredToken
         }
 
@@ -192,23 +185,15 @@ extension JWT {
         case hs256 = "HS256"
         case hs384 = "HS384"
         case hs512 = "HS512"
-
-        internal var variant: HMAC.Variant {
-            switch self {
-            case .hs256:
-                return .sha2(.sha256)
-            case .hs384:
-                return .sha2(.sha384)
-            case .hs512:
-                return .sha2(.sha512)
-            }
-        }
+        case es256 = "ES256"
+        case es384 = "ES384"
+        case es512 = "ES512"
     }
 }
 
 private func decodeJWTPart(_ value: String) throws -> [String: Any] {
     let bodyData = try base64UrlDecode(value)
-    guard let json = try JSONSerialization.jsonObject(with: .init(bodyData), options: []) as? [String: Any] else {
+    guard let json = try JSONSerialization.jsonObject(with: bodyData, options: []) as? [String: Any] else {
         throw JWTError.invalidJSON
     }
     return json
@@ -219,11 +204,45 @@ private func encodeJWTPart(_ value: [String: Any]) throws -> String {
     return try base64UrlEncode(data)
 }
 
-private func hmacSignature(_ input: String, key: String, using algorithm: JWT.Algorithm) throws -> [UInt8] {
-    return try HMAC(key: key.bytes, variant: algorithm.variant).authenticate(input.bytes)
+private func hmacSignature(_ input: String, secret: String, using algorithm: JWT.Algorithm) throws -> Data {
+    switch algorithm {
+    case .hs256:
+        return Crypto.Auth.code(for: input, secret: secret, using: .sha256)
+    case .hs384:
+        return Crypto.Auth.code(for: input, secret: secret, using: .sha384)
+    case .hs512:
+        return Crypto.Auth.code(for: input, secret: secret, using: .sha512)
+    case .es256:
+        return try Crypto.ECDSA.signature(for: input, secret: secret, using: .p256)
+    case .es384:
+        return try Crypto.ECDSA.signature(for: input, secret: secret, using: .p384)
+    case .es512:
+        return try Crypto.ECDSA.signature(for: input, secret: secret, using: .p521)
+    }
 }
 
-private func base64UrlDecode(_ value: String) throws -> [UInt8] {
+private func verifySignature(_ input: String, signature: Data, key: String, using algorithm: JWT.Algorithm) throws {
+    let verified: Bool
+    switch algorithm {
+    case .es256:
+        verified = try Crypto.ECDSA.verify(input, signature: signature, key: key, using: .p256)
+    case .es384:
+        verified = try Crypto.ECDSA.verify(input, signature: signature, key: key, using: .p384)
+    case .es512:
+        verified = try Crypto.ECDSA.verify(input, signature: signature, key: key, using: .p521)
+    case .hs256:
+        verified = Crypto.Auth.verify(input, signature: signature, secret: key, using: .sha256)
+    case .hs384:
+        verified = Crypto.Auth.verify(input, signature: signature, secret: key, using: .sha384)
+    case .hs512:
+        verified = Crypto.Auth.verify(input, signature: signature, secret: key, using: .sha512)
+    }
+    guard verified else {
+        throw JWTError.invalidSignature
+    }
+}
+
+private func base64UrlDecode(_ value: String) throws -> Data {
     var base64 = value
         .replacingOccurrences(of: "-", with: "+")
         .replacingOccurrences(of: "_", with: "/")
@@ -237,7 +256,7 @@ private func base64UrlDecode(_ value: String) throws -> [UInt8] {
     guard let data = Data(base64Encoded: base64, options: .ignoreUnknownCharacters) else {
         throw JWTError.invalidBase64URL
     }
-    return data.bytes
+    return data
 }
 
 private func base64UrlEncode(_ value: Data) throws -> String {

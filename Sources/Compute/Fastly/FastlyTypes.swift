@@ -140,6 +140,7 @@ public enum HTTPHeader: String, HTTPHeaderRepresentable, Codable, Sendable {
     case authorization = "authorization"
     case cacheControl = "cache-control"
     case connection = "connection"
+    case connectionId = "connection-id"
     case contentDisposition = "content-disposition"
     case contentEncoding = "content-encoding"
     case contentLanguage = "content-language"
@@ -155,6 +156,11 @@ public enum HTTPHeader: String, HTTPHeaderRepresentable, Codable, Sendable {
     case fastlyCacheKey = "fastly-xqd-cache-key"
     case forwarded = "forwarded"
     case from = "from"
+    case gripChannel = "grip-channel"
+    case gripHold = "grip-hold"
+    case gripKeepAlive = "grip-keep-alive"
+    case gripSig = "grip-sig"
+    case gripTimeout = "grip-timeout"
     case host = "host"
     case keepAlive = "keep-alive"
     case lastModified = "last-modified"
@@ -165,6 +171,7 @@ public enum HTTPHeader: String, HTTPHeaderRepresentable, Codable, Sendable {
     case referer = "referer"
     case refererPolicy = "referer-policy"
     case server = "server"
+    case secWebSocketExtensions = "sec-websocket-extensions"
     case setCookie = "set-cookie"
     case surrogateControl = "surrogate-control"
     case surrogateKey = "surrogate-key"
@@ -393,3 +400,11 @@ public let maxIpLookupLength = 2048
 public let maxDictionaryEntryLength = 8000
 
 public let highWaterMark = 4096
+
+public let fanoutPublicKey =
+    """
+    -----BEGIN PUBLIC KEY-----
+    MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAECKo5A1ebyFcnmVV8SE5On+8G81Jy
+    BjSvcrx4VLetWCjuDAmppTo3xM/zz763COTCgHfp/6lPdCyYjjqc+GM7sw==
+    -----END PUBLIC KEY-----
+    """
