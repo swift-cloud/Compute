@@ -1,5 +1,4 @@
 import Compute
-import Crypto
 
 private let token =
     """
@@ -8,9 +7,12 @@ private let token =
 
 try await onIncomingRequest { req, res in
     let jwt = try JWT(token: token)
-    let message = token.components(separatedBy: ".").dropLast().joined(separator: ".")
-    let pk = ECDSA.PublicKey(pem: fanoutPublicKey, curve: .secp256r1)
-    let sig = ECDSA.Signature(data: .init(jwt.signature))
-    let verified = pk.verify(message: message, signature: sig)
-    try await res.send(["v": verified])
+    let verified: Bool
+    do {
+        try jwt.verify(key: fanoutPublicKey, issuer: "fastly", expiration: false)
+        verified = true
+    } catch {
+        verified = false
+    }
+    try await res.send(["verified": verified])
 }

@@ -16,10 +16,10 @@ let package = Package(
         .library(name: "Compute", targets: ["Compute"])
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-cloud/Crypto", branch: "ab/ecdsa")
+        .package(url: "https://github.com/swift-cloud/swift-crypto", branch: "main")
     ],
     targets: [
-        .target(name: "Compute", dependencies: ["ComputeRuntime", "Crypto"]),
+        .target(name: "Compute", dependencies: ["ComputeRuntime", .product(name: "Crypto", package: "swift-crypto")]),
         .target(name: "ComputeRuntime"),
         .executableTarget(name: "ComputeDemo", dependencies: ["Compute"]),
         .testTarget(name: "ComputeTests", dependencies: ["Compute"])

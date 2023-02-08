@@ -1,12 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "crypto",
+      "identity" : "swift-crypto",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swift-cloud/Crypto",
+      "location" : "https://github.com/swift-cloud/swift-crypto",
       "state" : {
-        "branch" : "ab/ecdsa",
-        "revision" : "edbbfdd6c711ba69297627bae4a9e82ce9539bdc"
+        "branch" : "main",
+        "revision" : "fc42ff9a287091289fec2b63ae5009c3a2baad4d"
       }
     }
   ],

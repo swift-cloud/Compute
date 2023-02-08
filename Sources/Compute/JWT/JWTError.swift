@@ -7,6 +7,7 @@
 
 public enum JWTError: Error {
     case invalidToken
+    case invalidData
     case invalidBase64URL
     case invalidJSON
     case invalidSignature
@@ -22,6 +23,8 @@ extension JWTError: LocalizedError {
         switch self {
         case .invalidToken:
             return "Invalid token"
+        case .invalidData:
+            return "Invalid data"
         case .invalidBase64URL:
             return "Invalid base64 URL"
         case .invalidJSON:
