@@ -67,7 +67,7 @@ extension ReadableDataBody {
     }
 
     func bytes() async throws -> [UInt8] {
-        return .init(data)
+        return data.bytes
     }
 }
 #endif
