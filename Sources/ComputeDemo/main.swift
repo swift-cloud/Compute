@@ -14,5 +14,8 @@ try await onIncomingRequest { req, res in
     } catch {
         verified = false
     }
-    try await res.send(["verified": verified])
+    try await res.send([
+        "verified": verified,
+        "signature": jwt.signature.toHexString()
+    ])
 }
