@@ -44,36 +44,6 @@ extension IncomingRequest {
          try jwt.verify(key: fanoutPublicKey, issuer: "fastly")
     }
 
-    /// Important: this does not correctly verify the signature against Fastly's public key
-    /// We cannot verify this signature until our underlying crypto library supports Elliptic curves
-    public func unsafe_verifyFanoutRequest() throws {
-        guard let token = headers[.gripSig] else {
-            throw FanoutRequestError.invalidSignature
-        }
-
-        let jwt = try JWT(token: token)
-
-        guard let typ = jwt.header["typ"] as? String, typ == "JWT" else {
-            throw FanoutRequestError.invalidSignature
-        }
-
-        guard let alg = jwt.header["alg"] as? String, alg == "ES256" else {
-            throw FanoutRequestError.invalidSignature
-        }
-
-        guard let iss = jwt["iss"].string, iss == "fastly" else {
-            throw FanoutRequestError.invalidSignature
-        }
-
-        guard jwt.signature.count == 64 else {
-            throw FanoutRequestError.invalidSignature
-        }
-
-        guard let expDate = jwt.expiresAt, Date() < expDate else {
-            throw FanoutRequestError.invalidSignature
-        }
-    }
-
     public func upgradeWebsocket(to destination: UpgradeWebsocketDestination, hostname: String = "localhost") throws {
         switch destination {
         case .proxy:
@@ -83,7 +53,10 @@ extension IncomingRequest {
         }
     }
 
-    public func fanoutMessage() async throws -> FanoutMessage {
+    public func fanoutMessage(verifySignature: Bool = true) async throws -> FanoutMessage {
+        if verifySignature {
+            try verifyFanoutRequest()
+        }
         let text = try await body.text()
         return try FanoutMessage(text)
     }
