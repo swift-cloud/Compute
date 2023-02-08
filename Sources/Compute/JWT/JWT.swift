@@ -246,12 +246,9 @@ private func verifyHMACSignature(_ input: String, signature: [UInt8], key: Strin
 }
 
 private func verifyECDSASignature(_ input: String, signature: [UInt8], key: String, using algorithm: JWT.Algorithm) throws {
-    let verified = try ECDSA.verify(
-        message: input,
-        signature: .fromDer(.init(signature)),
-        publicKey: .fromPem(key),
-        variant: algorithm.variant
-    )
+    let pk = ECDSA.PublicKey(pem: key, curve: .secp256r1)
+    let sig = ECDSA.Signature(data: .init(signature))
+    let verified = pk.verify(message: input, signature: sig)
     guard verified else {
         throw JWTError.invalidSignature
     }
