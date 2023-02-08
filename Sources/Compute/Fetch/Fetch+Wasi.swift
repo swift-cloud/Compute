@@ -53,7 +53,7 @@ internal struct WasiFetcher: Sendable {
 
         // Check for a custom cache key
         if let cacheKey = request.cacheKey {
-            let hash = Crypto.sha256(cacheKey).toHexString()
+            let hash = Crypto.sha256(cacheKey).toHexString().uppercased()
             try httpRequest.insertHeader(HTTPHeader.fastlyCacheKey.rawValue, hash)
         }
 
