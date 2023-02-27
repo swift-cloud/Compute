@@ -24,9 +24,9 @@ public struct FetchRequest: Sendable {
 
     public var surrogateKey: String?
 
-    public var headers: [String: String]
+    public var headers: HTTPHeaders
 
-    public var searchParams: [String: String]
+    public var searchParams: HTTPSearchParams
 
     public var body: Body?
 
@@ -57,9 +57,9 @@ extension FetchRequest {
 
         public var body: Body? = nil
 
-        public var headers: [String: String]? = nil
+        public var headers: HTTPHeaders? = nil
 
-        public var searchParams: [String: String]? = nil
+        public var searchParams: HTTPSearchParams? = nil
 
         public var timeoutInterval: TimeInterval? = nil
 
@@ -76,8 +76,8 @@ extension FetchRequest {
         public static func options(
             method: HTTPMethod? = nil,
             body: Body? = nil,
-            headers: [String: String]? = nil,
-            searchParams: [String: String]? = nil,
+            headers: HTTPHeaders? = nil,
+            searchParams: HTTPSearchParams? = nil,
             timeoutInterval: TimeInterval? = nil,
             cachePolicy: CachePolicy? = nil,
             cacheKey: String? = nil,

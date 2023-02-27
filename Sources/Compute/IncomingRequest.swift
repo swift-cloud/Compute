@@ -11,7 +11,7 @@ public struct IncomingRequest: Sendable {
 
     public let headers: Headers
 
-    public let searchParams: [String: String]
+    public let searchParams: HTTPSearchParams
 
     /// `pathParams` will only be set when used with a `Router`
     public internal(set) var pathParams: Parameters = .init()

@@ -93,7 +93,7 @@ internal struct URLSessionFetcher: Sendable {
 
         return FetchResponse(
             body: ReadableDataBody(data),
-            headers: Headers(response.allHeaderFields as! [String: String]),
+            headers: Headers(response.allHeaderFields as! HTTPHeaders),
             status: response.statusCode,
             url: url
         )

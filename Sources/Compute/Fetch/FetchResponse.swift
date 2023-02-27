@@ -51,7 +51,7 @@ extension FetchResponse {
         return try await body.jsonArray()
     }
 
-    public func formValues() async throws -> [String: String] {
+    public func formValues() async throws -> HTTPSearchParams {
         return try await body.formValues()
     }
 

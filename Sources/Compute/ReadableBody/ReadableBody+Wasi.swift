@@ -63,7 +63,7 @@ extension ReadableWasiBody {
         return try await json() as! [Sendable]
     }
 
-    func formValues() async throws -> [String: String] {
+    func formValues() async throws -> HTTPSearchParams {
         let query = try await text()
         let components = URLComponents(string: "?\(query)")
         let queryItems = components?.queryItems ?? []

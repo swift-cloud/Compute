@@ -23,7 +23,7 @@ public protocol ReadableBody: Actor, Sendable {
 
     func jsonArray() async throws -> [Sendable]
 
-    func formValues() async throws -> [String: String]
+    func formValues() async throws -> HTTPSearchParams
 
     func text() async throws -> String
 

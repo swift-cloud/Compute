@@ -111,6 +111,10 @@ public enum HTTPMethod: String, Codable, Sendable, CaseIterable {
     case query = "QUERY"
 }
 
+public typealias HTTPHeaders = [String: String]
+
+public typealias HTTPSearchParams = [String: String]
+
 public protocol HTTPHeaderRepresentable {
 
     var stringValue: String { get }

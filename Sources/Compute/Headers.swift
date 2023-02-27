@@ -22,7 +22,7 @@ extension Fastly.Request: HeadersProvider {}
 
 extension Fastly.Response: HeadersProvider {}
 
-extension [String: String]: HeadersProvider {
+extension HTTPHeaders: HeadersProvider {
 
     public func getHeaderNames() throws -> [String] {
         self.enumerated().map { $1.key }
@@ -71,7 +71,7 @@ public struct Headers: Sendable {
         }
     }
 
-    public func dictionary() -> [String: String] {
+    public func dictionary() -> HTTPHeaders {
         return keys().reduce(into: [:]) { dict, key in
             dict[key] = get(key)
         }

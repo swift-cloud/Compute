@@ -49,7 +49,7 @@ extension ReadableDataBody {
         return try JSONSerialization.jsonObject(with: data) as! [Any]
     }
 
-    func formValues() async throws -> [String: String] {
+    func formValues() async throws -> HTTPSearchParams {
         let query = try await text()
         let components = URLComponents(string: "?\(query)")
         let queryItems = components?.queryItems ?? []
