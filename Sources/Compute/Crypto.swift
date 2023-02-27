@@ -73,15 +73,22 @@ extension Crypto {
         }
 
         public static func code(for input: String, secret: String, using hash: Hash) -> Data {
-            let data = Data(input.utf8)
-            let key = SymmetricKey(data: Data(secret.utf8))
+            return code(for: Data(input.utf8), secret: Data(secret.utf8), using: hash)
+        }
+
+        public static func code(for input: Data, secret: Data, using hash: Hash) -> Data {
+            let key = SymmetricKey(data: secret)
+            return code(for: input, secret: key, using: hash)
+        }
+
+        public static func code(for input: Data, secret: SymmetricKey, using hash: Hash) -> Data {
             switch hash {
             case .sha256:
-                return HMAC<SHA256>.authenticationCode(for: data, using: key).data
+                return HMAC<SHA256>.authenticationCode(for: input, using: secret).data
             case .sha384:
-                return HMAC<SHA384>.authenticationCode(for: data, using: key).data
+                return HMAC<SHA384>.authenticationCode(for: input, using: secret).data
             case .sha512:
-                return HMAC<SHA512>.authenticationCode(for: data, using: key).data
+                return HMAC<SHA512>.authenticationCode(for: input, using: secret).data
             }
         }
 
