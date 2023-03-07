@@ -30,6 +30,7 @@ public func fetch (
     _ request: IncomingRequest,
     origin: String,
     streaming: Bool = true,
+    forwardedFor: Bool = true,
     _ options: FetchRequest.Options = .options()
 ) async throws -> FetchResponse {
     guard
@@ -72,10 +73,18 @@ public func fetch (
         body = try await .bytes(request.body.bytes())
     }
 
+    // Copy the request headers
+    var headers = options.headers ?? request.headers.dictionary()
+
+    // Set the proxied IP address
+    if forwardedFor, headers[HTTPHeader.xForwardedFor.rawValue] == nil {
+        headers[HTTPHeader.xForwardedFor.rawValue] = request.clientIpAddress().stringValue
+    }
+
     return try await fetch(url, .options(
         method: options.method ?? request.method,
         body: body,
-        headers: options.headers ?? request.headers.dictionary(),
+        headers: headers,
         searchParams: options.searchParams ?? request.searchParams,
         timeoutInterval: options.timeoutInterval,
         cachePolicy: options.cachePolicy,
