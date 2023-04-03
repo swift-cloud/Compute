@@ -30,8 +30,8 @@ internal actor ReadableWasiBody: ReadableBody {
 
 extension ReadableWasiBody {
 
-    func pipeTo(_ dest: isolated WritableBody, preventClose: Bool) async throws {
-        var destBody = dest.body
+    func pipeTo(_ dest: WritableBody, preventClose: Bool) async throws {
+        var destBody = await dest.body
         try body.read {
             try destBody.write($0)
             return .continue

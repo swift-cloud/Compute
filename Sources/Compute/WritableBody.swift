@@ -33,9 +33,9 @@ public actor WritableBody: Sendable {
 
 extension WritableBody {
 
-    public func append(_ source: isolated ReadableBody) async throws {
+    public func append(_ source: ReadableBody) async throws {
         guard writable else { return }
-        try body.append(source.body)
+        try await body.append(source.body)
         try await Task.nextTick()
     }
 
