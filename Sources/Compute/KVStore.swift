@@ -1,13 +1,13 @@
 //
-//  ObjectStore.swift
+//  KVStore.swift
 //  
 //
 //  Created by Andrew Barba on 3/31/22.
 //
 
-public struct ObjectStore: Sendable {
+public struct KVStore: Sendable {
 
-    internal let store: Fastly.ObjectStore
+    internal let store: Fastly.KVStore
 
     public init(name: String) throws {
         store = try .init(name: name)
@@ -20,7 +20,7 @@ public struct ObjectStore: Sendable {
 
 // MARK: - Entry
 
-extension ObjectStore {
+extension KVStore {
 
     public struct Entry: Sendable {
 
@@ -30,17 +30,17 @@ extension ObjectStore {
 
 // MARK: - Read
 
-extension ObjectStore {
+extension KVStore {
 
     public func get(_ key: String) async throws -> Entry? {
-        guard let body = try store.lookup(key) else {
+        guard let body = try await store.lookup(key) else {
             return nil
         }
         return .init(body: ReadableWasiBody(body))
     }
 
     public func has(_ key: String) async throws -> Bool {
-        switch try store.lookup(key) {
+        switch try await store.lookup(key) {
         case .some:
             return true
         case .none:
@@ -51,14 +51,14 @@ extension ObjectStore {
 
 // MARK: - Update
 
-extension ObjectStore {
+extension KVStore {
 
     public func put(_ key: String, body: ReadableBody) async throws {
         try await store.insert(key, body: body.body)
     }
 
     public func put(_ key: String, bytes: [UInt8]) async throws {
-        try store.insert(key, bytes: bytes)
+        try await store.insert(key, bytes: bytes)
     }
 
     public func put(_ key: String, data: Data) async throws {
