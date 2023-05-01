@@ -26,7 +26,7 @@ internal actor ReadableDataBody: ReadableBody {
 
 extension ReadableDataBody {
 
-    func pipeTo(_ dest: isolated WritableBody, preventClose: Bool) async throws {
+    func pipeTo(_ dest: WritableBody, preventClose: Bool) async throws {
         try await dest.write(data)
     }
 }

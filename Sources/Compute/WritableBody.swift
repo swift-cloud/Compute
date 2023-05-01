@@ -39,7 +39,7 @@ extension WritableBody {
         try await Task.nextTick()
     }
 
-    public func pipeFrom(_ source: isolated ReadableBody, preventClose: Bool = false) async throws {
+    public func pipeFrom(_ source: ReadableBody, preventClose: Bool = false) async throws {
         guard writable else { return }
         try await source.pipeTo(self, preventClose: preventClose)
     }

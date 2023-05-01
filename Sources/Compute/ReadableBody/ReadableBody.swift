@@ -13,7 +13,7 @@ public protocol ReadableBody: Actor, Sendable {
 
     func close() async throws
 
-    func pipeTo(_ dest: isolated WritableBody, preventClose: Bool) async throws
+    func pipeTo(_ dest: WritableBody, preventClose: Bool) async throws
 
     func decode<T>(_ type: T.Type, decoder: JSONDecoder) async throws -> T where T: Decodable
 
@@ -38,7 +38,7 @@ extension ReadableBody {
         return try await decode(T.self, decoder: decoder)
     }
 
-    public func pipeTo(_ dest: isolated WritableBody) async throws {
+    public func pipeTo(_ dest: WritableBody) async throws {
         try await pipeTo(dest, preventClose: false)
     }
 }
