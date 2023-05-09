@@ -30,8 +30,7 @@ jobs:
       with:
         languages: swift
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    - run: swift build --target Compute
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
