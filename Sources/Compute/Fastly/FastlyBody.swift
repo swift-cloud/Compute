@@ -5,7 +5,7 @@
 //  Created by Andrew Barba on 1/13/22.
 //
 
-import ComputeRuntime
+import FastlyWorld
 
 extension Fastly {
     public struct Body: Sendable {
@@ -20,17 +20,23 @@ extension Fastly {
 
         internal init() throws {
             var handle: WasiHandle = 0
-            try wasi(fastly_http_body__new(&handle))
+            try fastlyWorld { err in
+                fastly_http_body_new(&handle, &err)
+            }
             self.handle = handle
         }
 
         public mutating func append(_ source: Body) throws {
-            try wasi(fastly_http_body__append(handle, source.handle))
+            try fastlyWorld { err in
+                fastly_http_body_append(handle, source.handle, &err)
+            }
             used = true
         }
 
         public mutating func close() throws {
-            try wasi(fastly_http_body__close(handle))
+            try fastlyWorld { err in
+                fastly_http_body_close(handle, &err)
+            }
         }
 
         @discardableResult
@@ -38,10 +44,13 @@ extension Fastly {
             defer { used = true }
             var position = 0
             while position < bytes.count {
-                try bytes[position..<bytes.count].withUnsafeBufferPointer {
-                    var written = 0
-                    try wasi(fastly_http_body__write(handle, $0.baseAddress, $0.count, location.rawValue, &written))
-                    position += written
+                try bytes[position..<bytes.count].withUnsafeBufferPointer { buffer in
+                    var list_t = buffer.fastly_world_t
+                    var written: UInt32 = 0
+                    try fastlyWorld { err in
+                        fastly_http_body_write(handle, &list_t, location.rawValue, &written, &err)
+                    }
+                    position += .init(written)
                 }
             }
             return position
@@ -49,10 +58,12 @@ extension Fastly {
 
         public mutating func scan(highWaterMark: Int = highWaterMark) throws -> [UInt8] {
             defer { used = true }
-            return try Array<UInt8>(unsafeUninitializedCapacity: highWaterMark) {
-                var length = 0
-                try wasi(fastly_http_body__read(handle, $0.baseAddress, highWaterMark, &length))
-                $1 = length
+            return try Array<UInt8>(unsafeUninitializedCapacity: highWaterMark) { buffer, written in
+                var list_t = buffer.fastly_world_t
+                try fastlyWorld { err in
+                    fastly_http_body_read(handle, .init(highWaterMark), &list_t, &err)
+                }
+                written = list_t.len
             }
         }
 

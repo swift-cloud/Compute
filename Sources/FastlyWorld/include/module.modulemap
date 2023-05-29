@@ -1,0 +1,4 @@
+module FastlyWorld {
+    header "fastly_world.h"
+    export *
+}

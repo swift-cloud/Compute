@@ -286,7 +286,7 @@ public enum HTTPStatus: Int, Codable, Sendable {
     case networkConnectTimeoutErrorUnknown = 599
 }
 
-public enum BodyWriteEnd: Int32, Sendable {
+public enum BodyWriteEnd: UInt8, Sendable {
     case back = 0
     case front
 }
