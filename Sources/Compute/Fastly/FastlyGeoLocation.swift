@@ -5,7 +5,7 @@
 //  Created by Andrew Barba on 1/12/22.
 //
 
-import ComputeRuntime
+import FastlyWorld
 
 extension Fastly {
     public struct GeoLocation: Sendable {
@@ -48,9 +48,12 @@ extension Fastly {
         }
 
         public static func lookup(ip bytes: [UInt8]) throws -> IpLookup {
-            return try wasiDecode(maxBufferLength: maxIpLookupLength) {
-                fastly_geo__lookup(bytes, bytes.count, $0, $1, &$2)
+            var list_t = bytes.fastly_world_t
+            var json_t = fastly_world_string_t()
+            try fastlyWorld { err in
+                fastly_geo_lookup(&list_t, &json_t, &err)
             }
+            return try Utils.jsonDecoder.decode(IpLookup.self, from: json_t.data)
         }
 
         private init() {}

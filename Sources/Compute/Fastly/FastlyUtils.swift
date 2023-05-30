@@ -15,11 +15,8 @@ internal func wasi(
     fileName: String = #file
 ) throws {
     let result = handler()
-    guard let status = WasiStatus(rawValue: result) else {
-        throw Fastly.Error(status: .unexpected, functionName: functionName, fileName: fileName)
-    }
-    guard status == .ok else {
-        throw Fastly.Error(status: status, functionName: functionName, fileName: fileName)
+    guard result == 0 else {
+        throw Fastly.Error(.init(result), functionName: functionName, fileName: fileName)
     }
 }
 
