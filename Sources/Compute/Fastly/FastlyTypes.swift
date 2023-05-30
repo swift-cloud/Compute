@@ -5,73 +5,9 @@
 //  Created by Andrew Barba on 1/12/22.
 //
 
-import ComputeRuntime
-
 public typealias WasiHandle = UInt32
 
 public let InvalidWasiHandle = UInt32.max - 1
-
-public enum WasiStatus: Int32, Error, CaseIterable, Codable, Sendable {
-    /// Success value.
-    /// This indicates that a hostcall finished successfully.
-    case ok = 0
-
-    /// Generic error value.
-    /// This means that some unexpected error occurred during a hostcall.
-    case unexpected = 1
-
-    /// Invalid argument.
-    case invalidArgument = 2
-
-    /// Invalid handle.
-    /// Thrown when a handle is not valid. E.G. No dictionary exists with the given name.
-    case invalidHandle = 3
-
-    /// Buffer length error.
-    /// Thrown when a buffer is too long.
-    case bufferLength = 4
-
-    /// Unsupported operation error.
-    /// This error is thrown when some operation cannot be performed, because it is not supported.
-    case unsupported = 5
-
-    /// Alignment error.
-    /// This is thrown when a pointer does not point to a properly aligned slice of memory.
-    case badAlignment = 6
-
-    /// Invalid HTTP error.
-    /// This can be thrown when a method, URI, header, or status is not valid. This can also
-    /// be thrown if a message head is too large.
-    case httpInvalid = 7
-
-    /// HTTP user error.
-    /// This is thrown in cases where user code caused an HTTP error. For example, attempt to send
-    /// a 1xx response code, or a request with a non-absolute URI. This can also be caused by
-    /// an unexpected header: both `content-length` and `transfer-encoding`, for example.
-    case httpUser = 8
-
-    /// HTTP incomplete message error.
-    /// This can be thrown when a stream ended unexpectedly.
-    case httpIncomplete = 9
-
-    /// A `None` error.
-    /// This status code is used to indicate when an optional value did not exist, as opposed to
-    /// an empty value.
-    /// Note, this value should no longer be used, as we have explicit optional types now.
-    case none = 10
-
-    /// Message head too large.
-    case httpHeadTooLarge = 11
-
-    /// Invalid HTTP status.
-    case httpInvalidStatus = 12
-
-    /// Limit exceeded
-    ///
-    /// This is returned when an attempt to allocate a resource has exceeded the maximum number of
-    /// resources permitted. For example, creating too many response handles.
-    case limitExceeded = 13
-}
 
 public enum HTTPVersion: Int32, Codable, Sendable {
     case http0_9 = 0

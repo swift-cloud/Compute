@@ -29,7 +29,7 @@ internal func wasiString(
     do {
         let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler: handler, functionName: functionName, fileName: fileName)
         return String(bytes: bytes, encoding: .utf8)
-    } catch WasiStatus.none, WasiStatus.invalidArgument {
+    } catch let error as Fastly.Error where error.code == .none || error.code == .invalidArgument {
         return nil
     } catch {
         throw error

@@ -131,7 +131,7 @@ internal struct WasiFetcher: Sendable {
         // Attempt to register the backend
         do {
             try request.registerDynamicBackend(name: backend, target: backend, options: .init(ssl: ssl))
-        } catch WasiStatus.unexpected {
+        } catch let error as Fastly.Error where error.code == .generic {
             // ignore
         } catch {
             throw error
