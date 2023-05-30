@@ -1,2 +1,12 @@
 language = "swift"
 manifest_version = 2
+
+[local_server]
+  [local_server.config_stores]
+    [local_server.config_stores.strings]
+      format = "inline-toml"
+    [local_server.config_stores.strings.content]
+      "en.welcome" = "welcome"
+      "de.welcome" = "willkommen"
+      "fr.welcome" = "bienvenue"
+      "es.welcome" = "bienvenido"

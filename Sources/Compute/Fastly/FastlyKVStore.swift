@@ -5,7 +5,7 @@
 //  Created by Andrew Barba on 3/30/22.
 //
 
-import ComputeRuntime
+import FastlyWorld
 
 extension Fastly {
     public struct KVStore: Sendable {
@@ -16,23 +16,31 @@ extension Fastly {
 
         public init(name: String) throws {
             var handle: WasiHandle = 0
-            try wasi(fastly_object_store__open(name, name.utf8.count, &handle))
+            var name_t = name.fastly_world_t
+            try fastlyWorld { err in
+                fastly_object_store_open(&name_t, &handle, &err)
+            }
             self.handle = handle
             self.name = name
         }
 
         public func lookup(_ key: String) async throws -> Body? {
-            do {
-                var bodyHandle: WasiHandle = InvalidWasiHandle
-                try wasi(fastly_object_store__lookup(handle, key, key.utf8.count, &bodyHandle))
-                return bodyHandle == InvalidWasiHandle ? nil : Body(bodyHandle)
-            } catch WasiStatus.none {
+            var bodyHandle = fastly_world_option_body_handle_t()
+            var key_t = key.fastly_world_t
+            try fastlyWorld { err in
+                fastly_object_store_lookup(handle, &key_t, &bodyHandle, &err)
+            }
+            guard bodyHandle.is_some else {
                 return nil
             }
+            return Body(bodyHandle.val)
         }
 
         public func insert(_ key: String, body: Body) async throws {
-            try wasi(fastly_object_store__insert(handle, key, key.utf8.count, body.handle))
+            var key_t = key.fastly_world_t
+            try fastlyWorld { err in
+                fastly_object_store_insert(handle, &key_t, body.handle, &err)
+            }
         }
 
         public func insert(_ key: String, bytes: [UInt8]) async throws {

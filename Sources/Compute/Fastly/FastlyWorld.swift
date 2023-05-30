@@ -42,6 +42,10 @@ extension fastly_world_string_t {
         let buffer = UnsafeBufferPointer(start: self.ptr, count: self.len)
         return Data(buffer: buffer)
     }
+
+    internal init(_ str: UnsafePointer<CChar>!, _ str_len: Int) {
+        self.init(ptr: .init(mutating: str), len: str_len)
+    }
 }
 
 extension fastly_world_option_string_t {
@@ -57,11 +61,7 @@ extension fastly_world_option_string_t {
 extension String {
 
     internal var fastly_world_t: fastly_world_string_t {
-        let len = self.utf8.count
-        return withCString {
-            let ptr = UnsafeMutablePointer(mutating: $0)
-            return fastly_world_string_t(ptr: ptr, len: len)
-        }
+        return .init(self, self.utf8.count)
     }
 }
 
@@ -105,6 +105,16 @@ extension Array where Element == UInt8 {
         var items = self
         return items.withUnsafeMutableBufferPointer {
             fastly_world_list_u8_t(ptr: $0.baseAddress, len: self.count)
+        }
+    }
+}
+
+extension Array where Element == fastly_pending_request_handle_t {
+
+    internal var fastly_world_t: fastly_world_list_pending_request_handle_t {
+        var items = self
+        return items.withUnsafeMutableBufferPointer {
+            fastly_world_list_pending_request_handle_t(ptr: $0.baseAddress, len: self.count)
         }
     }
 }

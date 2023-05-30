@@ -2690,24 +2690,24 @@ bool fastly_purge_surrogate_key(fastly_world_string_t *surrogate_key, bool soft_
   }
 }
 
-__attribute__((__export_name__("compute-at-edge#serve")))
-int32_t __wasm_export_compute_at_edge_serve(int32_t arg, int32_t arg0) {
-  compute_at_edge_request_t arg1 = (compute_at_edge_request_t) {
-    (uint32_t) (arg),
-    (uint32_t) (arg0),
-  };
-  fastly_world_result_void_void_t ret;
-  ret.is_err = !compute_at_edge_serve(&arg1);
-  int32_t result;
-  if ((ret).is_err) {
-    result = 1;
-  } else {
-    result = 0;
-  }
-  return result;
-}
-
-extern void __component_type_object_force_link_fastly_world(void);
-void __component_type_object_force_link_fastly_world_public_use_in_this_compilation_unit(void) {
-  __component_type_object_force_link_fastly_world();
-}
+//__attribute__((__export_name__("compute-at-edge#serve")))
+//int32_t __wasm_export_compute_at_edge_serve(int32_t arg, int32_t arg0) {
+//  compute_at_edge_request_t arg1 = (compute_at_edge_request_t) {
+//    (uint32_t) (arg),
+//    (uint32_t) (arg0),
+//  };
+//  fastly_world_result_void_void_t ret;
+//  ret.is_err = !compute_at_edge_serve(&arg1);
+//  int32_t result;
+//  if ((ret).is_err) {
+//    result = 1;
+//  } else {
+//    result = 0;
+//  }
+//  return result;
+//}
+//
+//extern void __component_type_object_force_link_fastly_world(void);
+//void __component_type_object_force_link_fastly_world_public_use_in_this_compilation_unit(void) {
+//  __component_type_object_force_link_fastly_world();
+//}
