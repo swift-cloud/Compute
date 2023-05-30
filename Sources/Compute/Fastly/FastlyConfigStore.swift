@@ -26,7 +26,7 @@ extension Fastly {
 
         public func get(_ key: String) throws -> String? {
             var key_t = key.fastly_world_t
-            var val_t = fastly_option_string_t()
+            var val_t = fastly_world_option_string_t()
             try fastlyWorld { err in
                 fastly_dictionary_get(handle, &key_t, &val_t, &err)
             }

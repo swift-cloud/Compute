@@ -20,7 +20,7 @@ internal func fastlyWorld(
 
 // MARK: - Booleans
 
-extension fastly_option_bool_t {
+extension fastly_world_option_bool_t {
 
     internal var value: Bool? {
         guard is_some else {
@@ -44,7 +44,7 @@ extension fastly_world_string_t {
     }
 }
 
-extension fastly_option_string_t {
+extension fastly_world_option_string_t {
 
     internal var value: String? {
         guard is_some else {
@@ -57,15 +57,17 @@ extension fastly_option_string_t {
 extension String {
 
     internal var fastly_world_t: fastly_world_string_t {
-        var str = fastly_world_string_t()
-        fastly_world_string_set(&str, self)
-        return str
+        let len = self.utf8.count
+        return withCString {
+            let ptr = UnsafeMutablePointer(mutating: $0)
+            return fastly_world_string_t(ptr: ptr, len: len)
+        }
     }
 }
 
 // MARK: - Bytes
 
-extension fastly_list_u8_t {
+extension fastly_world_list_u8_t {
 
     internal var data: Data {
         let buffer = UnsafeBufferPointer(start: self.ptr, count: self.len)
@@ -75,7 +77,7 @@ extension fastly_list_u8_t {
 
 // MARK: - Arrays
 
-extension fastly_list_string_t {
+extension fastly_world_list_string_t {
 
     internal var value: [String] {
         return .init(unsafeUninitializedCapacity: self.len) { buffer, written in
@@ -89,20 +91,20 @@ extension fastly_list_string_t {
 
 extension Array where Element == String {
 
-    internal var fastly_world_t: fastly_list_string_t {
+    internal var fastly_world_t: fastly_world_list_string_t {
         var items = self.map { $0.fastly_world_t }
         return items.withUnsafeMutableBufferPointer {
-            fastly_list_string_t(ptr: $0.baseAddress, len: self.count)
+            fastly_world_list_string_t(ptr: $0.baseAddress, len: self.count)
         }
     }
 }
 
 extension Array where Element == UInt8 {
 
-    internal var fastly_world_t: fastly_list_u8_t {
+    internal var fastly_world_t: fastly_world_list_u8_t {
         var items = self
         return items.withUnsafeMutableBufferPointer {
-            fastly_list_u8_t(ptr: $0.baseAddress, len: self.count)
+            fastly_world_list_u8_t(ptr: $0.baseAddress, len: self.count)
         }
     }
 }
@@ -111,15 +113,15 @@ extension Array where Element == UInt8 {
 
 extension UnsafeBufferPointer where Element == UInt8 {
 
-    internal var fastly_world_t: fastly_list_u8_t {
+    internal var fastly_world_t: fastly_world_list_u8_t {
         let ptr = UnsafeMutablePointer(mutating: self.baseAddress)
-        return fastly_list_u8_t(ptr: ptr, len: self.count)
+        return fastly_world_list_u8_t(ptr: ptr, len: self.count)
     }
 }
 
 extension UnsafeMutableBufferPointer where Element == UInt8 {
 
-    internal var fastly_world_t: fastly_list_u8_t {
-        return fastly_list_u8_t(ptr: self.baseAddress, len: self.count)
+    internal var fastly_world_t: fastly_world_list_u8_t {
+        return fastly_world_list_u8_t(ptr: self.baseAddress, len: self.count)
     }
 }
