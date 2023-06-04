@@ -264,6 +264,8 @@ int fastly_http_resp__header_remove(WasiHandle resp_handle, const char *name, si
 WASM_IMPORT("fastly_http_resp", "framing_headers_mode_set")
 int fastly_http_resp__framing_headers_mode_set(WasiHandle resp_handle, uint32_t mode);
 
+WASM_IMPORT("fastly_http_resp", "http_keepalive_mode_set")
+int fastly_http_resp__http_keepalive_mode_set(WasiHandle resp_handle, uint32_t mode);
 
 #pragma GCC diagnostic pop
 #endif /* ComputeRuntime_h */

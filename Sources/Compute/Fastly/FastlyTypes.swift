@@ -291,6 +291,11 @@ public enum BodyWriteEnd: Int32, Sendable {
     case front
 }
 
+public enum KeepAliveMode: UInt32, Sendable {
+    case automatic = 0
+    case disabled
+}
+
 public enum IPAddress: Sendable {
     case v4(String)
     case v6(String)

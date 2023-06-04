@@ -168,4 +168,6 @@ func fastly_http_resp__header_remove(_ resp_handle: WasiHandle, _ name: UnsafePo
 
 func fastly_http_resp__framing_headers_mode_set(_ resp_handle: WasiHandle, _ mode: UInt32) -> Int32 { fatalError() }
 
+func fastly_http_resp__http_keepalive_mode_set(_ resp_handle: WasiHandle, _ mode: UInt32) -> Int32 { fatalError() }
+
 #endif

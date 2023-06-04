@@ -91,5 +91,9 @@ extension Fastly {
         public mutating func setFramingHeadersMode(_ newValue: FramingHeadersMode) throws {
             try wasi(fastly_http_resp__framing_headers_mode_set(handle, newValue.rawValue))
         }
+
+        public mutating func setKeepAliveMode(_ newValue: KeepAliveMode) throws {
+            try wasi(fastly_http_resp__http_keepalive_mode_set(handle, newValue.rawValue))
+        }
     }
 }
