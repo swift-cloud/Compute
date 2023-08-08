@@ -118,4 +118,9 @@ extension FanoutMessage {
         let content = #"c:{"type": "subscribe", "channel": "\#(channel)"}"#
         return .init(.text, content: content)
     }
+
+    public static func unsubscribe(to channel: String) -> Self {
+        let content = #"c:{"type": "unsubscribe", "channel": "\#(channel)"}"#
+        return .init(.text, content: content)
+    }
 }
