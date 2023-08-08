@@ -41,7 +41,7 @@ extension IncomingRequest {
              throw FanoutRequestError.invalidSignature
          }
          let jwt = try JWT(token: token)
-         try jwt.verify(key: fanoutPublicKey, issuer: "fastly")
+         try jwt.verify(key: fanoutPublicKey)
     }
 
     public func upgradeWebsocket(to destination: UpgradeWebsocketDestination, hostname: String = "localhost") throws {
