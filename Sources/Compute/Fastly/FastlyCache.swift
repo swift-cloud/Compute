@@ -131,8 +131,8 @@ extension Fastly.Cache {
             var cacheHandle: WasiHandle = 0
             let options: CacheWriteOptions = [.initialAgeNs, .staleWhileRevalidateNs, .length]
             var config = CacheWriteConfig()
-            config.max_age_ns = .init(cachePolicy.ttl) * 1_000_000_000
-            config.stale_while_revalidate_ns = .init(cachePolicy.staleWhileRevalidate) * 1_000_000_000
+            config.max_age_ns = .init(cachePolicy.maxAge) * 1_000_000_000
+            config.stale_while_revalidate_ns = .init(cachePolicy.staleMaxAge) * 1_000_000_000
             config.length = .init(length)
             try wasi(fastly_cache__cache_transaction_insert_and_stream_back(handle, options.rawValue, &config, &bodyHandle, &cacheHandle))
             return (.init(bodyHandle), .init(cacheHandle))

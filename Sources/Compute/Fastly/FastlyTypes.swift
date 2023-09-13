@@ -403,7 +403,7 @@ public enum CachePolicy: Sendable {
     case pass
     case ttl(_ seconds: Int, staleWhileRevalidate: Int = 0, pciCompliant: Bool = false)
 
-    public var ttl: Int {
+    public var maxAge: Int {
         switch self {
         case .origin:
             return 0
@@ -414,7 +414,7 @@ public enum CachePolicy: Sendable {
         }
     }
 
-    public var staleWhileRevalidate: Int {
+    public var staleMaxAge: Int {
         switch self {
         case .origin:
             return 0
