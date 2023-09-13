@@ -402,6 +402,28 @@ public enum CachePolicy: Sendable {
     case origin
     case pass
     case ttl(_ seconds: Int, staleWhileRevalidate: Int = 0, pciCompliant: Bool = false)
+
+    public var ttl: Int {
+        switch self {
+        case .origin:
+            return 0
+        case .pass:
+            return 0
+        case .ttl(let seconds, _, _):
+            return seconds
+        }
+    }
+
+    public var staleWhileRevalidate: Int {
+        switch self {
+        case .origin:
+            return 0
+        case .pass:
+            return 0
+        case .ttl(_, let seconds, _):
+            return seconds
+        }
+    }
 }
 
 public struct CacheWriteOptions: OptionSet, Sendable {

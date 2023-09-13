@@ -11,47 +11,51 @@ extension Fastly {
 
     public struct Cache: Sendable {
 
-        public static func getOrSet(_ key: String, _ handler: () async throws -> FetchResponse) async throws -> ReadableBody {
+        public static func getOrSet(_ key: String, _ handler: () async throws -> (FetchResponse, CachePolicy)) async throws -> ReadableBody {
             return try await getOrSet(key) {
-                let body = try await handler().body.body
-                return HandlerData.body(body)
+                let (res, cachePolicy) = try await handler()
+                guard let header = res.headers[.contentLength], let length = Int(header) else {
+                    let bytes = try await res.bytes()
+                    return (HandlerData.bytes(bytes), .origin)
+                }
+                return await (HandlerData.body(res.body.body, length: length), cachePolicy)
             }
         }
 
-        public static func getOrSet(_ key: String, _ handler: () async throws -> [UInt8]) async throws -> ReadableBody {
+        public static func getOrSet(_ key: String, _ handler: () async throws -> ([UInt8], CachePolicy)) async throws -> ReadableBody {
             return try await getOrSet(key) {
-                let bytes = try await handler()
-                return HandlerData.bytes(bytes)
+                let (bytes, cachePolicy) = try await handler()
+                return (HandlerData.bytes(bytes), cachePolicy)
             }
         }
 
-        public static func getOrSet(_ key: String, _ handler: () async throws -> String) async throws -> ReadableBody {
+        public static func getOrSet(_ key: String, _ handler: () async throws -> (String, CachePolicy)) async throws -> ReadableBody {
             return try await getOrSet(key) {
-                let text = try await handler()
-                return HandlerData.bytes(.init(text.utf8))
+                let (text, cachePolicy) = try await handler()
+                return (HandlerData.bytes(.init(text.utf8)), cachePolicy)
             }
         }
 
-        public static func getOrSet(_ key: String, _ handler: () async throws -> Data) async throws -> ReadableBody {
+        public static func getOrSet(_ key: String, _ handler: () async throws -> (Data, CachePolicy)) async throws -> ReadableBody {
             return try await getOrSet(key) {
-                let data = try await handler()
-                return HandlerData.bytes(data.bytes)
+                let (data, cachePolicy) = try await handler()
+                return (HandlerData.bytes(data.bytes), cachePolicy)
             }
         }
 
-        public static func getOrSet(_ key: String, _ handler: () async throws -> [String: Sendable]) async throws -> ReadableBody {
+        public static func getOrSet(_ key: String, _ handler: () async throws -> ([String: Sendable], CachePolicy)) async throws -> ReadableBody {
             return try await getOrSet(key) {
-                let json = try await handler()
+                let (json, cachePolicy) = try await handler()
                 let data = try JSONSerialization.data(withJSONObject: json)
-                return HandlerData.bytes(data.bytes)
+                return (HandlerData.bytes(data.bytes), cachePolicy)
             }
         }
 
-        public static func getOrSet(_ key: String, _ handler: () async throws -> [Sendable]) async throws -> ReadableBody {
+        public static func getOrSet(_ key: String, _ handler: () async throws -> ([Sendable], CachePolicy)) async throws -> ReadableBody {
             return try await getOrSet(key) {
-                let json = try await handler()
+                let (json, cachePolicy) = try await handler()
                 let data = try JSONSerialization.data(withJSONObject: json)
-                return HandlerData.bytes(data.bytes)
+                return (HandlerData.bytes(data.bytes), cachePolicy)
             }
         }
     }
@@ -60,11 +64,20 @@ extension Fastly {
 extension Fastly.Cache {
 
     internal enum HandlerData {
-        case body(_ body: Fastly.Body)
+        case body(_ body: Fastly.Body, length: Int)
         case bytes(_ bytes: [UInt8])
+
+        var length: Int {
+            switch self {
+            case .body(_, let length):
+                return length
+            case .bytes(let bytes):
+                return bytes.count
+            }
+        }
     }
 
-    internal static func getOrSet(_ key: String, _ handler: () async throws -> HandlerData) async throws -> ReadableBody {
+    internal static func getOrSet(_ key: String, _ handler: () async throws -> (HandlerData, CachePolicy)) async throws -> ReadableBody {
         // Open the transaction
         let trx = try await Transaction.lookup(key)
 
@@ -78,14 +91,14 @@ extension Fastly.Cache {
         }
 
         // If its not usable then begin executing handler with new value
-        let data = try await handler()
+        let (data, cachePolicy) = try await handler()
 
         // Get an instance to the insert handle
-        var writer = try await trx.insertAndStreamBack()
+        var writer = try await trx.insertAndStreamBack(cachePolicy: cachePolicy, length: data.length)
 
         // Append bytes from handler to writeable body
         switch data {
-        case .body(let body):
+        case .body(let body, _):
             try writer.body.append(body)
         case .bytes(let bytes):
             try writer.body.write(bytes)
@@ -113,11 +126,14 @@ extension Fastly.Cache {
             return Transaction(handle)
         }
 
-        internal func insertAndStreamBack() async throws -> (body: Fastly.Body, transaction: Transaction) {
+        internal func insertAndStreamBack(cachePolicy: CachePolicy, length: Int) async throws -> (body: Fastly.Body, transaction: Transaction) {
             var bodyHandle: WasiHandle = 0
             var cacheHandle: WasiHandle = 0
-            let options = CacheWriteOptions.reserved
+            let options: CacheWriteOptions = [.initialAgeNs, .staleWhileRevalidateNs, .length]
             var config = CacheWriteConfig()
+            config.max_age_ns = .init(cachePolicy.ttl) * 1_000_000_000
+            config.stale_while_revalidate_ns = .init(cachePolicy.staleWhileRevalidate) * 1_000_000_000
+            config.length = .init(length)
             try wasi(fastly_cache__cache_transaction_insert_and_stream_back(handle, options.rawValue, &config, &bodyHandle, &cacheHandle))
             return (.init(bodyHandle), .init(cacheHandle))
         }
