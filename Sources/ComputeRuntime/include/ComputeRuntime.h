@@ -318,6 +318,15 @@ int fastly_cache__cache_transaction_cancel(WasiHandle handle);
 WASM_IMPORT("fastly_cache", "get_state")
 int fastly_cache__cache_get_state(WasiHandle handle, uint8_t *ret);
 
+WASM_IMPORT("fastly_cache", "get_length")
+int fastly_cache__cache_get_length(WasiHandle handle, uint64_t *ret);
+
+WASM_IMPORT("fastly_cache", "get_age_ns")
+int fastly_cache__cache_get_age_ns(WasiHandle handle, uint64_t *ret);
+
+WASM_IMPORT("fastly_cache", "get_hits")
+int fastly_cache__cache_get_hits(WasiHandle handle, uint64_t *ret);
+
 WASM_IMPORT("fastly_cache", "get_body")
 int fastly_cache__cache_get_body(WasiHandle handle, uint32_t options_mask,
                                  CacheGetBodyConfig *config,
