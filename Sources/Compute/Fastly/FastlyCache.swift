@@ -16,7 +16,7 @@ extension Fastly {
                 let (res, cachePolicy) = try await handler()
                 guard let header = res.headers[.contentLength], let length = Int(header) else {
                     let bytes = try await res.bytes()
-                    return (HandlerData.bytes(bytes), .origin)
+                    return (HandlerData.bytes(bytes), cachePolicy)
                 }
                 return await (HandlerData.body(res.body.body, length: length), cachePolicy)
             }
