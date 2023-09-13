@@ -18,7 +18,7 @@ extension Fastly {
             let state = try trx.getState()
 
             // If state is usable then return the body from cache
-            if state == .found || state == .usable {
+            if state.contains(.usable) {
                 return trx
             }
 
