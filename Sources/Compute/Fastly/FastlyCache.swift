@@ -16,30 +16,30 @@ extension Fastly {
                 let (res, cachePolicy) = try await handler()
                 guard let header = res.headers[.contentLength], let length = Int(header) else {
                     let bytes = try await res.bytes()
-                    return (HandlerData.bytes(bytes), cachePolicy)
+                    return (.bytes(bytes), cachePolicy)
                 }
-                return await (HandlerData.body(res.body.body, length: length), cachePolicy)
+                return await (.body(res.body.body, length: length), cachePolicy)
             }
         }
 
         public static func getOrSet(_ key: String, _ handler: () async throws -> ([UInt8], CachePolicy)) async throws -> ReadableBody {
             return try await getOrSet(key) {
                 let (bytes, cachePolicy) = try await handler()
-                return (HandlerData.bytes(bytes), cachePolicy)
+                return (.bytes(bytes), cachePolicy)
             }
         }
 
         public static func getOrSet(_ key: String, _ handler: () async throws -> (String, CachePolicy)) async throws -> ReadableBody {
             return try await getOrSet(key) {
                 let (text, cachePolicy) = try await handler()
-                return (HandlerData.bytes(.init(text.utf8)), cachePolicy)
+                return (.bytes(.init(text.utf8)), cachePolicy)
             }
         }
 
         public static func getOrSet(_ key: String, _ handler: () async throws -> (Data, CachePolicy)) async throws -> ReadableBody {
             return try await getOrSet(key) {
                 let (data, cachePolicy) = try await handler()
-                return (HandlerData.bytes(data.bytes), cachePolicy)
+                return (.bytes(data.bytes), cachePolicy)
             }
         }
 
@@ -47,7 +47,7 @@ extension Fastly {
             return try await getOrSet(key) {
                 let (json, cachePolicy) = try await handler()
                 let data = try JSONSerialization.data(withJSONObject: json)
-                return (HandlerData.bytes(data.bytes), cachePolicy)
+                return (.bytes(data.bytes), cachePolicy)
             }
         }
 
@@ -55,7 +55,7 @@ extension Fastly {
             return try await getOrSet(key) {
                 let (json, cachePolicy) = try await handler()
                 let data = try JSONSerialization.data(withJSONObject: json)
-                return (HandlerData.bytes(data.bytes), cachePolicy)
+                return (.bytes(data.bytes), cachePolicy)
             }
         }
     }
