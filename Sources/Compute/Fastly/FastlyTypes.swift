@@ -392,6 +392,8 @@ public struct CacheState: OptionSet {
     public static let stale = CacheState(rawValue: 1 << 2)
     public static let mustInsertOrUpdate = CacheState(rawValue: 1 << 3)
 
+    public static let none: CacheState = []
+
     public let rawValue: UInt8
     public init(rawValue: UInt8) {
         self.rawValue = rawValue
@@ -437,6 +439,8 @@ public struct CacheWriteOptions: OptionSet, Sendable {
     public static let userMetadata = CacheWriteOptions(rawValue: 1 << 7)
     public static let sensitiveData = CacheWriteOptions(rawValue: 1 << 8)
 
+    public static let none: CacheWriteOptions = []
+
     public let rawValue: UInt32
     public init(rawValue: UInt32) {
         self.rawValue = rawValue
@@ -446,6 +450,8 @@ public struct CacheWriteOptions: OptionSet, Sendable {
 public struct CacheLookupOptions: OptionSet, Sendable {
     public static let reserved = CacheLookupOptions(rawValue: 1 << 0)
     public static let requestHeaders = CacheLookupOptions(rawValue: 1 << 1)
+
+    public static let none: CacheLookupOptions = []
 
     public let rawValue: UInt32
     public init(rawValue: UInt32) {
@@ -457,6 +463,8 @@ public struct CacheGetBodyOptions: OptionSet, Sendable {
     public static let reserved = CacheLookupOptions(rawValue: 1 << 0)
     public static let from = CacheLookupOptions(rawValue: 1 << 1)
     public static let to = CacheLookupOptions(rawValue: 1 << 2)
+
+    public static let none: CacheGetBodyOptions = []
 
     public let rawValue: UInt32
     public init(rawValue: UInt32) {

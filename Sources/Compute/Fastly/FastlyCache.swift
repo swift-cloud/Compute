@@ -76,7 +76,7 @@ extension Fastly.Cache {
 
         public static func lookup(_ key: String) throws -> Transaction {
             var handle: WasiHandle = 0
-            let options = CacheLookupOptions.reserved
+            let options = CacheLookupOptions.none
             var config = CacheLookupConfig()
             try wasi(fastly_cache__cache_transaction_lookup(key, key.utf8.count, options.rawValue, &config, &handle))
             return Transaction(handle)
@@ -120,7 +120,7 @@ extension Fastly.Cache {
 
         public func getBody() throws -> Fastly.Body {
             var bodyHandle: WasiHandle = 0
-            let options = CacheGetBodyOptions.reserved
+            let options = CacheGetBodyOptions.none
             var config = CacheGetBodyConfig()
             try wasi(fastly_cache__cache_get_body(handle, options.rawValue, &config, &bodyHandle))
             return .init(bodyHandle)
