@@ -74,11 +74,14 @@ extension Cache {
 
         public let contentLength: Int
 
+        public let state: CacheState
+
         internal init(_ trx: Fastly.Cache.Transaction) throws {
             self.body = try ReadableWasiBody(trx.getBody())
             self.age = try trx.getAge()
             self.hits = try trx.getHits()
             self.contentLength = try trx.getLength()
+            self.state = try trx.getState()
         }
     }
 }

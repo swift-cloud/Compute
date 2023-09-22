@@ -372,7 +372,7 @@ public struct BackendConfigOptions: OptionSet, Sendable {
     }
 }
 
-public struct CacheOverrideTag: OptionSet {
+public struct CacheOverrideTag: OptionSet, Sendable {
     public static let pass = CacheOverrideTag(rawValue: 1 << 0)
     public static let ttl = CacheOverrideTag(rawValue: 1 << 1)
     public static let swr = CacheOverrideTag(rawValue: 1 << 2)
@@ -386,7 +386,7 @@ public struct CacheOverrideTag: OptionSet {
     }
 }
 
-public struct CacheState: OptionSet {
+public struct CacheState: OptionSet, Sendable {
     public static let found = CacheState(rawValue: 1 << 0)
     public static let usable = CacheState(rawValue: 1 << 1)
     public static let stale = CacheState(rawValue: 1 << 2)
