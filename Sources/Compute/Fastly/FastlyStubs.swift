@@ -11,22 +11,7 @@
 /// avoid link failure.
 /// When running with Compute runtime library, they are ignored completely.
 #if !arch(wasm32)
-
-/* TYPES */
-
-struct DynamicBackendConfig: Sendable {
-    var host_override: UnsafePointer<CChar>! = nil
-    var host_override_len: Int = 0
-    var connect_timeout_ms: Int = 0
-    var first_byte_timeout_ms: Int = 0
-    var between_bytes_timeout_ms: Int = 0
-    var ssl_min_version: Int = 0
-    var ssl_max_version: Int = 0
-    var cert_hostname: UnsafePointer<CChar>! = nil
-    var cert_hostname_len: Int = 0
-    var sni_hostname: UnsafePointer<CChar>! = nil
-    var sni_hostname_len: Int = 0
-}
+import ComputeRuntime
 
 /* FASTLY_ABI */
 
@@ -169,5 +154,50 @@ func fastly_http_resp__header_remove(_ resp_handle: WasiHandle, _ name: UnsafePo
 func fastly_http_resp__framing_headers_mode_set(_ resp_handle: WasiHandle, _ mode: UInt32) -> Int32 { fatalError() }
 
 func fastly_http_resp__http_keepalive_mode_set(_ resp_handle: WasiHandle, _ mode: UInt32) -> Int32 { fatalError() }
+
+func fastly_cache__cache_transaction_lookup(
+    _ cache_key: UnsafePointer<CChar>!,
+    _ cache_key_len: Int,
+    _ options_mask: UInt32,
+    _ config: UnsafeMutablePointer<CacheLookupConfig>!,
+    _ ret: UnsafeMutablePointer<WasiHandle>!
+) -> Int32 { fatalError() }
+
+func fastly_cache__cache_transaction_insert_and_stream_back(
+    _ handle: WasiHandle,
+    _ options_mask: UInt32,
+    _ config: UnsafeMutablePointer<CacheWriteConfig>!,
+    _ ret_body: UnsafeMutablePointer<WasiHandle>!,
+    _ ret_cache: UnsafeMutablePointer<WasiHandle>!
+) -> Int32 { fatalError() }
+
+func fastly_cache__cache_get_state(
+    _ handle: WasiHandle,
+    _ ret: UnsafeMutablePointer<UInt8>!
+) -> Int32 { fatalError() }
+
+func fastly_cache__cache_get_age_ns(
+    _ handle: WasiHandle,
+    _ ret: UnsafeMutablePointer<UInt64>!
+) -> Int32 { fatalError() }
+
+func fastly_cache__cache_get_length(
+    _ handle: WasiHandle,
+    _ ret: UnsafeMutablePointer<UInt64>!
+) -> Int32 { fatalError() }
+
+func fastly_cache__cache_get_hits(
+    _ handle: WasiHandle,
+    _ ret: UnsafeMutablePointer<UInt64>!
+) -> Int32{ fatalError() }
+
+func fastly_cache__cache_get_body(
+    _ handle: WasiHandle,
+    _ options_mask: UInt32,
+    _ config: UnsafeMutablePointer<CacheGetBodyConfig>!,
+    _ ret: UnsafeMutablePointer<WasiHandle>!
+) -> Int32 { fatalError() }
+
+func fastly_cache__cache_transaction_cancel(_ handle: WasiHandle) -> Int32 { fatalError() }
 
 #endif

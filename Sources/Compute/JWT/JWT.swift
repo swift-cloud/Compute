@@ -151,6 +151,7 @@ extension JWT {
     @discardableResult
     public func verify(
         key: String,
+        using algorithm: Algorithm? = nil,
         issuer: String? = nil,
         subject: String? = nil,
         expiration: Bool = true
@@ -159,7 +160,7 @@ extension JWT {
         let input = token.components(separatedBy: ".").prefix(2).joined(separator: ".")
 
         // Ensure the signatures match
-        try verifySignature(input, signature: signature, key: key, using: algorithm)
+        try verifySignature(input, signature: signature, key: key, using: algorithm ?? self.algorithm)
 
         // Ensure the jwt is not expired
         if expiration, self.expired == true {
