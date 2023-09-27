@@ -78,6 +78,9 @@ int fastly_http_body__append(WasiHandle dest, WasiHandle src);
 WASM_IMPORT("fastly_http_body", "close")
 int fastly_http_body__close(WasiHandle handle);
 
+WASM_IMPORT("fastly_http_body", "abandon")
+int fastly_http_body__abandon(WasiHandle handle);
+
 WASM_IMPORT("fastly_http_body", "write")
 int fastly_http_body__write(WasiHandle handle, const uint8_t* data, size_t data_len, int body_end, size_t* nwritten);
 

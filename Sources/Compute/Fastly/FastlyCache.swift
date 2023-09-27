@@ -18,7 +18,7 @@ extension Fastly {
             let state = try trx.getState()
 
             // If state is usable then return the body from cache
-            if state.contains(.usable) {
+            guard state.contains(.mustInsertOrUpdate) else {
                 return trx
             }
 
@@ -36,6 +36,9 @@ extension Fastly {
                 case .bytes(let bytes):
                     try writer.body.write(bytes)
                 }
+
+                // Finish the body
+                try writer.body.close()
 
                 return writer.transaction
             } catch {

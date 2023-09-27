@@ -57,6 +57,8 @@ func fastly_http_body__append(_ dest: WasiHandle, _ src: WasiHandle) -> Int32 { 
 
 func fastly_http_body__close(_ handle: WasiHandle) -> Int32 { fatalError() }
 
+func fastly_http_body__abandon(_ handle: WasiHandle) -> Int32 { fatalError() }
+
 func fastly_http_body__write(_ handle: WasiHandle, _ data: UnsafePointer<UInt8>!, _ data_len: Int, _ body_end: Int32, _ nwritten: UnsafeMutablePointer<Int>!) -> Int32 { fatalError() }
 
 func fastly_http_body__read(_ handle: WasiHandle, _ data: UnsafeMutablePointer<UInt8>!, _ data_max_len: Int, _ nwritten: UnsafeMutablePointer<Int>!) -> Int32 { fatalError() }

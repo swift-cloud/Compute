@@ -33,6 +33,10 @@ extension Fastly {
             try wasi(fastly_http_body__close(handle))
         }
 
+        public mutating func abandon() throws {
+            try wasi(fastly_http_body__abandon(handle))
+        }
+
         @discardableResult
         public mutating func write(_ bytes: [UInt8], location: BodyWriteEnd = .back) throws -> Int {
             defer { used = true }
