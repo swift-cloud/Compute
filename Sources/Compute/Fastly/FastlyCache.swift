@@ -85,7 +85,7 @@ extension Fastly.Cache {
         public func insertAndStreamBack(cachePolicy: CachePolicy, length: Int) throws -> (body: Fastly.Body, transaction: Transaction) {
             var bodyHandle: WasiHandle = 0
             var cacheHandle: WasiHandle = 0
-            let options: CacheWriteOptions = [.initialAgeNs, .staleWhileRevalidateNs, .length]
+            let options: CacheWriteOptions = [.staleWhileRevalidateNs, .length]
             var config = CacheWriteConfig()
             config.max_age_ns = .init(cachePolicy.maxAge) * 1_000_000_000
             config.stale_while_revalidate_ns = .init(cachePolicy.staleMaxAge) * 1_000_000_000
