@@ -144,8 +144,8 @@ The Compute package provdes access to [Fastly's Cache API](https://developer.fas
 
 ```swift
 let data = try await Cache.getOrSet("my-page") {
-        let res = try await expensivePageRender()
-        return (res, .ttl(60))
+    let res = try await expensivePageRender()
+    return (res, .ttl(60))
 }
 
 try await res
