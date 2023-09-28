@@ -136,3 +136,20 @@ let data = try await fetch(req, origin: "https://httpbin.org", .options(
 ))
 try await res.proxy(data)
 ```
+
+## Cache
+
+The Compute package provdes access to [Fastly's Cache API](https://developer.fastly.com/learning/concepts/edge-state/cache#simple-cache) allowing you to cache and retrieve arbitrary data during a request:
+
+
+```swift
+let data = try await Cache.getOrSet("my-page") {
+        let res = try await expensivePageRender()
+        return (res, .ttl(60))
+}
+
+try await res
+    .status(200)
+    .header(.contentLength, "\(data.contentLength)")
+    .send(data.body)
+```
