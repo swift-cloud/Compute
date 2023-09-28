@@ -19,24 +19,6 @@
 
 typedef uint32_t WasiHandle;
 
-typedef struct DynamicBackendConfig {
-    const char* host_override;
-    size_t host_override_len;
-    size_t connect_timeout_ms;
-    size_t first_byte_timeout_ms;
-    size_t between_bytes_timeout_ms;
-    size_t ssl_min_version;
-    size_t ssl_max_version;
-    const char* cert_hostname;
-    size_t cert_hostname_len;
-    const char* ca_cert;
-    size_t ca_cert_len;
-    const char* ciphers;
-    size_t ciphers_len;
-    const char* sni_hostname;
-    size_t sni_hostname_len;
-} DynamicBackendConfig;
-
 /* FASTLY_ABI */
 
 WASM_IMPORT("fastly_abi", "init")
@@ -95,6 +77,9 @@ int fastly_http_body__append(WasiHandle dest, WasiHandle src);
 
 WASM_IMPORT("fastly_http_body", "close")
 int fastly_http_body__close(WasiHandle handle);
+
+WASM_IMPORT("fastly_http_body", "abandon")
+int fastly_http_body__abandon(WasiHandle handle);
 
 WASM_IMPORT("fastly_http_body", "write")
 int fastly_http_body__write(WasiHandle handle, const uint8_t* data, size_t data_len, int body_end, size_t* nwritten);
@@ -211,6 +196,24 @@ int fastly_http_req__redirect_to_grip_proxy(const char *backend, size_t backend_
 WASM_IMPORT("fastly_http_req", "downstream_tls_ja3_md5")
 int fastly_http_req__downstream_tls_ja3_md5(uint8_t *value, size_t *nwritten);
 
+typedef struct DynamicBackendConfig {
+    const char* host_override;
+    size_t host_override_len;
+    size_t connect_timeout_ms;
+    size_t first_byte_timeout_ms;
+    size_t between_bytes_timeout_ms;
+    size_t ssl_min_version;
+    size_t ssl_max_version;
+    const char* cert_hostname;
+    size_t cert_hostname_len;
+    const char* ca_cert;
+    size_t ca_cert_len;
+    const char* ciphers;
+    size_t ciphers_len;
+    const char* sni_hostname;
+    size_t sni_hostname_len;
+} DynamicBackendConfig;
+
 WASM_IMPORT("fastly_http_req", "register_dynamic_backend")
 int fastly_http_req__register_dynamic_backend(const char *name,
                                               size_t name_len,
@@ -266,6 +269,71 @@ int fastly_http_resp__framing_headers_mode_set(WasiHandle resp_handle, uint32_t 
 
 WASM_IMPORT("fastly_http_resp", "http_keepalive_mode_set")
 int fastly_http_resp__http_keepalive_mode_set(WasiHandle resp_handle, uint32_t mode);
+
+/* FASTLY_CACHE */
+
+typedef struct CacheLookupConfig {
+    // * A full request handle, but used only for its headers
+    WasiHandle request_headers;
+} CacheLookupConfig;
+
+typedef struct CacheGetBodyConfig {
+    uint64_t start;
+    uint64_t end;
+} CacheGetBodyConfig;
+
+typedef struct CacheWriteConfig {
+    uint64_t max_age_ns;
+    uint32_t request_headers;
+    const uint8_t *vary_rule_ptr;
+    size_t vary_rule_len;
+    uint64_t initial_age_ns;
+    uint64_t stale_while_revalidate_ns;
+    const uint8_t *surrogate_keys_ptr;
+    size_t surrogate_keys_len;
+    uint64_t length;
+    const uint8_t *user_metadata_ptr;
+    size_t user_metadata_len;
+} CacheWriteConfig;
+
+WASM_IMPORT("fastly_cache", "lookup")
+int cache_lookup(const char *cache_key, size_t cache_key_len, uint32_t options_mask,
+                 CacheLookupConfig *config,
+                 WasiHandle *ret);
+
+WASM_IMPORT("fastly_cache", "insert")
+int fastly_cache__cache_insert(const char *cache_key, size_t cache_key_len, uint32_t options_mask,
+                               CacheWriteConfig *config, WasiHandle *ret);
+
+WASM_IMPORT("fastly_cache", "transaction_lookup")
+int fastly_cache__cache_transaction_lookup(const char *cache_key, size_t cache_key_len, uint32_t options_mask,
+                                           CacheLookupConfig *config,
+                                           WasiHandle *ret);
+
+WASM_IMPORT("fastly_cache", "transaction_insert_and_stream_back")
+int fastly_cache__cache_transaction_insert_and_stream_back(WasiHandle handle, uint32_t options_mask, CacheWriteConfig *config,
+                                                           WasiHandle *ret_body,
+                                                           WasiHandle *ret_cache);
+
+WASM_IMPORT("fastly_cache", "transaction_cancel")
+int fastly_cache__cache_transaction_cancel(WasiHandle handle);
+
+WASM_IMPORT("fastly_cache", "get_state")
+int fastly_cache__cache_get_state(WasiHandle handle, uint8_t *ret);
+
+WASM_IMPORT("fastly_cache", "get_length")
+int fastly_cache__cache_get_length(WasiHandle handle, uint64_t *ret);
+
+WASM_IMPORT("fastly_cache", "get_age_ns")
+int fastly_cache__cache_get_age_ns(WasiHandle handle, uint64_t *ret);
+
+WASM_IMPORT("fastly_cache", "get_hits")
+int fastly_cache__cache_get_hits(WasiHandle handle, uint64_t *ret);
+
+WASM_IMPORT("fastly_cache", "get_body")
+int fastly_cache__cache_get_body(WasiHandle handle, uint32_t options_mask,
+                                 CacheGetBodyConfig *config,
+                                 WasiHandle *ret);
 
 #pragma GCC diagnostic pop
 #endif /* ComputeRuntime_h */
