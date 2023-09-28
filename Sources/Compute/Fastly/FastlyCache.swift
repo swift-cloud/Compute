@@ -10,7 +10,9 @@ import ComputeRuntime
 extension Fastly {
     public struct Cache: Sendable {
 
-        public static func getOrSet(_ key: String, _ handler: () async throws -> (HandlerData, CachePolicy)) async throws -> Transaction {
+        public typealias InsertResult = (data: HandlerData, cachePolicy: CachePolicy)
+
+        public static func getOrSet(_ key: String, _ handler: () async throws -> InsertResult) async throws -> Transaction {
             // Open the transaction
             let trx = try Transaction.lookup(key)
 
@@ -54,10 +56,10 @@ extension Fastly {
 
 extension Fastly.Cache {
     public enum HandlerData {
-        case body(_ body: Fastly.Body, length: Int)
+        case body(_ body: Fastly.Body, length: Int? = nil)
         case bytes(_ bytes: [UInt8])
 
-        public var length: Int {
+        public var length: Int? {
             switch self {
             case .body(_, let length):
                 return length
@@ -85,14 +87,20 @@ extension Fastly.Cache {
             return Transaction(handle)
         }
 
-        public func insertAndStreamBack(cachePolicy: CachePolicy, length: Int) throws -> (body: Fastly.Body, transaction: Transaction) {
+        public func insertAndStreamBack(cachePolicy: CachePolicy, length: Int?) throws -> (body: Fastly.Body, transaction: Transaction) {
             var bodyHandle: WasiHandle = 0
             var cacheHandle: WasiHandle = 0
-            let options: CacheWriteOptions = [.staleWhileRevalidateNs, .length]
+            var options: CacheWriteOptions = []
             var config = CacheWriteConfig()
             config.max_age_ns = .init(cachePolicy.maxAge) * 1_000_000_000
-            config.stale_while_revalidate_ns = .init(cachePolicy.staleMaxAge) * 1_000_000_000
-            config.length = .init(length)
+            if cachePolicy.staleMaxAge > 0 {
+                options.insert(.staleWhileRevalidateNs)
+                config.stale_while_revalidate_ns = .init(cachePolicy.staleMaxAge) * 1_000_000_000
+            }
+            if let length {
+                options.insert(.length)
+                config.length = .init(length)
+            }
             try wasi(fastly_cache__cache_transaction_insert_and_stream_back(handle, options.rawValue, &config, &bodyHandle, &cacheHandle))
             return (.init(bodyHandle), .init(cacheHandle))
         }

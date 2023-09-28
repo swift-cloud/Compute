@@ -10,10 +10,7 @@ public struct Cache: Sendable {
     public static func getOrSet(_ key: String, _ handler: () async throws -> (FetchResponse, CachePolicy)) async throws -> Entry {
         let trx = try await Fastly.Cache.getOrSet(key) {
             let (res, cachePolicy) = try await handler()
-            guard let header = res.headers[.contentLength], let length = Int(header) else {
-                let bytes = try await res.bytes()
-                return (.bytes(bytes), cachePolicy)
-            }
+            let length = res.headers[.contentLength].flatMap(Int.init)
             return await (.body(res.body.body, length: length), cachePolicy)
         }
         return try .init(trx)
