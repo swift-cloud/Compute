@@ -39,7 +39,7 @@ extension FetchResponse {
         return try await body.decode(type, decoder: decoder)
     }
 
-    public func json() async throws -> Any {
+    public func json() async throws -> Sendable {
         return try await body.json()
     }
 

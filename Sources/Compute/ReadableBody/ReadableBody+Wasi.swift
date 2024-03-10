@@ -51,8 +51,7 @@ extension ReadableWasiBody {
 
     func json() async throws -> Sendable {
         let data = try await data()
-        let dict = try JSONSerialization.jsonObject(with: data, options: [])
-        return dict
+        return try JSONSerialization.jsonObject(with: data, options: [])
     }
 
     func jsonObject() async throws -> [String: Sendable] {
