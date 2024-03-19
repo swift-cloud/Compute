@@ -335,5 +335,11 @@ int fastly_cache__cache_get_body(WasiHandle handle, uint32_t options_mask,
                                  CacheGetBodyConfig *config,
                                  WasiHandle *ret);
 
+/* FASTLY_DEVICE */
+
+WASM_IMPORT("fastly_device_detection", "lookup")
+int fastly_device__device_detection_lookup(const char *user_agent, size_t user_agent_len, const char *buf,
+                                           size_t buf_len, size_t *nwritten);
+
 #pragma GCC diagnostic pop
 #endif /* ComputeRuntime_h */
