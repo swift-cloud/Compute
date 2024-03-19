@@ -1,4 +1,4 @@
-// swift-tools-version:5.10
+// swift-tools-version:5.9
 
 import PackageDescription
 
@@ -33,7 +33,13 @@ let package = Package(
                 .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
-        .executableTarget(name: "ComputeDemo", dependencies: ["Compute"]),
-        .testTarget(name: "ComputeTests", dependencies: ["Compute"])
+        .executableTarget(
+            name: "ComputeDemo",
+            dependencies: ["Compute"]
+        ),
+        .testTarget(
+            name: "ComputeTests",
+            dependencies: ["Compute"]
+        )
     ]
 )

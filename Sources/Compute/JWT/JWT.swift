@@ -194,7 +194,7 @@ extension JWT {
 
 private func decodeJWTPart(_ value: String) throws -> [String: Sendable] {
     let bodyData = try base64UrlDecode(value)
-    guard let json = try JSONSerialization.jsonObject(with: bodyData, options: []) as? [String: Sendable] else {
+    guard let json = try JSONSerialization.jsonObject(with: bodyData) as? [String: Sendable] else {
         throw JWTError.invalidJSON
     }
     return json

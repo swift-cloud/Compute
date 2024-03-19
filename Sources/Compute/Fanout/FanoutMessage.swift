@@ -74,22 +74,16 @@ extension FanoutMessage {
         return try decoder.decode(type, from: data())
     }
 
-    public func json() throws -> Sendable {
-        return try JSONSerialization.jsonObject(with: data())
+    public func json<T: Sendable>() throws -> T {
+        return try JSONSerialization.jsonObject(with: data()) as! T
     }
 
     public func jsonObject() throws -> [String: Sendable] {
-        guard let json = try JSONSerialization.jsonObject(with: data()) as? [String: Sendable] else {
-            throw FanoutMessageError.invalidFormat
-        }
-        return json
+        return try json()
     }
 
     public func jsonArray() throws -> [Sendable] {
-        guard let json = try JSONSerialization.jsonObject(with: data()) as? [Sendable] else {
-            throw FanoutMessageError.invalidFormat
-        }
-        return json
+        return try json()
     }
 
     public func data() throws -> Data {
