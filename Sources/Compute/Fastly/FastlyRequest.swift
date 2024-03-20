@@ -301,4 +301,10 @@ extension Fastly.Request {
             try wasi(fastly_http_req__downstream_tls_ja3_md5(buffer.baseAddress, &length))
         }
     }
+
+    public static func downstreamTLSJA4() throws -> String? {
+        return try wasiString(maxBufferLength: 1024) {
+            fastly_http_req__downstream_tls_ja4($0, $1, &$2)
+        }
+    }
 }

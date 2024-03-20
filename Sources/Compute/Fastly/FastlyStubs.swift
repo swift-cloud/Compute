@@ -127,6 +127,12 @@ func fastly_http_req__register_dynamic_backend(_ name: UnsafePointer<CChar>!, _ 
 
 func fastly_http_req__downstream_tls_ja3_md5(_ value: UnsafeMutablePointer<UInt8>!, _ nwritten: UnsafeMutablePointer<Int>!) -> Int32 { fatalError() }
 
+func fastly_http_req__downstream_tls_ja4(
+    _ value: UnsafeMutablePointer<UInt8>!,
+    _ max_len: Int,
+    _ nwritten_out: UnsafeMutablePointer<Int>!
+) -> Int32 { fatalError() }
+
 /* FASTLY_HTTP_RESP */
 
 func fastly_http_resp__new(_ handle: UnsafeMutablePointer<WasiHandle>!) -> Int32 { fatalError() }
