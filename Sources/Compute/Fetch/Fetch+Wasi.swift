@@ -84,7 +84,7 @@ internal struct WasiFetcher: Sendable {
 
         // Register the backend
         if Fastly.Environment.viceroy, request.backend != "localhost" {
-            try registerDynamicBackend(request.backend, for: httpRequest, ssl: urlComponents.scheme == "https")
+            try await dynamicBackends.register(request.backend, for: httpRequest, ssl: urlComponents.scheme == "https")
         }
 
         // Issue async request
@@ -119,25 +119,30 @@ internal struct WasiFetcher: Sendable {
             }
         }
     }
+}
 
-    private static var dynamicBackends: Set<String> = []
+extension WasiFetcher {
+    private static let dynamicBackends = DynamicBackendRepository()
 
-    private static func registerDynamicBackend(_ backend: String, for request: Fastly.Request, ssl: Bool) throws {
-        // Make sure we didn't already register the backend
-        guard dynamicBackends.contains(backend) == false else {
-            return
+    private actor DynamicBackendRepository {
+
+        private var state: Set<String> = []
+
+        func register(_ backend: String, for request: Fastly.Request, ssl: Bool) throws {
+            // Make sure we didn't already register the backend
+            guard !state.contains(backend) else { return }
+
+            // Mark the backend as registered
+            defer { state.insert(backend) }
+
+            // Attempt to register the backend
+            do {
+                try request.registerDynamicBackend(name: backend, target: backend, options: .init(ssl: ssl))
+            } catch WasiStatus.unexpected {
+                // ignore
+            } catch {
+                throw error
+            }
         }
-
-        // Attempt to register the backend
-        do {
-            try request.registerDynamicBackend(name: backend, target: backend, options: .init(ssl: ssl))
-        } catch WasiStatus.unexpected {
-            // ignore
-        } catch {
-            throw error
-        }
-
-        // Mark the backend as registered
-        dynamicBackends.insert(backend)
     }
 }

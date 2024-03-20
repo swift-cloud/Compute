@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:5.9
 
 import PackageDescription
 
@@ -17,9 +17,29 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-crypto", from: "3.0.0")
     ],
     targets: [
-        .target(name: "Compute", dependencies: ["ComputeRuntime", .product(name: "Crypto", package: "swift-crypto")]),
-        .target(name: "ComputeRuntime"),
-        .executableTarget(name: "ComputeDemo", dependencies: ["Compute"]),
-        .testTarget(name: "ComputeTests", dependencies: ["Compute"])
+        .target(
+            name: "Compute",
+            dependencies: [
+                "ComputeRuntime",
+                .product(name: "Crypto", package: "swift-crypto")
+            ],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency")
+            ]
+        ),
+        .target(
+            name: "ComputeRuntime",
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency")
+            ]
+        ),
+        .executableTarget(
+            name: "ComputeDemo",
+            dependencies: ["Compute"]
+        ),
+        .testTarget(
+            name: "ComputeTests",
+            dependencies: ["Compute"]
+        )
     ]
 )

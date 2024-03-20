@@ -37,16 +37,16 @@ extension ReadableDataBody {
         return try decoder.decode(type, from: data)
     }
 
-    func json() async throws -> Sendable {
-        return try JSONSerialization.jsonObject(with: data)
+    func json<T: Sendable>() async throws -> T {
+        return try JSONSerialization.jsonObject(with: data) as! T
     }
 
     func jsonObject() async throws -> [String : Sendable] {
-        return try JSONSerialization.jsonObject(with: data) as! [String: Any]
+        return try await json()
     }
 
     func jsonArray() async throws -> [Sendable] {
-        return try JSONSerialization.jsonObject(with: data) as! [Any]
+        return try await json()
     }
 
     func formValues() async throws -> HTTPSearchParams {

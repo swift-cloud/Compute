@@ -29,21 +29,21 @@ extension Fastly {
 }
 
 extension Fastly.Environment {
-    public static var cacheGeneration = current["FASTLY_CACHE_GENERATION"] ?? "local"
+    public static let cacheGeneration = current["FASTLY_CACHE_GENERATION"] ?? "local"
 
-    public static var customerId = current["FASTLY_CUSTOMER_ID"] ?? "local"
+    public static let customerId = current["FASTLY_CUSTOMER_ID"] ?? "local"
 
-    public static var hostname = current["FASTLY_HOSTNAME"] ?? "localhost"
+    public static let hostname = current["FASTLY_HOSTNAME"] ?? "localhost"
 
-    public static var pop = current["FASTLY_POP"] ?? "local"
+    public static let pop = current["FASTLY_POP"] ?? "local"
 
-    public static var region = current["FASTLY_REGION"] ?? "local"
+    public static let region = current["FASTLY_REGION"] ?? "local"
 
-    public static var serviceId = current["FASTLY_SERVICE_ID"] ?? "local"
+    public static let serviceId = current["FASTLY_SERVICE_ID"] ?? "local"
 
-    public static var serviceVersion = current["FASTLY_SERVICE_VERSION"] ?? "0"
+    public static let serviceVersion = current["FASTLY_SERVICE_VERSION"] ?? "0"
 
-    public static var traceId = current["FASTLY_TRACE_ID"] ?? "local"
+    public static let traceId = current["FASTLY_TRACE_ID"] ?? "local"
 
     public static var viceroy: Bool {
         return hostname == "localhost"

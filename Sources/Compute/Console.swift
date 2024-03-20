@@ -7,7 +7,7 @@
 
 public let console = Console()
 
-public struct Console {
+public struct Console: Sendable {
 
     public var prefix: String? = nil
 
@@ -25,18 +25,17 @@ public struct Console {
     }
 
     public func error(_ items: Any...) {
+        var errorStream = StandardErrorOutputStream()
         let text = items.map { String(describing: $0) }.joined(separator: " ")
         if let prefix = prefix {
-            print(prefix, text, to: &StandardErrorOutputStream.default)
+            print(prefix, text, to: &errorStream)
         } else {
-            print(text, to: &StandardErrorOutputStream.default)
+            print(text, to: &errorStream)
         }
     }
 }
 
 fileprivate struct StandardErrorOutputStream: TextOutputStream {
-
-    fileprivate static var `default` = StandardErrorOutputStream()
 
     private let stderr = FileHandle.standardError
 
