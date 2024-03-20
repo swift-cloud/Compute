@@ -65,8 +65,17 @@ public struct IncomingRequest: Sendable {
 }
 
 extension IncomingRequest {
+    public enum TLSFingerprintMethod: Sendable {
+        case ja3
+        case ja4
+    }
 
-    public func clientFingerprint() -> String? {
-        return try? Fastly.Request.downstreamTLSJA3MD5().hex
+    public func TLSFingerprint(_ method: TLSFingerprintMethod) -> String? {
+        switch method {
+        case .ja3:
+            return try? Fastly.Request.downstreamTLSJA3MD5().hex
+        case .ja4:
+            return try? Fastly.Request.downstreamTLSJA4()
+        }
     }
 }

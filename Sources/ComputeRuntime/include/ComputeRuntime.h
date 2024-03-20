@@ -196,6 +196,9 @@ int fastly_http_req__redirect_to_grip_proxy(const char *backend, size_t backend_
 WASM_IMPORT("fastly_http_req", "downstream_tls_ja3_md5")
 int fastly_http_req__downstream_tls_ja3_md5(uint8_t *value, size_t *nwritten);
 
+WASM_IMPORT("fastly_http_req", "downstream_tls_ja4")
+int fastly_http_req__downstream_tls_ja4(uint8_t *value, size_t max_len, size_t* nwritten_out);
+
 typedef struct DynamicBackendConfig {
     const char* host_override;
     size_t host_override_len;
