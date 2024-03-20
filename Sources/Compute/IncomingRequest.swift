@@ -66,7 +66,7 @@ public struct IncomingRequest: Sendable {
 
 extension IncomingRequest {
 
-    @available(*, deprecated, renamed: "TLSFingerptint", message: "Use TLSFingerprint with provided method")
+    @available(*, deprecated, renamed: "TLSFingerprint", message: "Use TLSFingerprint with provided method")
     public func clientFingerprint() -> String? {
         return try? Fastly.Request.downstreamTLSJA3MD5().hex
     }
