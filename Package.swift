@@ -8,7 +8,7 @@ let package = Package(
         .macOS(.v11),
         .iOS(.v14),
         .tvOS(.v14),
-        .watchOS(.v7)
+        .watchOS(.v7),
     ],
     products: [
         .library(name: "Compute", targets: ["Compute"])
@@ -21,7 +21,7 @@ let package = Package(
             name: "Compute",
             dependencies: [
                 "ComputeRuntime",
-                .product(name: "Crypto", package: "swift-crypto")
+                .product(name: "Crypto", package: "swift-crypto"),
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
@@ -40,6 +40,6 @@ let package = Package(
         .testTarget(
             name: "ComputeTests",
             dependencies: ["Compute"]
-        )
+        ),
     ]
 )
