@@ -210,7 +210,6 @@ func fastly_cache__cache_transaction_cancel(_ handle: WasiHandle) -> Int32 { fat
 
 func fastly_device__device_detection_lookup(
     _ user_agent: UnsafePointer<CChar>!,
-    _ user_agent_len: Int,
     _ buf: UnsafeMutablePointer<UInt8>!,
     _ buf_len: Int,
     _ nwritten: UnsafeMutablePointer<Int>!

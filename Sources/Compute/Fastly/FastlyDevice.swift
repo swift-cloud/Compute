@@ -26,7 +26,7 @@ extension Fastly {
 
         public static func lookup(userAgent: String) throws -> DeviceLookup {
             return try wasiDecode(maxBufferLength: maxIpLookupLength) {
-                fastly_device__device_detection_lookup(userAgent, userAgent.utf8.count, $0, $1, &$2)
+                fastly_device__device_detection_lookup(userAgent, $0, $1, &$2)
             }
         }
 
