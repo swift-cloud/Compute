@@ -1,10 +1,11 @@
 //
 //  Router.swift
-//  
+//
 //
 //  Created by Andrew Barba on 4/4/22.
 //
 
+@MainActor
 public final class Router {
 
     public typealias Handler = (IncomingRequest, OutgoingResponse) async throws -> Void
@@ -31,7 +32,8 @@ public final class Router {
 
     private func handler(for req: inout IncomingRequest) -> Handler? {
         let pathComponents = req.url.pathComponents.dropFirst()
-        return router.route(path: [req.method.rawValue] + pathComponents, parameters: &req.pathParams)
+        return router.route(
+            path: [req.method.rawValue] + pathComponents, parameters: &req.pathParams)
     }
 }
 
@@ -39,7 +41,9 @@ extension Router {
 
     @discardableResult
     public func listen() async throws -> Self {
-        try await onIncomingRequest(self.run)
+        try await onIncomingRequest { req, res in
+            try await self.run(req, res)
+        }
         return self
     }
 }
@@ -58,7 +62,7 @@ extension Router {
     }
 
     @discardableResult
-    public func put (_ path: String, _ handler: @escaping Handler) -> Self {
+    public func put(_ path: String, _ handler: @escaping Handler) -> Self {
         return add(method: .put, path: path, handler: handler)
     }
 
@@ -109,7 +113,7 @@ extension Router {
         }
 
         // Check if response was already sent
-        guard res.didSend == false else {
+        guard await res.didSend == false else {
             return
         }
 

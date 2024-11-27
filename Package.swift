@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.0
 
 import PackageDescription
 
@@ -22,16 +22,10 @@ let package = Package(
             dependencies: [
                 "ComputeRuntime",
                 .product(name: "Crypto", package: "swift-crypto"),
-            ],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
         .target(
-            name: "ComputeRuntime",
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
+            name: "ComputeRuntime"
         ),
         .executableTarget(
             name: "ComputeDemo",

@@ -1,11 +1,11 @@
 //
 //  OutgoingResponse.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/13/22.
 //
 
-public final class OutgoingResponse {
+public actor OutgoingResponse {
 
     internal private(set) var response: Fastly.Response
 
@@ -222,7 +222,8 @@ extension OutgoingResponse {
 extension OutgoingResponse {
 
     @discardableResult
-    public func write<T>(_ value: T, encoder: JSONEncoder = .init()) async throws -> Self where T: Encodable & Sendable {
+    public func write<T>(_ value: T, encoder: JSONEncoder = .init()) async throws -> Self
+    where T: Encodable & Sendable {
         try await sendAndStream()
         try await body.write(value, encoder: encoder)
         return self
@@ -295,7 +296,7 @@ extension OutgoingResponse {
 
 private let invalidProxyHeaders: Set<String> = [
     HTTPHeader.altSvc.rawValue,
-    HTTPHeader.transferEncoding.rawValue
+    HTTPHeader.transferEncoding.rawValue,
 ]
 
 // MARK: - CORS
@@ -313,9 +314,11 @@ extension OutgoingResponse {
     ) -> Self {
         headers[.accessControlAllowOrigin] = origin
         headers[.accessControlAllowMethods] = methods.map { $0.rawValue }.joined(separator: ", ")
-        headers[.accessControlAllowHeaders] = allowHeaders?.map { $0.stringValue }.joined(separator: ", ") ?? "*"
+        headers[.accessControlAllowHeaders] =
+            allowHeaders?.map { $0.stringValue }.joined(separator: ", ") ?? "*"
         headers[.accessControlAllowCredentials] = allowCredentials?.description
-        headers[.accessControlExposeHeaders] = exposeHeaders?.map { $0.stringValue }.joined(separator: ", ")
+        headers[.accessControlExposeHeaders] = exposeHeaders?.map { $0.stringValue }.joined(
+            separator: ", ")
         headers[.accessControlMaxAge] = String(maxAge)
         return self
     }
@@ -338,7 +341,8 @@ extension OutgoingResponse {
 
     @discardableResult
     public func upgradeToHTTP3(maxAge: Int = 86400) -> Self {
-        headers[.altSvc] = #"h3=":443";ma=\#(maxAge),h3-29=":443";ma=\#(maxAge),h3-27=":443";ma=\#(maxAge)"#
+        headers[.altSvc] =
+            #"h3=":443";ma=\#(maxAge),h3-29=":443";ma=\#(maxAge),h3-27=":443";ma=\#(maxAge)"#
         return self
     }
 }
@@ -412,8 +416,10 @@ extension OutgoingResponse {
         _ value: String,
         _ options: [CookieOption]
     ) -> Self {
-        let encodedName = name.addingPercentEncoding(withAllowedCharacters: .javascriptURLAllowed) ?? name
-        let encodedValue = value.addingPercentEncoding(withAllowedCharacters: .javascriptURLAllowed) ?? value
+        let encodedName =
+            name.addingPercentEncoding(withAllowedCharacters: .javascriptURLAllowed) ?? name
+        let encodedValue =
+            value.addingPercentEncoding(withAllowedCharacters: .javascriptURLAllowed) ?? value
         let parts = ["\(encodedName)=\(encodedValue)"] + options.map(\.value)
         let header = parts.joined(separator: "; ")
         headers.append(.setCookie, header)

@@ -6,11 +6,15 @@
 //
 
 @_exported import Foundation
+
 #if canImport(FoundationNetworking)
-@_exported import FoundationNetworking
+    @_exported import FoundationNetworking
 #endif
 
-public func onIncomingRequest(_ handler: @escaping (_ req: IncomingRequest, _ res: OutgoingResponse) async throws -> Void) async throws {
+@MainActor
+public func onIncomingRequest(
+    _ handler: @escaping (_ req: IncomingRequest, _ res: OutgoingResponse) async throws -> Void
+) async throws {
     // Initialize ABI
     try Fastly.ABI.initialize()
 

@@ -1,6 +1,7 @@
 .DS_Store
 /.build
 /.swiftpm
+/.index-build
 /Packages
 /*.xcodeproj
 xcuserdata/

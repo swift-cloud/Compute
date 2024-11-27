@@ -17,6 +17,6 @@ try await onIncomingRequest { req, res in
     try await res.send([
         "verified": verified,
         "signature": jwt.signature.toHexString(),
-        "jwt": JWT(claims: ["a": "b"], secret: "hello-world").token
+        "jwt": JWT(claims: ["a": "b"], secret: "hello-world").token,
     ])
 }
