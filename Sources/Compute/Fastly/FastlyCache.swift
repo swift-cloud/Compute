@@ -1,6 +1,6 @@
 //
 //  FastlyCache.swift
-//  
+//
 //
 //  Created by Andrew Barba on 9/13/23.
 //
@@ -12,7 +12,9 @@ extension Fastly {
 
         public typealias InsertResult = (data: HandlerData, cachePolicy: CachePolicy)
 
-        public static func getOrSet(_ key: String, _ handler: () async throws -> InsertResult) async throws -> Transaction {
+        public static func getOrSet(_ key: String, _ handler: () async throws -> InsertResult)
+            async throws -> Transaction
+        {
             // Open the transaction
             let trx = try Transaction.lookup(key)
 
@@ -29,7 +31,8 @@ extension Fastly {
                 let (data, cachePolicy) = try await handler()
 
                 // Get an instance to the insert handle
-                var writer = try trx.insertAndStreamBack(cachePolicy: cachePolicy, length: data.length)
+                var writer = try trx.insertAndStreamBack(
+                    cachePolicy: cachePolicy, length: data.length)
 
                 // Append bytes from handler to writeable body
                 switch data {
@@ -83,11 +86,15 @@ extension Fastly.Cache {
             var handle: WasiHandle = 0
             let options = CacheLookupOptions.none
             var config = CacheLookupConfig()
-            try wasi(fastly_cache__cache_transaction_lookup(key, key.utf8.count, options.rawValue, &config, &handle))
+            try wasi(
+                fastly_cache__cache_transaction_lookup(
+                    key, key.utf8.count, options.rawValue, &config, &handle))
             return Transaction(handle)
         }
 
-        public func insertAndStreamBack(cachePolicy: CachePolicy, length: Int?) throws -> (body: Fastly.Body, transaction: Transaction) {
+        public func insertAndStreamBack(cachePolicy: CachePolicy, length: Int?) throws -> (
+            body: Fastly.Body, transaction: Transaction
+        ) {
             var bodyHandle: WasiHandle = 0
             var cacheHandle: WasiHandle = 0
             var options: CacheWriteOptions = []
@@ -101,7 +108,9 @@ extension Fastly.Cache {
                 options.insert(.length)
                 config.length = .init(length)
             }
-            try wasi(fastly_cache__cache_transaction_insert_and_stream_back(handle, options.rawValue, &config, &bodyHandle, &cacheHandle))
+            try wasi(
+                fastly_cache__cache_transaction_insert_and_stream_back(
+                    handle, options.rawValue, &config, &bodyHandle, &cacheHandle))
             return (.init(bodyHandle), .init(cacheHandle))
         }
 

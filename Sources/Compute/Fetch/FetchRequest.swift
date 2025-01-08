@@ -1,6 +1,6 @@
 //
 //  FetchRequest.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/14/22.
 //
@@ -110,7 +110,8 @@ extension FetchRequest {
         case json(_ json: Data)
         case stream(_ body: ReadableBody)
 
-        public static func json<T>(_ value: T, encoder: JSONEncoder = .init()) throws -> Body where T: Encodable {
+        public static func json<T>(_ value: T, encoder: JSONEncoder = .init()) throws -> Body
+        where T: Encodable {
             let data = try encoder.encode(value)
             return Body.json(data)
         }

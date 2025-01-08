@@ -11,7 +11,7 @@
 protocol Routable {
     /// Type of value stored in routes. This will be returned by the router.
     associatedtype Output
-    
+
     /// Registers a new `Output` to the `Router` at a given path.
     ///
     ///  - parameters:
@@ -19,7 +19,7 @@ protocol Routable {
     ///     - path: Path to register output at.
     ///
     mutating func register(_ output: Output, at path: [PathComponent])
-    
+
     /// Fetches output for a specific route.
     ///
     /// `PathComponent.parameter` values will be stored in the supplied `Parameters`

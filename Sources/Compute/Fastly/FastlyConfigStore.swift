@@ -1,6 +1,6 @@
 //
 //  Dictionary.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/12/22.
 //

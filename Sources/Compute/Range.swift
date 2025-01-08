@@ -1,6 +1,6 @@
 //
 //  Range.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/18/22.
 //
@@ -37,7 +37,9 @@ public struct Range: Sendable {
 
     public init?(from value: String) {
         // Split on equals to get [<unit>, <start>-<end>]
-        let valueParts = value.components(separatedBy: "=").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+        let valueParts = value.components(separatedBy: "=").map {
+            $0.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
 
         // Ensure only two parts
         guard valueParts.count == 2 else {
@@ -48,13 +50,17 @@ public struct Range: Sendable {
         let unit = valueParts[0]
 
         // Parse intervals parts to get [<start>-<end>, ...]
-        let intervalsParts = valueParts[1].components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+        let intervalsParts = valueParts[1].components(separatedBy: ",").map {
+            $0.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
 
         // Map over intervals parts to create intervals
         let intervals = intervalsParts.compactMap { part -> RangeInterval? in
 
             // Split part on - to get [<start>, <end>]
-            let intervalParts = part.components(separatedBy: "-").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            let intervalParts = part.components(separatedBy: "-").map {
+                $0.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
 
             // Ensure exactly two parts
             guard intervalParts.count == 2 else {

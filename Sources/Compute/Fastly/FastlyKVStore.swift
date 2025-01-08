@@ -1,6 +1,6 @@
 //
 //  Store.swift
-//  
+//
 //
 //  Created by Andrew Barba on 3/30/22.
 //

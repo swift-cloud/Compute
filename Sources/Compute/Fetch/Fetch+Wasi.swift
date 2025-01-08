@@ -1,6 +1,6 @@
 //
 //  Fetch.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/15/22.
 //
@@ -84,16 +84,19 @@ internal struct WasiFetcher: Sendable {
 
         // Register the backend
         if Fastly.Environment.viceroy, request.backend != "localhost" {
-            try await dynamicBackends.register(request.backend, for: httpRequest, ssl: urlComponents.scheme == "https")
+            try await dynamicBackends.register(
+                request.backend, for: httpRequest, ssl: urlComponents.scheme == "https")
         }
 
         // Issue async request
         let pendingRequest: Fastly.PendingRequest
         if let streamingBody = streamingBody {
-            pendingRequest = try await httpRequest.sendAsyncStreaming(writableBody.body, backend: request.backend)
+            pendingRequest = try await httpRequest.sendAsyncStreaming(
+                writableBody.body, backend: request.backend)
             try await streamingBody.pipeTo(writableBody)
         } else {
-            pendingRequest = try await httpRequest.sendAsync(writableBody.body, backend: request.backend)
+            pendingRequest = try await httpRequest.sendAsync(
+                writableBody.body, backend: request.backend)
         }
 
         // Store the time we started sending request
@@ -114,7 +117,9 @@ internal struct WasiFetcher: Sendable {
             }
 
             // Check for a timeout
-            if let timeoutInterval = request.timeoutInterval, Date().timeIntervalSince1970 - startTime > timeoutInterval {
+            if let timeoutInterval = request.timeoutInterval,
+                Date().timeIntervalSince1970 - startTime > timeoutInterval
+            {
                 throw FetchRequestError.timeout
             }
         }
@@ -137,7 +142,8 @@ extension WasiFetcher {
 
             // Attempt to register the backend
             do {
-                try request.registerDynamicBackend(name: backend, target: backend, options: .init(ssl: ssl))
+                try request.registerDynamicBackend(
+                    name: backend, target: backend, options: .init(ssl: ssl))
             } catch WasiStatus.unexpected {
                 // ignore
             } catch {

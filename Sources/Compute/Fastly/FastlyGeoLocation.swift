@@ -1,6 +1,6 @@
 //
 //  Geo.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/12/22.
 //
@@ -38,10 +38,11 @@ extension Fastly {
                 let bytes = text.components(separatedBy: ".").compactMap { UInt8($0) }
                 return try lookup(ip: bytes)
             case .v6(let text):
-                let bytes = text.components(separatedBy: ":").reduce(Array<UInt8>()) { res, octet in
+                let bytes = text.components(separatedBy: ":").reduce([UInt8]()) { res, octet in
                     let first = octet.prefix(2)
                     let second = octet.suffix(2)
-                    return res + [UInt8(first, radix: 16), UInt8(second, radix: 16)].compactMap { $0 }
+                    return res
+                        + [UInt8(first, radix: 16), UInt8(second, radix: 16)].compactMap { $0 }
                 }
                 return try lookup(ip: bytes)
             }

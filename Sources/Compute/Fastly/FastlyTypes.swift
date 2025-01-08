@@ -1,6 +1,6 @@
 //
 //  Types.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/12/22.
 //
@@ -86,7 +86,7 @@ public enum HTTPVersion: Int32, Codable, Sendable {
             return "0.9"
         case .http1_0:
             return "1.0"
-        case.http1_1:
+        case .http1_1:
             return "1.1"
         case .h2:
             return "2"

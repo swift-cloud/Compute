@@ -1,6 +1,6 @@
 //
 //  FanoutClient.swift
-//  
+//
 //
 //  Created by Andrew Barba on 2/1/23.
 //
@@ -19,7 +19,10 @@ public struct FanoutClient: Sendable {
         "https://\(hostname)/service/\(service)/publish/"
     }
 
-    public init(service: String = Fastly.Environment.serviceId, token: String, hostname: String = "api.fastly.com") {
+    public init(
+        service: String = Fastly.Environment.serviceId, token: String,
+        hostname: String = "api.fastly.com"
+    ) {
         self.service = service
         self.token = token
         self.hostname = hostname
@@ -27,11 +30,13 @@ public struct FanoutClient: Sendable {
 
     @discardableResult
     public func publish(_ message: PublishMessage) async throws -> FetchResponse {
-        return try await fetch(publishEndpoint, .options(
-            method: .post,
-            body: .json(message),
-            headers: ["Fastly-Key": token]
-        ))
+        return try await fetch(
+            publishEndpoint,
+            .options(
+                method: .post,
+                body: .json(message),
+                headers: ["Fastly-Key": token]
+            ))
     }
 
     @discardableResult
@@ -43,7 +48,9 @@ public struct FanoutClient: Sendable {
     }
 
     @discardableResult
-    public func publish<T: Encodable>(_ value: T, encoder: JSONEncoder = .init(), to channel: String) async throws -> FetchResponse {
+    public func publish<T: Encodable>(
+        _ value: T, encoder: JSONEncoder = .init(), to channel: String
+    ) async throws -> FetchResponse {
         let content = try encoder.encode(value)
         return try await publish(content, to: channel)
     }
@@ -56,7 +63,9 @@ public struct FanoutClient: Sendable {
     }
 
     @discardableResult
-    public func publish(_ jsonObject: [String: Any], to channel: String) async throws -> FetchResponse {
+    public func publish(_ jsonObject: [String: Any], to channel: String) async throws
+        -> FetchResponse
+    {
         let data = try JSONSerialization.data(withJSONObject: jsonObject)
         let content = String(data: data, encoding: .utf8)
         return try await publish(content, to: channel)
