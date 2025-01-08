@@ -1,6 +1,6 @@
 //
 //  Request.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/13/22.
 //
@@ -58,7 +58,9 @@ extension Fastly {
             try wasi(fastly_http_req__auto_decompress_response_set(handle, encodings.rawValue))
         }
 
-        public mutating func setCachePolicy(_ policy: CachePolicy, surrogateKey: String? = nil) throws {
+        public mutating func setCachePolicy(_ policy: CachePolicy, surrogateKey: String? = nil)
+            throws
+        {
             var tag: CacheOverrideTag
             let ttl: UInt32
             let swr: UInt32
@@ -72,12 +74,15 @@ extension Fastly {
                 ttl = 0
                 swr = 0
             case .ttl(let seconds, let staleWhileRevalidate, let pciCompliant):
-                tag = .ttl.union(staleWhileRevalidate > 0 ? .swr : .none).union(pciCompliant ? .pci : .none)
+                tag = .ttl.union(staleWhileRevalidate > 0 ? .swr : .none).union(
+                    pciCompliant ? .pci : .none)
                 ttl = .init(seconds)
                 swr = .init(staleWhileRevalidate)
             }
             if let surrogateKey = surrogateKey {
-                try wasi(fastly_http_req__cache_override_v2_set(handle, tag.rawValue, ttl, swr, surrogateKey, surrogateKey.utf8.count))
+                try wasi(
+                    fastly_http_req__cache_override_v2_set(
+                        handle, tag.rawValue, ttl, swr, surrogateKey, surrogateKey.utf8.count))
             } else {
                 try wasi(fastly_http_req__cache_override_set(handle, tag.rawValue, ttl, swr))
             }
@@ -88,8 +93,10 @@ extension Fastly {
             var nextCursor: Int64 = 0
             var bytes: [UInt8] = []
             while true {
-                let chunk = try Array<UInt8>(unsafeUninitializedCapacity: 1024)  {
-                    try wasi(fastly_http_req__header_names_get(handle, $0.baseAddress, 1024, cursor, &nextCursor, &$1))
+                let chunk = try [UInt8](unsafeUninitializedCapacity: 1024) {
+                    try wasi(
+                        fastly_http_req__header_names_get(
+                            handle, $0.baseAddress, 1024, cursor, &nextCursor, &$1))
                 }
                 guard chunk.count > 0 else {
                     break
@@ -110,33 +117,47 @@ extension Fastly {
         }
 
         public mutating func insertHeader(_ name: String, _ value: String) throws {
-            try wasi(fastly_http_req__header_insert(handle, name, name.utf8.count, value, value.utf8.count))
+            try wasi(
+                fastly_http_req__header_insert(
+                    handle, name, name.utf8.count, value, value.utf8.count))
         }
 
         public mutating func appendHeader(_ name: String, _ value: String) throws {
-            try wasi(fastly_http_req__header_append(handle, name, name.utf8.count, value, value.utf8.count))
+            try wasi(
+                fastly_http_req__header_append(
+                    handle, name, name.utf8.count, value, value.utf8.count))
         }
 
         public mutating func removeHeader(_ name: String) throws {
             try wasi(fastly_http_req__header_remove(handle, name, name.utf8.count))
         }
 
-        public mutating func send(_ body: Body, backend: String) throws -> (response: Response, body: Body) {
+        public mutating func send(_ body: Body, backend: String) throws -> (
+            response: Response, body: Body
+        ) {
             var responseHandle: WasiHandle = 0
             var bodyHandle: WasiHandle = 0
-            try wasi(fastly_http_req__send(handle, body.handle, backend, backend.utf8.count, &responseHandle, &bodyHandle))
+            try wasi(
+                fastly_http_req__send(
+                    handle, body.handle, backend, backend.utf8.count, &responseHandle, &bodyHandle))
             return (.init(responseHandle), .init(bodyHandle))
         }
 
         public mutating func sendAsync(_ body: Body, backend: String) throws -> PendingRequest {
             var pendingRequestHandle: WasiHandle = 0
-            try wasi(fastly_http_req__send_async(handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
+            try wasi(
+                fastly_http_req__send_async(
+                    handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
             return .init(pendingRequestHandle, request: self)
         }
 
-        public mutating func sendAsyncStreaming(_ body: Body, backend: String) throws -> PendingRequest {
+        public mutating func sendAsyncStreaming(_ body: Body, backend: String) throws
+            -> PendingRequest
+        {
             var pendingRequestHandle: WasiHandle = 0
-            try wasi(fastly_http_req__send_async_streaming(handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
+            try wasi(
+                fastly_http_req__send_async_streaming(
+                    handle, body.handle, backend, backend.utf8.count, &pendingRequestHandle))
             return .init(pendingRequestHandle, request: self)
         }
 
@@ -185,7 +206,9 @@ extension Fastly.Request {
         }
     }
 
-    public func registerDynamicBackend(name: String, target: String, options: DynamicBackendOptions = .init()) throws {
+    public func registerDynamicBackend(
+        name: String, target: String, options: DynamicBackendOptions = .init()
+    ) throws {
         var mask: BackendConfigOptions = []
 
         var config = DynamicBackendConfig()
@@ -233,14 +256,15 @@ extension Fastly.Request {
                 config.sni_hostname_len = target.utf8.count
             }
 
-            try wasi(fastly_http_req__register_dynamic_backend(
-                name,
-                name.utf8.count,
-                target,
-                target.utf8.count,
-                mask.rawValue,
-                &config
-            ))
+            try wasi(
+                fastly_http_req__register_dynamic_backend(
+                    name,
+                    name.utf8.count,
+                    target,
+                    target.utf8.count,
+                    mask.rawValue,
+                    &config
+                ))
         }
     }
 }
@@ -267,8 +291,10 @@ extension Fastly.Request {
         var nextCursor: Int64 = 0
         var bytes: [UInt8] = []
         while true {
-            let chunk = try Array<UInt8>(unsafeUninitializedCapacity: 1024)  {
-                try wasi(fastly_http_req__original_header_names_get($0.baseAddress, 1024, cursor, &nextCursor, &$1))
+            let chunk = try [UInt8](unsafeUninitializedCapacity: 1024) {
+                try wasi(
+                    fastly_http_req__original_header_names_get(
+                        $0.baseAddress, 1024, cursor, &nextCursor, &$1))
             }
             guard chunk.count > 0 else {
                 break

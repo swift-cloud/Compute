@@ -18,12 +18,12 @@ public enum PathComponent: ExpressibleByStringInterpolation, CustomStringConvert
     ///
     /// Represented as `:` followed by the identifier.
     case parameter(String)
-    
+
     /// A dynamic parameter component with discarded value.
     ///
     /// Represented as `*`
     case anything
-    
+
     /// A fallback component that will match one *or more* dynamic
     /// parameter components with discarded values.
     ///
@@ -47,7 +47,7 @@ public enum PathComponent: ExpressibleByStringInterpolation, CustomStringConvert
             self = .constant(value)
         }
     }
-    
+
     /// `CustomStringConvertible` conformance.
     public var description: String {
         switch self {

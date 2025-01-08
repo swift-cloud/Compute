@@ -1,6 +1,6 @@
 //
 //  JWTClaim.swift
-//  
+//
 //
 //  Created by Andrew Barba on 2/6/23.
 //

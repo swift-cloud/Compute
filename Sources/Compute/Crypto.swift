@@ -1,6 +1,6 @@
 //
 //  Crypto.swift
-//  
+//
 //
 //  Created by Andrew Barba on 2/8/23.
 //
@@ -13,15 +13,18 @@ public enum Crypto {}
 
 extension Crypto {
 
-    public static func hash<T>(_ input: String, using hash: T.Type) -> T.Digest where T: HashFunction {
+    public static func hash<T>(_ input: String, using hash: T.Type) -> T.Digest
+    where T: HashFunction {
         return T.hash(data: Data(input.utf8))
     }
 
-    public static func hash<T>(_ input: [UInt8], using hash: T.Type) -> T.Digest where T: HashFunction {
+    public static func hash<T>(_ input: [UInt8], using hash: T.Type) -> T.Digest
+    where T: HashFunction {
         return T.hash(data: Data(input))
     }
 
-    public static func hash<T>(_ input: Data, using hash: T.Type) -> T.Digest where T: HashFunction {
+    public static func hash<T>(_ input: Data, using hash: T.Type) -> T.Digest
+    where T: HashFunction {
         return T.hash(data: input)
     }
 
@@ -92,7 +95,9 @@ extension Crypto {
             }
         }
 
-        public static func verify(_ input: String, signature: Data, secret: String, using hash: Hash) -> Bool {
+        public static func verify(
+            _ input: String, signature: Data, secret: String, using hash: Hash
+        ) -> Bool {
             let computed = code(for: input, secret: secret, using: hash)
             return computed.toHexString() == signature.toHexString()
         }
@@ -109,7 +114,9 @@ extension Crypto {
             case p521
         }
 
-        public static func signature(for input: String, secret: String, using algorithm: Algorithm) throws -> Data {
+        public static func signature(for input: String, secret: String, using algorithm: Algorithm)
+            throws -> Data
+        {
             switch algorithm {
             case .p256:
                 let pk = try P256.Signing.PrivateKey(pemRepresentation: secret)
@@ -123,7 +130,9 @@ extension Crypto {
             }
         }
 
-        public static func verify(_ input: String, signature: Data, key: String, using algorithm: Algorithm) throws -> Bool {
+        public static func verify(
+            _ input: String, signature: Data, key: String, using algorithm: Algorithm
+        ) throws -> Bool {
             switch algorithm {
             case .p256:
                 let publicKey = try P256.Signing.PublicKey(pemRepresentation: key)
@@ -154,7 +163,7 @@ extension DataProtocol {
     }
 
     public func toHexString() -> String {
-        return reduce("") {$0 + String(format: "%02x", $1)}
+        return reduce("") { $0 + String(format: "%02x", $1) }
     }
 }
 
@@ -168,7 +177,7 @@ extension Digest {
     }
 
     public func toHexString() -> String {
-        return reduce("") {$0 + String(format: "%02x", $1)}
+        return reduce("") { $0 + String(format: "%02x", $1) }
     }
 }
 
@@ -182,7 +191,7 @@ extension HashedAuthenticationCode {
     }
 
     public func toHexString() -> String {
-        return reduce("") {$0 + String(format: "%02x", $1)}
+        return reduce("") { $0 + String(format: "%02x", $1) }
     }
 }
 
@@ -192,6 +201,6 @@ extension Array where Element == UInt8 {
     }
 
     public func toHexString() -> String {
-        return reduce("") {$0 + String(format: "%02x", $1)}
+        return reduce("") { $0 + String(format: "%02x", $1) }
     }
 }

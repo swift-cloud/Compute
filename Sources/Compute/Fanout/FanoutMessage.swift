@@ -1,6 +1,6 @@
 //
 //  FanoutMessage.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/31/23.
 //

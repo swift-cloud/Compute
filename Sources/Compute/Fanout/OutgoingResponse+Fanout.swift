@@ -1,6 +1,6 @@
 //
 //  OutgoingResponse+Fanout.swift
-//  
+//
 //
 //  Created by Andrew Barba on 2/2/23.
 //

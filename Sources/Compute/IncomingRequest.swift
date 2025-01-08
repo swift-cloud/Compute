@@ -1,6 +1,6 @@
 //
 //  IncomingRequest.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/13/22.
 //
@@ -39,7 +39,8 @@ public struct IncomingRequest: Sendable {
         self.url = url
         self.method = try request.getMethod() ?? .get
         self.httpVersion = try request.getHTTPVersion() ?? .http1_1
-        self.searchParams = URLComponents(string: url.absoluteString)?
+        self.searchParams =
+            URLComponents(string: url.absoluteString)?
             .queryItems?
             .reduce(into: [:]) { $0[$1.name] = $1.value } ?? [:]
     }

@@ -1,6 +1,6 @@
 //
 //  Console.swift
-//  
+//
 //
 //  Created by Andrew Barba on 3/23/22.
 //
@@ -35,7 +35,7 @@ public struct Console: Sendable {
     }
 }
 
-fileprivate struct StandardErrorOutputStream: TextOutputStream {
+private struct StandardErrorOutputStream: TextOutputStream {
 
     private let stderr = FileHandle.standardError
 

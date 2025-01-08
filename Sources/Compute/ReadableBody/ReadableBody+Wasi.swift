@@ -44,7 +44,8 @@ extension ReadableWasiBody {
 
 extension ReadableWasiBody {
 
-    func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T where T: Decodable {
+    func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T
+    where T: Decodable {
         let data = try await data()
         return try decoder.decode(type, from: data)
     }

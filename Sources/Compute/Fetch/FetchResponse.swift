@@ -1,6 +1,6 @@
 //
 //  FetchResponse.swift
-//  
+//
 //
 //  Created by Andrew Barba on 12/5/22.
 //
@@ -31,11 +31,13 @@ extension FetchResponse {
 
 extension FetchResponse {
 
-    public func decode<T>(decoder: JSONDecoder = .init()) async throws -> T where T: Decodable & Sendable {
+    public func decode<T>(decoder: JSONDecoder = .init()) async throws -> T
+    where T: Decodable & Sendable {
         return try await body.decode(decoder: decoder)
     }
 
-    public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T where T: Decodable & Sendable {
+    public func decode<T>(_ type: T.Type, decoder: JSONDecoder = .init()) async throws -> T
+    where T: Decodable & Sendable {
         return try await body.decode(type, decoder: decoder)
     }
 

@@ -1,11 +1,12 @@
 //
 //  JWTTests.swift
-//  
+//
 //
 //  Created by Andrew Barba on 11/27/22.
 //
 
 import XCTest
+
 @testable import Compute
 
 private let token =
@@ -56,7 +57,7 @@ final class JWTTests: XCTestCase {
         let jwt = try JWT(
             claims: ["name": "John Doe"],
             secret: "your-256-bit-secret",
-            issuedAt: Date(timeIntervalSince1970: 1669591611),
+            issuedAt: Date(timeIntervalSince1970: 1_669_591_611),
             subject: "1234567890"
         )
         XCTAssertEqual(jwt.token, token)

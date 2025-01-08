@@ -1,6 +1,6 @@
 //
 //  IncomingRequest+Fanout.swift
-//  
+//
 //
 //  Created by Andrew Barba on 2/1/23.
 //
@@ -37,14 +37,16 @@ extension IncomingRequest {
     }
 
     public func verifyFanoutRequest() throws {
-         guard let token = headers[.gripSig] else {
-             throw FanoutRequestError.invalidSignature
-         }
-         let jwt = try JWT(token: token)
-         try jwt.verify(key: fanoutPublicKey)
+        guard let token = headers[.gripSig] else {
+            throw FanoutRequestError.invalidSignature
+        }
+        let jwt = try JWT(token: token)
+        try jwt.verify(key: fanoutPublicKey)
     }
 
-    public func upgradeWebsocket(to destination: UpgradeWebsocketDestination, hostname: String = "localhost") throws {
+    public func upgradeWebsocket(
+        to destination: UpgradeWebsocketDestination, hostname: String = "localhost"
+    ) throws {
         switch destination {
         case .proxy:
             try request.redirectToWebsocketProxy(backend: hostname)

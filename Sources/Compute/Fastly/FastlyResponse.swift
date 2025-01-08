@@ -1,6 +1,6 @@
 //
 //  Response.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/13/22.
 //
@@ -43,7 +43,8 @@ extension Fastly {
         }
 
         public mutating func send(_ body: Body, streaming: Bool = false) throws {
-            try wasi(fastly_http_resp__send_downstream(handle, body.handle, Int32(streaming ? 1 : 0)))
+            try wasi(
+                fastly_http_resp__send_downstream(handle, body.handle, Int32(streaming ? 1 : 0)))
         }
 
         public func getHeaderNames() throws -> [String] {
@@ -51,8 +52,10 @@ extension Fastly {
             var nextCursor: Int64 = 0
             var bytes: [UInt8] = []
             while true {
-                let chunk = try Array<UInt8>(unsafeUninitializedCapacity: 1024)  {
-                    try wasi(fastly_http_resp__header_names_get(handle, $0.baseAddress, 1024, cursor, &nextCursor, &$1))
+                let chunk = try [UInt8](unsafeUninitializedCapacity: 1024) {
+                    try wasi(
+                        fastly_http_resp__header_names_get(
+                            handle, $0.baseAddress, 1024, cursor, &nextCursor, &$1))
                 }
                 guard chunk.count > 0 else {
                     break
@@ -73,11 +76,15 @@ extension Fastly {
         }
 
         public mutating func insertHeader(_ name: String, _ value: String) throws {
-            try wasi(fastly_http_resp__header_insert(handle, name, name.utf8.count, value, value.utf8.count))
+            try wasi(
+                fastly_http_resp__header_insert(
+                    handle, name, name.utf8.count, value, value.utf8.count))
         }
 
         public mutating func appendHeader(_ name: String, _ value: String) throws {
-            try wasi(fastly_http_resp__header_append(handle, name, name.utf8.count, value, value.utf8.count))
+            try wasi(
+                fastly_http_resp__header_append(
+                    handle, name, name.utf8.count, value, value.utf8.count))
         }
 
         public mutating func removeHeader(_ name: String) throws {

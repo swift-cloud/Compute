@@ -1,6 +1,6 @@
 //
 //  Body.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/13/22.
 //
@@ -44,7 +44,9 @@ extension Fastly {
             while position < bytes.count {
                 try bytes[position..<bytes.count].withUnsafeBufferPointer {
                     var written = 0
-                    try wasi(fastly_http_body__write(handle, $0.baseAddress, $0.count, location.rawValue, &written))
+                    try wasi(
+                        fastly_http_body__write(
+                            handle, $0.baseAddress, $0.count, location.rawValue, &written))
                     position += written
                 }
             }
@@ -53,14 +55,16 @@ extension Fastly {
 
         public mutating func scan(highWaterMark: Int = highWaterMark) throws -> [UInt8] {
             defer { used = true }
-            return try Array<UInt8>(unsafeUninitializedCapacity: highWaterMark) {
+            return try [UInt8](unsafeUninitializedCapacity: highWaterMark) {
                 var length = 0
                 try wasi(fastly_http_body__read(handle, $0.baseAddress, highWaterMark, &length))
                 $1 = length
             }
         }
 
-        public mutating func read(highWaterMark: Int = highWaterMark, onChunk: ([UInt8]) throws -> BodyScanContinuation) throws {
+        public mutating func read(
+            highWaterMark: Int = highWaterMark, onChunk: ([UInt8]) throws -> BodyScanContinuation
+        ) throws {
             while true {
                 // Read chunk based on appropriate offset
                 let chunk = try scan(highWaterMark: highWaterMark)

@@ -1,6 +1,6 @@
 //
 //  KVStore.swift
-//  
+//
 //
 //  Created by Andrew Barba on 3/31/22.
 //
@@ -80,9 +80,9 @@ extension KVStore {
         try await put(key, data: data)
     }
 
-    public func put<T>(_ key: String, value: T, encoder: JSONEncoder = .init()) async throws where T: Encodable {
+    public func put<T>(_ key: String, value: T, encoder: JSONEncoder = .init()) async throws
+    where T: Encodable {
         let data = try encoder.encode(value)
         try await put(key, data: data)
     }
 }
-

@@ -60,7 +60,7 @@ public struct Parameters: Sendable {
     public func get(_ name: String) -> String? {
         self.values[name]
     }
-    
+
     /// Grabs the named parameter from the parameter bag, casting it to
     /// a `LosslessStringConvertible` type.
     ///
@@ -71,11 +71,10 @@ public struct Parameters: Sendable {
     ///     let commentID = parameters.get("comment_id", as: Int.self)
     ///
     public func get<T>(_ name: String, as type: T.Type = T.self) -> T?
-        where T: LosslessStringConvertible
-    {
+    where T: LosslessStringConvertible {
         self.get(name).flatMap(T.init)
     }
-    
+
     /// Adds a new parameter value to the bag.
     ///
     /// - note: The value will be percent-decoded.
@@ -86,7 +85,7 @@ public struct Parameters: Sendable {
     public mutating func set(_ name: String, to value: String?) {
         self.values[name] = value?.removingPercentEncoding
     }
-    
+
     /// Fetches the components matched by `catchall` (`**`).
     ///
     /// If the route doen't hit `catchall`, it'll return `[]`.
@@ -108,7 +107,7 @@ public struct Parameters: Sendable {
         }
         return self.catchall.values
     }
-    
+
     /// Stores the components matched by `catchall` (`**`).
     ///
     /// - parameters:
@@ -116,7 +115,7 @@ public struct Parameters: Sendable {
     public mutating func setCatchall(matched: [String]) {
         self.catchall = Catchall(values: matched)
     }
-    
+
     /// Holds path components that were matched by `catchall` (`**`).
     ///
     /// Used internally.

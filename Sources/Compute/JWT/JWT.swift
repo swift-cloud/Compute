@@ -1,6 +1,6 @@
 //
 //  JWT.swift
-//  
+//
 //
 //  Created by Andrew Barba on 11/27/22.
 //
@@ -65,7 +65,7 @@ public struct JWT: Sendable {
     ) throws {
         let header: [String: Sendable] = [
             "alg": algorithm.rawValue,
-            "typ": "JWT"
+            "typ": "JWT",
         ]
 
         var properties: [String: Sendable] = [
@@ -160,7 +160,8 @@ extension JWT {
         let input = token.components(separatedBy: ".").prefix(2).joined(separator: ".")
 
         // Ensure the signatures match
-        try verifySignature(input, signature: signature, key: key, using: algorithm ?? self.algorithm)
+        try verifySignature(
+            input, signature: signature, key: key, using: algorithm ?? self.algorithm)
 
         // Ensure the jwt is not expired
         if expiration, self.expired == true {
@@ -205,7 +206,9 @@ private func encodeJWTPart(_ value: [String: Any]) throws -> String {
     return try base64UrlEncode(data)
 }
 
-private func hmacSignature(_ input: String, secret: String, using algorithm: JWT.Algorithm) throws -> Data {
+private func hmacSignature(_ input: String, secret: String, using algorithm: JWT.Algorithm) throws
+    -> Data
+{
     switch algorithm {
     case .hs256:
         return Crypto.Auth.code(for: input, secret: secret, using: .sha256)
@@ -222,7 +225,9 @@ private func hmacSignature(_ input: String, secret: String, using algorithm: JWT
     }
 }
 
-private func verifySignature(_ input: String, signature: Data, key: String, using algorithm: JWT.Algorithm) throws {
+private func verifySignature(
+    _ input: String, signature: Data, key: String, using algorithm: JWT.Algorithm
+) throws {
     let verified: Bool
     switch algorithm {
     case .es256:
@@ -244,7 +249,8 @@ private func verifySignature(_ input: String, signature: Data, key: String, usin
 }
 
 private func base64UrlDecode(_ value: String) throws -> Data {
-    var base64 = value
+    var base64 =
+        value
         .replacingOccurrences(of: "-", with: "+")
         .replacingOccurrences(of: "_", with: "/")
     let length = Double(base64.lengthOfBytes(using: String.Encoding.utf8))
@@ -261,7 +267,8 @@ private func base64UrlDecode(_ value: String) throws -> Data {
 }
 
 private func base64UrlEncode(_ value: Data) throws -> String {
-    return value
+    return
+        value
         .base64EncodedString()
         .trimmingCharacters(in: ["="])
         .replacingOccurrences(of: "+", with: "-")

@@ -1,13 +1,15 @@
 //
 //  Utils.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/12/22.
 //
 
-import CoreFoundation
+import Foundation
 
-internal typealias WasiBufferReader = (_ buffer: UnsafeMutablePointer<UInt8>?, _ maxLength: Int, _ length: inout Int) -> Int32
+internal typealias WasiBufferReader = (
+    _ buffer: UnsafeMutablePointer<UInt8>?, _ maxLength: Int, _ length: inout Int
+) -> Int32
 
 internal func wasi(
     _ handler: @autoclosure () -> Int32,
@@ -30,7 +32,9 @@ internal func wasiString(
     fileName: String = #file
 ) throws -> String? {
     do {
-        let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler: handler, functionName: functionName, fileName: fileName)
+        let bytes = try wasiBytes(
+            maxBufferLength: maxBufferLength, handler: handler, functionName: functionName,
+            fileName: fileName)
         return String(bytes: bytes, encoding: .utf8)
     } catch WasiStatus.none, WasiStatus.invalidArgument {
         return nil
@@ -46,7 +50,9 @@ internal func wasiDecode<T>(
     functionName: String = #function,
     fileName: String = #file
 ) throws -> T where T: Decodable {
-    let bytes = try wasiBytes(maxBufferLength: maxBufferLength, handler: handler, functionName: functionName, fileName: fileName)
+    let bytes = try wasiBytes(
+        maxBufferLength: maxBufferLength, handler: handler, functionName: functionName,
+        fileName: fileName)
     return try decoder.decode(T.self, from: Data(bytes))
 }
 
@@ -56,15 +62,17 @@ internal func wasiBytes(
     functionName: String = #function,
     fileName: String = #file
 ) throws -> [UInt8] {
-    return try Array<UInt8>(unsafeUninitializedCapacity: maxBufferLength) {
+    return try [UInt8](unsafeUninitializedCapacity: maxBufferLength) {
         var length = 0
-        try wasi(handler($0.baseAddress, maxBufferLength, &length), functionName: functionName, fileName: fileName)
+        try wasi(
+            handler($0.baseAddress, maxBufferLength, &length), functionName: functionName,
+            fileName: fileName)
         $1 = length
     }
 }
 
 internal struct Utils {
-    
+
     internal static let jsonDecoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -76,7 +84,7 @@ extension Array {
 
     internal func chunked(into size: Int) -> [[Element]] {
         return stride(from: 0, to: count, by: size).map {
-            Array(self[$0 ..< Swift.min($0 + size, count)])
+            Array(self[$0..<Swift.min($0 + size, count)])
         }
     }
 }
@@ -91,5 +99,5 @@ extension DataProtocol {
 extension CharacterSet {
 
     static let javascriptURLAllowed: CharacterSet =
-        .alphanumerics.union(.init(charactersIn: "-_.!~*'()")) // as per RFC 3986
+        .alphanumerics.union(.init(charactersIn: "-_.!~*'()"))  // as per RFC 3986
 }

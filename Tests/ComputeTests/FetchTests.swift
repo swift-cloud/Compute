@@ -1,11 +1,12 @@
 //
 //  FetchTests.swift
-//  
+//
 //
 //  Created by Andrew Barba on 11/27/22.
 //
 
 import XCTest
+
 @testable import Compute
 
 final class FetchTests: XCTestCase {

@@ -1,6 +1,6 @@
 //
 //  PendingRequest.swift
-//  
+//
 //
 //  Created by Andrew Barba on 1/14/22.
 //
@@ -30,19 +30,24 @@ extension Fastly {
             var isDone: UInt32 = 0
             var responseHandle: WasiHandle = 0
             var bodyHandle: WasiHandle = 0
-            try wasi(fastly_http_req__pending_req_poll(handle, &isDone, &responseHandle, &bodyHandle))
+            try wasi(
+                fastly_http_req__pending_req_poll(handle, &isDone, &responseHandle, &bodyHandle))
             guard isDone > 0 else {
                 return nil
             }
             return (.init(responseHandle), .init(bodyHandle))
         }
 
-        internal static func select(_ requests: [PendingRequest]) throws -> (index: Int, response: Response, body: Body) {
+        internal static func select(_ requests: [PendingRequest]) throws -> (
+            index: Int, response: Response, body: Body
+        ) {
             var handles = requests.map(\.handle)
             var doneIndex: UInt32 = 0
             var responseHandle: WasiHandle = 0
             var bodyHandle: WasiHandle = 0
-            try wasi(fastly_http_req__pending_req_select(&handles, handles.count, &doneIndex, &responseHandle, &bodyHandle))
+            try wasi(
+                fastly_http_req__pending_req_select(
+                    &handles, handles.count, &doneIndex, &responseHandle, &bodyHandle))
             return (.init(doneIndex), .init(responseHandle), .init(bodyHandle))
         }
     }
