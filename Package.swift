@@ -1,20 +1,17 @@
-// swift-tools-version:5.10
+// swift-tools-version:6.2
 
 import PackageDescription
 
 let package = Package(
     name: "Compute",
     platforms: [
-        .macOS(.v11),
-        .iOS(.v14),
-        .tvOS(.v14),
-        .watchOS(.v7),
+        .macOS(.v15)
     ],
     products: [
         .library(name: "Compute", targets: ["Compute"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-crypto", "1.0.0"..<"4.0.0")
+        .package(url: "https://github.com/apple/swift-crypto", from: "3.12.0")
     ],
     targets: [
         .target(
@@ -35,9 +32,5 @@ let package = Package(
             name: "ComputeTests",
             dependencies: ["Compute"]
         ),
-    ],
-    swiftLanguageVersions: [
-        .version("6"),
-        .v5,
     ]
 )
