@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 2/1/23.
 //
 
-import Foundation
-
 public struct FanoutClient: Sendable {
 
     public let service: String

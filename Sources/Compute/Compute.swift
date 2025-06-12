@@ -5,10 +5,10 @@
 //  Created by Andrew Barba on 1/11/22.
 //
 
-@_exported import Foundation
-
-#if canImport(FoundationNetworking)
-    @_exported import FoundationNetworking
+#if canImport(FoundationEssentials)
+    @_exported import FoundationEssentials
+#else
+    @_exported import Foundation
 #endif
 
 @MainActor

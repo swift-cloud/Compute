@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 2/1/23.
 //
 
-import Foundation
-
 public enum FanoutRequestError: Error, Sendable {
     case invalidSignature
 }

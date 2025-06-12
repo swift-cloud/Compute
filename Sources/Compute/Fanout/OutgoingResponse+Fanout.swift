@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 2/2/23.
 //
 
-import Foundation
-
 extension OutgoingResponse {
 
     public func meta(_ key: String, _ value: String?) -> Self {
