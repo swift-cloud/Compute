@@ -1,6 +1,7 @@
 .DS_Store
 /.build
 /.swiftpm
+/.vscode
 /.index-build
 /Packages
 /*.xcodeproj
