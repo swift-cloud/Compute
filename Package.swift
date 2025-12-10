@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "Compute", targets: ["Compute"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-crypto", from: "3.12.0")
+        .package(url: "https://github.com/apple/swift-crypto", "3.12.0"..<"5.0.0")
     ],
     targets: [
         .target(

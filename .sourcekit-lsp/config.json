@@ -1,0 +1,5 @@
+{
+    "swiftPM": {
+        "swiftSDK": "swift-6.2.2-RELEASE_wasm"
+    }
+}
