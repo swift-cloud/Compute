@@ -116,16 +116,6 @@ extension FetchRequest {
             return Body.json(data)
         }
 
-        public static func json(_ jsonObject: [String: Any]) throws -> Body {
-            let data = try JSONSerialization.data(withJSONObject: jsonObject)
-            return Body.json(data)
-        }
-
-        public static func json(_ jsonArray: [Any]) throws -> Body {
-            let data = try JSONSerialization.data(withJSONObject: jsonArray)
-            return Body.json(data)
-        }
-
         public var defaultContentType: String? {
             switch self {
             case .json:

@@ -5,20 +5,52 @@
 //  Created by Andrew Barba on 11/27/22.
 //
 
-public struct JWT: Sendable {
+public protocol JWTPayload: Sendable, Codable {
+    var iat: TimeInterval? { get set }
+    var exp: TimeInterval? { get set }
+    var sub: String? { get set }
+    var iss: String? { get set }
+    var jti: String? { get set }
+}
+
+public enum JWTAlgorithm: String, Codable, Sendable {
+    case hs256 = "HS256"
+    case hs384 = "HS384"
+    case hs512 = "HS512"
+    case es256 = "ES256"
+    case es384 = "ES384"
+    case es512 = "ES512"
+}
+
+public struct JWTHeader: Sendable, Codable {
+    public let alg: JWTAlgorithm
+    public let typ: String
+}
+
+public struct EmptyJWTPayload: JWTPayload {
+    public var iat: TimeInterval?
+    public var exp: TimeInterval?
+    public var sub: String?
+    public var iss: String?
+    public var jti: String?
+
+    public init() {}
+}
+
+public struct JWT<Payload: JWTPayload>: Sendable, Codable {
 
     public let token: String
 
-    public let algorithm: Algorithm
+    public let algorithm: JWTAlgorithm
 
-    public let header: [String: Sendable]
+    public let header: JWTHeader
 
-    public let payload: [String: Sendable]
+    public let payload: Payload
 
     public let signature: Data
 
     public func claim(name: String) -> Claim {
-        return .init(value: payload[name])
+        return .init(value: payload)[name]
     }
 
     public subscript(key: String) -> Claim {
@@ -33,15 +65,10 @@ public struct JWT: Sendable {
         }
 
         // Parse header
-        let header = try decodeJWTPart(parts[0])
-
-        // Parse algorithm
-        guard let alg = header["alg"] as? String, let algorithm = Algorithm(rawValue: alg) else {
-            throw JWTError.unsupportedAlgorithm
-        }
+        let header: JWTHeader = try decodeJWTPart(parts[0])
 
         // Parse payload
-        let payload = try decodeJWTPart(parts[1])
+        let payload: Payload = try decodeJWTPart(parts[1])
 
         // Parse signature
         let signature = try base64UrlDecode(parts[2])
@@ -49,46 +76,41 @@ public struct JWT: Sendable {
         self.header = header
         self.payload = payload
         self.signature = signature
-        self.algorithm = algorithm
+        self.algorithm = header.alg
         self.token = token
     }
 
     public init(
-        claims: [String: Sendable],
+        claims: Payload,
         secret: String,
-        algorithm: Algorithm = .hs256,
+        algorithm: JWTAlgorithm = .hs256,
         issuedAt: Date = .init(),
         expiresAt: Date? = nil,
         issuer: String? = nil,
         subject: String? = nil,
         identifier: String? = nil
     ) throws {
-        let header: [String: Sendable] = [
-            "alg": algorithm.rawValue,
-            "typ": "JWT",
-        ]
+        let header = JWTHeader(alg: algorithm, typ: "JWT")
 
-        var properties: [String: Sendable] = [
-            "iat": issuedAt.timeIntervalSince1970.rounded(.down)
-        ]
+        var payload = claims
+
+        payload.iat = issuedAt.timeIntervalSince1970.rounded(.down)
 
         if let expiresAt {
-            properties["exp"] = expiresAt.timeIntervalSince1970.rounded(.up)
+            payload.exp = expiresAt.timeIntervalSince1970.rounded(.up)
         }
 
         if let subject {
-            properties["sub"] = subject
+            payload.sub = subject
         }
 
         if let issuer {
-            properties["iss"] = issuer
+            payload.iss = issuer
         }
 
         if let identifier {
-            properties["jti"] = identifier
+            payload.jti = identifier
         }
-
-        let payload = claims.merging(properties, uniquingKeysWith: { $1 })
 
         let _header = try encodeJWTPart(header)
 
@@ -151,7 +173,7 @@ extension JWT {
     @discardableResult
     public func verify(
         key: String,
-        using algorithm: Algorithm? = nil,
+        using algorithm: JWTAlgorithm? = nil,
         issuer: String? = nil,
         subject: String? = nil,
         expiration: Bool = true
@@ -182,31 +204,20 @@ extension JWT {
     }
 }
 
-extension JWT {
-    public enum Algorithm: String, Sendable {
-        case hs256 = "HS256"
-        case hs384 = "HS384"
-        case hs512 = "HS512"
-        case es256 = "ES256"
-        case es384 = "ES384"
-        case es512 = "ES512"
-    }
-}
-
-private func decodeJWTPart(_ value: String) throws -> [String: Sendable] {
+private func decodeJWTPart<T: Decodable>(_ value: String) throws -> T {
     let bodyData = try base64UrlDecode(value)
-    guard let json = try JSONSerialization.jsonObject(with: bodyData) as? [String: Sendable] else {
+    guard let json = try? JSONDecoder().decode(T.self, from: bodyData) else {
         throw JWTError.invalidJSON
     }
     return json
 }
 
-private func encodeJWTPart(_ value: [String: Any]) throws -> String {
-    let data = try JSONSerialization.data(withJSONObject: value, options: [.sortedKeys])
+private func encodeJWTPart<T: Encodable>(_ value: T) throws -> String {
+    let data = try JSONEncoder().encode(value)
     return try base64UrlEncode(data)
 }
 
-private func hmacSignature(_ input: String, secret: String, using algorithm: JWT.Algorithm) throws
+private func hmacSignature(_ input: String, secret: String, using algorithm: JWTAlgorithm) throws
     -> Data
 {
     switch algorithm {
@@ -226,7 +237,7 @@ private func hmacSignature(_ input: String, secret: String, using algorithm: JWT
 }
 
 private func verifySignature(
-    _ input: String, signature: Data, key: String, using algorithm: JWT.Algorithm
+    _ input: String, signature: Data, key: String, using algorithm: JWTAlgorithm
 ) throws {
     let verified: Bool
     switch algorithm {

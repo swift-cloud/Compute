@@ -94,8 +94,7 @@ extension DataProtocol {
     }
 }
 
-extension CharacterSet {
-
-    static let javascriptURLAllowed: CharacterSet =
-        .alphanumerics.union(.init(charactersIn: "-_.!~*'()"))  // as per RFC 3986
-}
+// extension CharacterSet {
+//     static let javascriptURLAllowed: CharacterSet =
+//         .alphanumerics.union(.init(charactersIn: "-_.!~*'()"))  // as per RFC 3986
+// }

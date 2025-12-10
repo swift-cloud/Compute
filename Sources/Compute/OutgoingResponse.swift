@@ -124,18 +124,6 @@ extension OutgoingResponse {
         try await sendAndClose()
     }
 
-    public func send(_ jsonObject: [String: Sendable]) async throws {
-        try defaultContentType("application/json")
-        try await body.write(jsonObject)
-        try await sendAndClose()
-    }
-
-    public func send(_ jsonArray: [Sendable]) async throws {
-        try defaultContentType("application/json")
-        try await body.write(jsonArray)
-        try await sendAndClose()
-    }
-
     public func send(_ text: String) async throws {
         try defaultContentType("text/plain")
         let data = text.data(using: .utf8) ?? .init()
@@ -226,20 +214,6 @@ extension OutgoingResponse {
     where T: Encodable & Sendable {
         try await sendAndStream()
         try await body.write(value, encoder: encoder)
-        return self
-    }
-
-    @discardableResult
-    public func write(_ jsonObject: [String: Sendable]) async throws -> Self {
-        try await sendAndStream()
-        try await body.write(jsonObject)
-        return self
-    }
-
-    @discardableResult
-    public func write(_ jsonArray: [Sendable]) async throws -> Self {
-        try await sendAndStream()
-        try await body.write(jsonArray)
         return self
     }
 
@@ -417,9 +391,9 @@ extension OutgoingResponse {
         _ options: [CookieOption]
     ) -> Self {
         let encodedName =
-            name.addingPercentEncoding(withAllowedCharacters: .javascriptURLAllowed) ?? name
+            name.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? name
         let encodedValue =
-            value.addingPercentEncoding(withAllowedCharacters: .javascriptURLAllowed) ?? value
+            value.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? value
         let parts = ["\(encodedName)=\(encodedValue)"] + options.map(\.value)
         let header = parts.joined(separator: "; ")
         headers.append(.setCookie, header)

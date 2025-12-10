@@ -38,24 +38,6 @@ extension Fastly {
         }
 
         @discardableResult
-        public func write(
-            _ jsonObject: [String: Any],
-            options: JSONSerialization.WritingOptions = [.sortedKeys]
-        ) throws -> Int {
-            let data = try JSONSerialization.data(withJSONObject: jsonObject, options: options)
-            return try write(data)
-        }
-
-        @discardableResult
-        public func write(
-            _ jsonArray: [Any],
-            options: JSONSerialization.WritingOptions = [.sortedKeys]
-        ) throws -> Int {
-            let data = try JSONSerialization.data(withJSONObject: jsonArray, options: options)
-            return try write(data)
-        }
-
-        @discardableResult
         public func write(_ data: Data) throws -> Int {
             let text = String(bytes: data, encoding: .utf8) ?? ""
             return try write(text)

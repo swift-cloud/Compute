@@ -48,23 +48,12 @@ public struct Cache: Sendable {
         return try .init(trx)
     }
 
-    public static func getOrSet(
-        _ key: String, _ handler: () async throws -> ([String: Sendable], CachePolicy)
+    public static func getOrSet<T: Encodable>(
+        _ key: String, _ handler: () async throws -> (T, CachePolicy)
     ) async throws -> Entry {
         let trx = try await Fastly.Cache.getOrSet(key) {
             let (json, cachePolicy) = try await handler()
-            let data = try JSONSerialization.data(withJSONObject: json)
-            return (.bytes(data.bytes), cachePolicy)
-        }
-        return try .init(trx)
-    }
-
-    public static func getOrSet(
-        _ key: String, _ handler: () async throws -> ([Sendable], CachePolicy)
-    ) async throws -> Entry {
-        let trx = try await Fastly.Cache.getOrSet(key) {
-            let (json, cachePolicy) = try await handler()
-            let data = try JSONSerialization.data(withJSONObject: json)
+            let data = try JSONEncoder().encode(json)
             return (.bytes(data.bytes), cachePolicy)
         }
         return try .init(trx)

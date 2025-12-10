@@ -6,17 +6,7 @@ private let token =
     """
 
 try await onIncomingRequest { req, res in
-    let jwt = try JWT(token: token)
-    let verified: Bool
-    do {
-        try jwt.verify(key: fanoutPublicKey, issuer: "fastly", expiration: false)
-        verified = true
-    } catch {
-        verified = false
-    }
-    try await res.send([
-        "verified": verified,
-        "signature": jwt.signature.toHexString(),
-        "jwt": JWT(claims: ["a": "b"], secret: "hello-world").token,
-    ])
+    let jwt = try JWT<EmptyJWTPayload>(token: token)
+    try jwt.verify(key: fanoutPublicKey, issuer: "fastly", expiration: false)
+    try await res.send(jwt)
 }

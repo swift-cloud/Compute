@@ -41,18 +41,6 @@ extension FetchResponse {
         return try await body.decode(type, decoder: decoder)
     }
 
-    public func json<T: Sendable>() async throws -> T {
-        return try await body.json()
-    }
-
-    public func jsonObject() async throws -> [String: Sendable] {
-        return try await body.jsonObject()
-    }
-
-    public func jsonArray() async throws -> [Sendable] {
-        return try await body.jsonArray()
-    }
-
     public func formValues() async throws -> HTTPSearchParams {
         return try await body.formValues()
     }
