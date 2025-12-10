@@ -5,11 +5,7 @@
 //  Created by Andrew Barba on 1/11/22.
 //
 
-#if canImport(FoundationEssentials)
-    @_exported import FoundationEssentials
-#else
-    @_exported import Foundation
-#endif
+@_exported import Foundation
 
 @MainActor
 public func onIncomingRequest(

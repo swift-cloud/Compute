@@ -69,11 +69,11 @@ public struct JWT: Sendable {
         ]
 
         var properties: [String: Sendable] = [
-            "iat": floor(issuedAt.timeIntervalSince1970)
+            "iat": issuedAt.timeIntervalSince1970.rounded(.down)
         ]
 
         if let expiresAt {
-            properties["exp"] = ceil(expiresAt.timeIntervalSince1970)
+            properties["exp"] = expiresAt.timeIntervalSince1970.rounded(.up)
         }
 
         if let subject {
@@ -254,7 +254,7 @@ private func base64UrlDecode(_ value: String) throws -> Data {
         .replacingOccurrences(of: "-", with: "+")
         .replacingOccurrences(of: "_", with: "/")
     let length = Double(base64.lengthOfBytes(using: String.Encoding.utf8))
-    let requiredLength = 4 * ceil(length / 4.0)
+    let requiredLength = 4 * (length / 4.0).rounded(.up)
     let paddingLength = requiredLength - length
     if paddingLength > 0 {
         let padding = "".padding(toLength: Int(paddingLength), withPad: "=", startingAt: 0)
