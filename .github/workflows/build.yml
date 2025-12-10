@@ -5,13 +5,13 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: swift:6.0
+    container: swift:6.2.2
 
     steps:
       - uses: actions/checkout@v4
 
       - run: swift --version
 
-      - run: swift sdk install https://github.com/swiftwasm/swift/releases/download/swift-wasm-6.0.2-RELEASE/swift-wasm-6.0.2-RELEASE-wasm32-unknown-wasi.artifactbundle.zip --checksum 6ffedb055cb9956395d9f435d03d53ebe9f6a8d45106b979d1b7f53358e1dcb4
+      - run: swift sdk install https://download.swift.org/swift-6.2.2-release/wasm-sdk/swift-6.2.2-RELEASE/swift-6.2.2-RELEASE_wasm.artifactbundle.tar.gz --checksum 128fa003e0cad624897c2b1d5f07cedf400e3c8bd851d304e57440b591cbe606
 
-      - run: swift build --swift-sdk wasm32-unknown-wasi
+      - run: swift build --swift-sdk swift-6.2.2-RELEASE_wasm
