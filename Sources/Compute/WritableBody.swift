@@ -57,22 +57,6 @@ extension WritableBody {
         try await write(data)
     }
 
-    public func write(
-        _ jsonObject: [String: Sendable],
-        options: JSONSerialization.WritingOptions = [.sortedKeys]
-    ) async throws {
-        let data = try JSONSerialization.data(withJSONObject: jsonObject, options: options)
-        try await write(data)
-    }
-
-    public func write(
-        _ jsonArray: [Sendable],
-        options: JSONSerialization.WritingOptions = [.sortedKeys]
-    ) async throws {
-        let data = try JSONSerialization.data(withJSONObject: jsonArray, options: options)
-        try await write(data)
-    }
-
     public func write(_ text: String) async throws {
         let data = text.data(using: .utf8) ?? .init()
         try await write(data)

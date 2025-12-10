@@ -17,12 +17,6 @@ public protocol ReadableBody: Actor, Sendable {
 
     func decode<T>(_ type: T.Type, decoder: JSONDecoder) async throws -> T where T: Decodable
 
-    func json<T: Sendable>() async throws -> T
-
-    func jsonObject() async throws -> [String: Sendable]
-
-    func jsonArray() async throws -> [Sendable]
-
     func formValues() async throws -> HTTPSearchParams
 
     func text() async throws -> String

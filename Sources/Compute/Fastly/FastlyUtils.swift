@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 1/12/22.
 //
 
-import Foundation
-
 internal typealias WasiBufferReader = (
     _ buffer: UnsafeMutablePointer<UInt8>?, _ maxLength: Int, _ length: inout Int
 ) -> Int32
@@ -96,8 +94,7 @@ extension DataProtocol {
     }
 }
 
-extension CharacterSet {
-
-    static let javascriptURLAllowed: CharacterSet =
-        .alphanumerics.union(.init(charactersIn: "-_.!~*'()"))  // as per RFC 3986
-}
+// extension CharacterSet {
+//     static let javascriptURLAllowed: CharacterSet =
+//         .alphanumerics.union(.init(charactersIn: "-_.!~*'()"))  // as per RFC 3986
+// }

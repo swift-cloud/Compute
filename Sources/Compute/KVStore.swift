@@ -70,16 +70,6 @@ extension KVStore {
         try await put(key, data: data)
     }
 
-    public func put(_ key: String, jsonObject: [String: Any]) async throws {
-        let data = try JSONSerialization.data(withJSONObject: jsonObject)
-        try await put(key, data: data)
-    }
-
-    public func put(_ key: String, jsonArray: [Any]) async throws {
-        let data = try JSONSerialization.data(withJSONObject: jsonArray)
-        try await put(key, data: data)
-    }
-
     public func put<T>(_ key: String, value: T, encoder: JSONEncoder = .init()) async throws
     where T: Encodable {
         let data = try encoder.encode(value)

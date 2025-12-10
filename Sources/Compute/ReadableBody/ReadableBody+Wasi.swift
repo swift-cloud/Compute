@@ -50,19 +50,6 @@ extension ReadableWasiBody {
         return try decoder.decode(type, from: data)
     }
 
-    func json<T: Sendable>() async throws -> T {
-        let data = try await data()
-        return try JSONSerialization.jsonObject(with: data) as! T
-    }
-
-    func jsonObject() async throws -> [String: Sendable] {
-        return try await json()
-    }
-
-    func jsonArray() async throws -> [Sendable] {
-        return try await json()
-    }
-
     func formValues() async throws -> HTTPSearchParams {
         let query = try await text()
         let components = URLComponents(string: "?\(query)")

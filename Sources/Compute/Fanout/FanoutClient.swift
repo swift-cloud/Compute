@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 2/1/23.
 //
 
-import Foundation
-
 public struct FanoutClient: Sendable {
 
     public let service: String
@@ -52,29 +50,6 @@ public struct FanoutClient: Sendable {
         _ value: T, encoder: JSONEncoder = .init(), to channel: String
     ) async throws -> FetchResponse {
         let content = try encoder.encode(value)
-        return try await publish(content, to: channel)
-    }
-
-    @discardableResult
-    public func publish(_ json: Any, to channel: String) async throws -> FetchResponse {
-        let data = try JSONSerialization.data(withJSONObject: json)
-        let content = String(data: data, encoding: .utf8)
-        return try await publish(content, to: channel)
-    }
-
-    @discardableResult
-    public func publish(_ jsonObject: [String: Any], to channel: String) async throws
-        -> FetchResponse
-    {
-        let data = try JSONSerialization.data(withJSONObject: jsonObject)
-        let content = String(data: data, encoding: .utf8)
-        return try await publish(content, to: channel)
-    }
-
-    @discardableResult
-    public func publish(_ jsonArray: [Any], to channel: String) async throws -> FetchResponse {
-        let data = try JSONSerialization.data(withJSONObject: jsonArray)
-        let content = String(data: data, encoding: .utf8)
         return try await publish(content, to: channel)
     }
 }

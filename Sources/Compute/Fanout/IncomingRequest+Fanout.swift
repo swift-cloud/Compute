@@ -5,8 +5,6 @@
 //  Created by Andrew Barba on 2/1/23.
 //
 
-import Foundation
-
 public enum FanoutRequestError: Error, Sendable {
     case invalidSignature
 }
@@ -40,7 +38,7 @@ extension IncomingRequest {
         guard let token = headers[.gripSig] else {
             throw FanoutRequestError.invalidSignature
         }
-        let jwt = try JWT(token: token)
+        let jwt = try JWT<EmptyJWTPayload>(token: token)
         try jwt.verify(key: fanoutPublicKey)
     }
 
